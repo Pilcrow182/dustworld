@@ -12,16 +12,14 @@ local function is_owner(pos, name)
 end
 
 local bones_formspec =
-	"size[8,9]" ..
+	"size[10,8.75]" ..
 	default.gui_bg ..
 	default.gui_bg_img ..
 	default.gui_slots ..
-	"list[current_name;main;0,0.3;8,4;]" ..
-	"list[current_player;main;0,4.85;8,1;]" ..
-	"list[current_player;main;0,6.08;8,3;8]" ..
+	"list[current_name;main;1,0.3;8,4;]" ..
+	"list[current_player;main;0,4.85;10,4;]" ..
 	"listring[current_name;main]" ..
-	"listring[current_player;main]" ..
-	default.get_hotbar_bg(0,4.85)
+	"listring[current_player;main]"
 
 local share_bones_time = tonumber(minetest.settings:get("share_bones_time")) or 1200
 local share_bones_time_early = tonumber(minetest.settings:get("share_bones_time_early")) or share_bones_time / 4

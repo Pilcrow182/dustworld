@@ -99,7 +99,7 @@ zcg.formspec = function(pn)
 	page = zcg.users[pn].page
 	alt = zcg.users[pn].alt
 	current_item = zcg.users[pn].current_item
-	local formspec = "size[8,7.5]"
+	local formspec = "size[10,7.5]"
 	.. "button[0,0;2,.5;main;Back]"
 	-- Show craft recipe
 	if current_item ~= "" then
@@ -125,13 +125,13 @@ zcg.formspec = function(pn)
 	end
 	
 	-- Node list
-	local npp = 8*3 -- nodes per page
+	local npp = 10*3 -- nodes per page
 	local i = 0 -- for positionning buttons
 	local s = 0 -- for skipping pages
 	for _, name in ipairs(zcg.itemlist) do
 		if s < page*npp then s = s+1 else
 			if i >= npp then break end
-			formspec = formspec .. "item_image_button["..(i%8)..","..(math.floor(i/8)+3.5)..";1,1;"..name..";zcg:"..name..";]"
+			formspec = formspec .. "item_image_button["..(i%10)..","..(math.floor(i/10)+3.5)..";1,1;"..name..";zcg:"..name..";]"
 			i = i+1
 		end
 	end

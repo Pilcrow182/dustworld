@@ -4,47 +4,43 @@
 --
 
 function default.get_furnace_active_formspec(fuel_percent, item_percent)
-	return "size[8,8.5]"..
+	return "size[10,8.25]"..
 		default.gui_bg..
 		default.gui_bg_img..
 		default.gui_slots..
-		"list[context;src;2.75,0.5;1,1;]"..
-		"list[context;fuel;2.75,2.5;1,1;]"..
-		"image[2.75,1.5;1,1;default_furnace_fire_bg.png^[lowpart:"..
+		"list[context;src;3,0.5;1,1;]"..
+		"list[context;fuel;3,2.5;1,1;]"..
+		"image[3,1.5;1,1;default_furnace_fire_bg.png^[lowpart:"..
 		(100-fuel_percent)..":default_furnace_fire_fg.png]"..
-		"image[3.75,1.5;1,1;gui_furnace_arrow_bg.png^[lowpart:"..
+		"image[4,1.5;1,1;gui_furnace_arrow_bg.png^[lowpart:"..
 		(item_percent)..":gui_furnace_arrow_fg.png^[transformR270]"..
-		"list[context;dst;4.75,0.96;2,2;]"..
-		"list[current_player;main;0,4.25;8,1;]"..
-		"list[current_player;main;0,5.5;8,3;8]"..
+		"list[context;dst;5,0.96;2,2;]"..
+		"list[current_player;main;0,4.25;10,4;]"..
 		"listring[context;dst]"..
 		"listring[current_player;main]"..
 		"listring[context;src]"..
 		"listring[current_player;main]"..
 		"listring[context;fuel]"..
-		"listring[current_player;main]"..
-		default.get_hotbar_bg(0, 4.25)
+		"listring[current_player;main]"
 end
 
 function default.get_furnace_inactive_formspec()
-	return "size[8,8.5]"..
+	return "size[10,8.25]"..
 		default.gui_bg..
 		default.gui_bg_img..
 		default.gui_slots..
-		"list[context;src;2.75,0.5;1,1;]"..
-		"list[context;fuel;2.75,2.5;1,1;]"..
-		"image[2.75,1.5;1,1;default_furnace_fire_bg.png]"..
-		"image[3.75,1.5;1,1;gui_furnace_arrow_bg.png^[transformR270]"..
-		"list[context;dst;4.75,0.96;2,2;]"..
-		"list[current_player;main;0,4.25;8,1;]"..
-		"list[current_player;main;0,5.5;8,3;8]"..
+		"list[context;src;3,0.5;1,1;]"..
+		"list[context;fuel;3,2.5;1,1;]"..
+		"image[3,1.5;1,1;default_furnace_fire_bg.png]"..
+		"image[4,1.5;1,1;gui_furnace_arrow_bg.png^[transformR270]"..
+		"list[context;dst;5,0.96;2,2;]"..
+		"list[current_player;main;0,4.25;10,4;]"..
 		"listring[context;dst]"..
 		"listring[current_player;main]"..
 		"listring[context;src]"..
 		"listring[current_player;main]"..
 		"listring[context;fuel]"..
-		"listring[current_player;main]"..
-		default.get_hotbar_bg(0, 4.25)
+		"listring[current_player;main]"
 end
 
 --

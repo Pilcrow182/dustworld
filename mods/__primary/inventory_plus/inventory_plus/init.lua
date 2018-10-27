@@ -97,7 +97,7 @@ inventory_plus.get_formspec = function(player,page)
 	if page=="main" then
 		if minetest.setting_getbool("creative_mode") then
 			return player:get_inventory_formspec()
---					.. get_buttons(0,0,3) -- TODO: Make this stop interfering with other tabs
+				.. get_buttons(0,0,3) -- TODO: Make this stop interfering with other tabs
 		else
 			return inventory_plus.inventory[player:get_player_name()]
 				.. get_buttons(0,0,3)

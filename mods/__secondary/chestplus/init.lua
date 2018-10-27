@@ -18,7 +18,7 @@ local chest = clone_node("default:chest")
 		meta:set_string("formspec",
 			"size[10,10]"..
 			"list[current_name;main;0,0;10,5;]"..
-			"list[current_player;main;1,6;8,4;]")
+			"list[current_player;main;0,6;10,4;]")
 		meta:set_string("infotext", "Mese Chest")
 		local inv = meta:get_inventory()
 		inv:set_size("main",10*5)
@@ -58,7 +58,7 @@ local chest_locked = clone_node("default:chest_locked")
 		meta:set_string("formspec",
 			"size[10,10]"..
 			"list[current_name;main;0,0;10,5;]"..
-			"list[current_player;main;1,6;8,4;]")
+			"list[current_player;main;0,6;10,4;]")
 		meta:set_string("infotext", "Locked Mese Chest")
 		meta:set_string("owner", "")
 		local inv = meta:get_inventory()

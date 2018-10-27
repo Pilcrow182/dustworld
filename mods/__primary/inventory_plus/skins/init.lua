@@ -74,15 +74,15 @@ skins.formspec = {}
 skins.formspec.main = function(name)
 	page = skins.pages[name]
 	if page == nil then page = 0 end
-	local formspec = "size[8,7.5]"
+	local formspec = "size[10,7.5]"
 		.. "button[0,0;2,.5;main;Back]"
-		.. "label[0,.5;Your current skin:]"
-		.. "label[0,1.5;Choose a skin below:]"
+		.. "label[1,.5;Your current skin:]"
+		.. "label[1,1.5;Choose a skin below:]"
 	if skins.get_type(skins.skins[name]) == skins.type.MODEL then
-		formspec = formspec .. "image[3,.5;2,1;"..skins.skins[name]..".png]"
+		formspec = formspec .. "image[4,.5;2,1;"..skins.skins[name]..".png]"
 	elseif skins.get_type(skins.skins[name]) == skins.type.SPRITE then
-		formspec = formspec .. "image[3,0;1,2;"..skins.skins[name]..".png]"
-		formspec = formspec .. "image[4,0;1,2;"..skins.skins[name].."_back.png]"
+		formspec = formspec .. "image[4,0;1,2;"..skins.skins[name]..".png]"
+		formspec = formspec .. "image[5,0;1,2;"..skins.skins[name].."_back.png]"
 	end
 	local imodel = 0
 	local isprite = 0
@@ -90,16 +90,16 @@ skins.formspec.main = function(name)
 	local ssprite = 0 -- Skip sprites, used for pages
 	for i, skin in ipairs(skins.list) do
 		if skins.get_type(skin) == skins.type.MODEL then
-			if smodel < page*8 then smodel = smodel + 1 else
-				if imodel < 8 then
+			if smodel < page*10 then smodel = smodel + 1 else
+				if imodel < 10 then
 					formspec = formspec .. "image_button["..(imodel)..",2;1,2;"..skin..".png_preview.png;skins_set_"..i..";]"
 				end
 				imodel = imodel +1
 			end
 		end
 		if skins.get_type(skin) == skins.type.SPRITE then
-			if ssprite < page*8 then ssprite = ssprite + 1 else
-				if isprite < 8 then
+			if ssprite < page*10 then ssprite = ssprite + 1 else
+				if isprite < 10 then
 					formspec = formspec .. "image_button["..(isprite)..",4.5;1,2;"..skin..".png;skins_set_"..i..";]"
 				end
 				isprite = isprite +1
@@ -107,11 +107,11 @@ skins.formspec.main = function(name)
 		end
 	end
 	if page > 0 then
-		formspec = formspec .. "button[0,7;1,.5;skins_page_"..(page-1)..";<<]"
+		formspec = formspec .. "button[1,7;1,.5;skins_page_"..(page-1)..";<<]"
 	end
-	formspec = formspec .. "label[3,6.5;Page "..page.."]"
-	if imodel > 8 or isprite > 8 then
-		formspec = formspec .. "button[7,7;1,.5;skins_page_"..(page+1)..";>>]"
+	formspec = formspec .. "label[4.5,7;Page "..page.."]"
+	if imodel > 10 or isprite > 10 then
+		formspec = formspec .. "button[8,7;1,.5;skins_page_"..(page+1)..";>>]"
 	end
 	return formspec
 end

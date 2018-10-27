@@ -11,23 +11,23 @@ machine = {
 
 function survivalist.get_machine_active_formspec(pos, percent)
 	local formspec =
-		"size[8,9]"..
+		"size[10,9]"..
 		"image[2,2;1,1;default_furnace_fire_bg.png^[lowpart:"..
 		(100-percent)..":default_furnace_fire_fg.png]"..
-		"list[current_name;fuel;2,3;1,1;]"..
-		"list[current_name;src;2,1;1,1;]"..
-		"list[current_name;dst;5,1;2,2;]"..
-		"list[current_player;main;0,5;8,4;]"
+		"list[current_name;fuel;3,3;1,1;]"..
+		"list[current_name;src;3,1;1,1;]"..
+		"list[current_name;dst;6,1;2,2;]"..
+		"list[current_player;main;0,5;10,4;]"
 	return formspec
 end
 
 survivalist.machine_inactive_formspec =
-	"size[8,9]"..
+	"size[10,9]"..
 	"image[2,2;1,1;default_furnace_fire_bg.png]"..
-	"list[current_name;fuel;2,3;1,1;]"..
-	"list[current_name;src;2,1;1,1;]"..
-	"list[current_name;dst;5,1;2,2;]"..
-	"list[current_player;main;0,5;8,4;]"
+	"list[current_name;fuel;3,3;1,1;]"..
+	"list[current_name;src;3,1;1,1;]"..
+	"list[current_name;dst;6,1;2,2;]"..
+	"list[current_player;main;0,5;10,4;]"
 
 
 function survivalist.swap_machine(pos, machine_type)

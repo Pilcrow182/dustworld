@@ -318,13 +318,13 @@ end
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	local name = player:get_player_name()
 	if fields.outfit then
-		inventory_plus.set_inventory_formspec(player, "size[8,7.5]"
+		inventory_plus.set_inventory_formspec(player, "size[10,7.5]"
 		.."button[0,0;2,0.5;main;Back]"
-		.."list[current_player;main;0,3.5;8,4;]"
-		.."list[detached:"..name.."_outfit;armor_head;3,0;1,1;]"
-		.."list[detached:"..name.."_outfit;armor_torso;3,1;1,1;]"
-		.."list[detached:"..name.."_outfit;armor_legs;3,2;1,1;]"
-		.."list[detached:"..name.."_outfit;armor_shield;4,1;1,1;]")
+		.."list[current_player;main;0,3.5;10,4;]"
+		.."list[detached:"..name.."_outfit;armor_head;4,0;1,1;]"
+		.."list[detached:"..name.."_outfit;armor_torso;4,1;1,1;]"
+		.."list[detached:"..name.."_outfit;armor_legs;4,2;1,1;]"
+		.."list[detached:"..name.."_outfit;armor_shield;5,1;1,1;]")
 		return
 	end
 	for field, _ in pairs(fields) do
