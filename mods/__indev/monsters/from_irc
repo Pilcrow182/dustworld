@@ -1,0 +1,83 @@
+<Pilcrow> I was thinking about mobs and had an interesting idea. current mob mods handle
+	spawning by registering an ABM for the nodes a mob can spawn on. would it not be
+	faster (i.e. less server work) to register a globalstep that iterates through
+	connected players, generates a random number to check if it should spawn a mob,
+	and then searches the nearby area for a place to spawn it?
+
+<Pilcrow> or better yet, if it generates a single set of x/z coordinates, scans up/down
+	about 5 nodes to find the surface, and then compares that surface node to a mob
+	lookup table to see if there's one that can spawn there.
+
+<VanessaE> nope, that would be slower
+
+<VanessaE> because an ABM does almost the same thing
+
+<VanessaE> abms only execute for the blocks near a given user
+
+<VanessaE> globalstep executes continuously, as long as the server is running
+
+<Pilcrow> well, I know it executes continuously, but if put on a timer of, say, 10
+	seconds (using dtime ofc), would it not be faster to center the calculations on a
+	player versus having an ABM on dirt every 10 seconds? globalstep would have one
+	random number per player to see <if> a mob should spawn nearby, versus 50+ random
+	"chance" calculations (one per each dirt block in the area), followed by time of
+	day calculations for each one that suceeds, etc...
+
+<Pilcrow> ^ or am I overlooking something important, VanessaE?
+
+<VanessaE> well that MIGHT be faster
+
+<VanessaE> but the trick is looking for land to spawn on 
+
+<VanessaE> surely you'd want the 10-second interval to always be able to find a spot
+
+<VanessaE> or at least to have a good chance
+
+<Warr1024> you can combine the strategies, too
+
+<Pilcrow> like I said earlier though, I'm thinking it should calculate a single set of
+	x/z coords and scan up/down by around 5 nodes to look for the surface. if the
+	surface happens to be, say, gravel, and nothing is set to spawn on gravel, maybe
+	generate a new set of coords? or maybe just end, and try again with a new set of
+	coords on the next interval...
+
+<Warr1024> use the ABM to find good candidate spots, and write them into a list.  When
+	the list is full, each new entry replaces and existing one
+
+<Warr1024> then you can use your globalstep timer to perform spawning from that list.
+
+<Warr1024> something like that would smooth out spikes if you needed to do spawning in
+	bursts
+
+<Warr1024> tbh, I HAVE done the global timer thing before, and it's not so bad if the
+	limiting factor is mainly a very expensive "eligible to spawn" check.
+
+<Pilcrow> true, Warr1024. I was thinking of spawning a single mob per interval, but maybe
+	spawning in bursts would be better. my other thought was, if the spawning
+	algorithm is specifically focused on the players, mobs can potentially be
+	programmed with no "player-searching" capabilities, as they could spawn tied to
+	the player that they were generated for. this would prevent mobs rubber-banding
+	between nearby players (unlike Simple Mobs)...
+
+<Warr1024> if you're just interested in adding mobs to add a bit of combat challenge,
+	that's okay, I guess.
+
+<Warr1024> I'd be more interested in mobs as a more complex gameplay mechanism, taking
+	into account the limitations of their ability to observe their world
+
+<Warr1024> That'd be really hard to do scalably, though.
+
+<Warr1024> One other commonality I've seen in most mob frameworks is the use of entities.
+	I was actually more interested in the possibility of "staybs", i.e. creatures in
+	node-space
+
+<Warr1024> cellular automata are already a very interesting gameplay mechanic
+
+<Warr1024> hm, guess I gotta go...
+
+<Warr1024> btw, Pilcrow, thanks for the upvote on that GUI anti-aliasing merge req.
+
+<Pilcrow> yeah, the kind of complexity needed for environment awareness is beyond the
+	scope of this idea, though; I'm thinking this would be nice for a lightweight
+	hostile-mobs mod. the only reason I really I've ever want mobs in my minetest
+	games is for the added challenge and danger of them.

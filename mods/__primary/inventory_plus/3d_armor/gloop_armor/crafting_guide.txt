@@ -1,0 +1,46 @@
+gloop_armor -- Crafting Guide
+----------------------------
+
+A = Alatro Ingot [gloopores:alatro_ingot]
+
+Alatro Helmet: [gloop_armor:helmet_alatro]
+
++---+---+---+
+| A | A | A |
++---+---+---+
+| A |   | A |
++---+---+---+
+|   |   |   |
++---+---+---+
+
+Alatro Chestplate: [gloop_armor:chestplate_alatro]
+
++---+---+---+
+| A |   | A |
++---+---+---+
+| A | A | A |
++---+---+---+
+| A | A | A |
++---+---+---+
+
+Alatro Leggings: [gloop_armor:leggings_alatro]
+
++---+---+---+
+| A | A | A |
++---+---+---+
+| A |   | A |
++---+---+---+
+| A |   | A |
++---+---+---+
+
+Alatro Shield: [gloop_armor:shield_alatro]
+
++---+---+---+
+| A | A | A |
++---+---+---+
+| A | A | A |
++---+---+---+
+|   | A |   |
++---+---+---+
+
+

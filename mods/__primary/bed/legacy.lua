@@ -1,0 +1,6 @@
+minetest.register_alias("beds:bed", "bed:bed_bottom")
+minetest.register_alias("beds:bed_bottom", "bed:bed_bottom")
+minetest.register_alias("beds:bed_top", "bed:bed_top")
+minetest.register_alias("beds:fancy_bed", "bed:bed_bottom")
+minetest.register_alias("beds:fancy_bed_bottom", "bed:bed_bottom")
+minetest.register_alias("beds:fancy_bed_top", "bed:bed_top")
