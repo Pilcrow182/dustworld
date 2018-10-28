@@ -327,26 +327,26 @@ register_tube("pipeworks:mese_tube","Mese pneumatic tube segment",mese_plain_tex
 			inv:set_size("line"..tostring(i), 6*1)
 		end
 		meta:set_string("formspec",
-				"size[8,11]"..
-				"list[current_name;line1;1,0;6,1;]"..
-				"list[current_name;line2;1,1;6,1;]"..
-				"list[current_name;line3;1,2;6,1;]"..
-				"list[current_name;line4;1,3;6,1;]"..
-				"list[current_name;line5;1,4;6,1;]"..
-				"list[current_name;line6;1,5;6,1;]"..
-				"image[0,0;1,1;pipeworks_white.png]"..
-				"image[0,1;1,1;pipeworks_black.png]"..
-				"image[0,2;1,1;pipeworks_green.png]"..
-				"image[0,3;1,1;pipeworks_yellow.png]"..
-				"image[0,4;1,1;pipeworks_blue.png]"..
-				"image[0,5;1,1;pipeworks_red.png]"..
-				"button[7,0;1,1;button1;On]"..
-				"button[7,1;1,1;button2;On]"..
-				"button[7,2;1,1;button3;On]"..
-				"button[7,3;1,1;button4;On]"..
-				"button[7,4;1,1;button5;On]"..
-				"button[7,5;1,1;button6;On]"..
-				"list[current_player;main;0,7;8,4;]")
+				"size[10,11]"..
+				"list[current_name;line1;2,0;6,1;]"..
+				"list[current_name;line2;2,1;6,1;]"..
+				"list[current_name;line3;2,2;6,1;]"..
+				"list[current_name;line4;2,3;6,1;]"..
+				"list[current_name;line5;2,4;6,1;]"..
+				"list[current_name;line6;2,5;6,1;]"..
+				"image[1,0;1,1;pipeworks_white.png]"..
+				"image[1,1;1,1;pipeworks_black.png]"..
+				"image[1,2;1,1;pipeworks_green.png]"..
+				"image[1,3;1,1;pipeworks_yellow.png]"..
+				"image[1,4;1,1;pipeworks_blue.png]"..
+				"image[1,5;1,1;pipeworks_red.png]"..
+				"button[8,0;1,1;button1;On]"..
+				"button[8,1;1,1;button2;On]"..
+				"button[8,2;1,1;button3;On]"..
+				"button[8,3;1,1;button4;On]"..
+				"button[8,4;1,1;button5;On]"..
+				"button[8,5;1,1;button6;On]"..
+				"list[current_player;main;0,7;10,4;]")
 		meta:set_string("infotext", "Mese pneumatic tube")
 	end,
 	on_receive_fields=function(pos,formname,fields,sender)
@@ -357,28 +357,28 @@ register_tube("pipeworks:mese_tube","Mese pneumatic tube segment",mese_plain_tex
 		i=string.sub(i,-1)
 		newstate=1-meta:get_int("l"..i.."s")
 		meta:set_int("l"..i.."s",newstate)
-		local frm="size[8,11]"..
-				"list[current_name;line1;1,0;6,1;]"..
-				"list[current_name;line2;1,1;6,1;]"..
-				"list[current_name;line3;1,2;6,1;]"..
-				"list[current_name;line4;1,3;6,1;]"..
-				"list[current_name;line5;1,4;6,1;]"..
-				"list[current_name;line6;1,5;6,1;]"..
-				"image[0,0;1,1;pipeworks_white.png]"..
-				"image[0,1;1,1;pipeworks_black.png]"..
-				"image[0,2;1,1;pipeworks_green.png]"..
-				"image[0,3;1,1;pipeworks_yellow.png]"..
-				"image[0,4;1,1;pipeworks_blue.png]"..
-				"image[0,5;1,1;pipeworks_red.png]"
+		local frm="size[10,11]"..
+				"list[current_name;line1;2,0;6,1;]"..
+				"list[current_name;line2;2,1;6,1;]"..
+				"list[current_name;line3;2,2;6,1;]"..
+				"list[current_name;line4;2,3;6,1;]"..
+				"list[current_name;line5;2,4;6,1;]"..
+				"list[current_name;line6;2,5;6,1;]"..
+				"image[1,0;1,1;pipeworks_white.png]"..
+				"image[1,1;1,1;pipeworks_black.png]"..
+				"image[1,2;1,1;pipeworks_green.png]"..
+				"image[1,3;1,1;pipeworks_yellow.png]"..
+				"image[1,4;1,1;pipeworks_blue.png]"..
+				"image[1,5;1,1;pipeworks_red.png]"
 		for i=1,6 do
 			local st=meta:get_int("l"..tostring(i).."s")
 			if st==0 then
-				frm=frm.."button[7,"..tostring(i-1)..";1,1;button"..tostring(i)..";Off]"
+				frm=frm.."button[8,"..tostring(i-1)..";1,1;button"..tostring(i)..";Off]"
 			else
-				frm=frm.."button[7,"..tostring(i-1)..";1,1;button"..tostring(i)..";On]"
+				frm=frm.."button[8,"..tostring(i-1)..";1,1;button"..tostring(i)..";On]"
 			end
 		end
-		frm=frm.."list[current_player;main;0,7;8,4;]"
+		frm=frm.."list[current_player;main;0,7;10,4;]"
 		meta:set_string("formspec",frm)
 	end,
 	can_dig = function(pos,player)

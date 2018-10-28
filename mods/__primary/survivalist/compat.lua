@@ -14,7 +14,12 @@ survivalist.use_bucket = function(itemstack, user, pointed_thing)
 		if node.name == liquiddef.source then node.param2 = LIQUID_MAX end
 		return ItemStack({name = liquiddef.itemname, metadata = tostring(node.param2)})
 	end
-end,
+end
+
+survivalist.supported_leaves = {
+	"default:apple", "default:leaves", "default:jungle_leaves", "survivalist:apple_leaves", "trees:leaves_palm", "trees:leaves_mangrove", "trees:leaves_conifer",
+	"trees:leaves_birch", "trees:leaves_green", "trees:leaves_yellow", "trees:leaves_red", "trees:leaves_green_viney", "trees:leaves_yellow_viney", "trees:leaves_red_viney"
+}
 
 survivalist.clone_item("bucket:bucket_empty", "bucket:bucket_empty", {
 	on_use = function(itemstack, user, pointed_thing)
@@ -37,10 +42,39 @@ survivalist.clone_item("default:lava_flowing", "default:lava_flowing", {
 	groups = {hot = 3, lava = 3, liquid = 2, igniter = 1, not_in_creative_inventory = 1},
 })
 
+survivalist.clone_item("doors:gate_wood", "doors:gate_wood", {
+	description = "Wood Fence Gate",
+})
+
+survivalist.clone_item("default:tree", "default:tree", {
+	description = "Tree",
+})
+
+survivalist.clone_item("default:wood", "default:wood", {
+	description = "Wood Planks",
+})
+
+survivalist.clone_item("default:sapling", "default:sapling", {
+	description = "Tree Sapling",
+})
+
+survivalist.clone_item("default:leaves", "default:leaves", {
+	description = "Tree Leaves",
+})
+
+survivalist.clone_item("default:fence_wood", "default:fence_wood", {
+	description = "Wood Fence",
+})
+
+survivalist.clone_item("default:fence_rail_wood", "default:fence_rail_wood", {
+	description = "Wood Fence Rail",
+})
+
 for i=1,4 do
 	minetest.register_alias("survivalist:grinder_"..i, "survivalist:machine_grinder_"..i)
 	minetest.register_alias("survivalist:compressor_"..i, "survivalist:machine_compressor_"..i)
 end
+
 
 if minetest.get_modpath("mesecons") == nil then
 	minetest.register_craftitem(":mesecons:wire_00000000_off",{

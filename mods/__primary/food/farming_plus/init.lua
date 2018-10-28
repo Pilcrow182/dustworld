@@ -25,10 +25,6 @@ for lvl = 1, 6, 1 do
 	})
 end
 
--- ========= RUBBER ==========
--- NOTE: use moretrees to get rubber
---dofile(minetest.get_modpath("farming_plus").."/rubber.lua")
-
 -- ========= STRAWBERRIES =========
 dofile(minetest.get_modpath("farming_plus").."/strawberries.lua")
 
@@ -55,3 +51,10 @@ dofile(minetest.get_modpath("farming_plus").."/carrots.lua")
 
 -- ========= COCOA =========
 dofile(minetest.get_modpath("farming_plus").."/cocoa.lua")
+
+-- ========= LEAFDECAY =========
+default.register_leafdecay({
+	trunks = {"default:tree"},
+	leaves = {"default:apple", "default:leaves", "farming_plus:banana", "farming_plus:banana_leaves", "farming_plus:cocoa", "farming_plus:cocoa_leaves"},
+	radius = 3,
+})

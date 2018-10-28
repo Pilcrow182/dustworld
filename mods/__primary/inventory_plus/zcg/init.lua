@@ -108,18 +108,19 @@ zcg.formspec = function(pn)
 				alt = #zcg.crafts[current_item]
 			end
 			if alt > 1 then
-				formspec = formspec .. "button[7,0;1,1;zcg_alt:"..(alt-1)..";^]"
+				formspec = formspec .. "button[7.5,0;1,1;zcg_alt:"..(alt-1)..";^]"
 			end
 			if alt < #zcg.crafts[current_item] then
-				formspec = formspec .. "button[7,2;1,1;zcg_alt:"..(alt+1)..";v]"
+				formspec = formspec .. "button[7.5,2;1,1;zcg_alt:"..(alt+1)..";v]"
 			end
 			local c = zcg.crafts[current_item][alt]
 			if c then
 				for i, item in pairs(c.items) do
-					formspec = formspec .. "item_image_button["..((i-1)%c.width+3)..","..(math.floor((i-1)/c.width))..";1,1;"..item..";zcg:"..item..";]"
+					formspec = formspec .. "item_image_button["..((i-1)%c.width+3.5)..","..(math.floor((i-1)/c.width))..";1,1;"..item..";zcg:"..item..";]"
 				end
 				formspec = formspec .. "label[0,2;Method: "..c.type.."]"
-				formspec = formspec .. "item_image_button[7,1;1,1;"..zcg.users[pn].current_item..";;]"
+				formspec = formspec .. "image[6.5,1;1,1;gui_furnace_arrow_bg.png^[transformR270]"
+				formspec = formspec .. "item_image_button[7.5,1;1,1;"..zcg.users[pn].current_item..";;]"
 			end
 		end
 	end

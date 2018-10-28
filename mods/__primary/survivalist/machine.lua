@@ -296,6 +296,7 @@ survivalist.register_machine("grinder", {
 	{"default:apple", "survivalist:mulch"},
 	{"default:cactus", "survivalist:mulch"},
 	{"default:leaves", "survivalist:mulch"},
+	{"survivalist:apple", "survivalist:mulch"},
 	{"survivalist:apple_leaves", "survivalist:mulch"},
 	{"flint:flintstone_block", "default:gravel"},
 })

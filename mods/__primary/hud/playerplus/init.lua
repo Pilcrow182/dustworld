@@ -81,15 +81,15 @@ minetest.register_globalstep(function(dtime)
 			local playerMovement = control.up or control.down or control.left or control.right
 			local playerForward = control.up
 
-			if playerInfo["state"] == 2 then
-				players[playerName]["timeOut"] = players[playerName]["timeOut"] + 1
-				if playerInfo["timeOut"] >= SPRINT_TIMEOUT*10 then
-					players[playerName]["timeOut"] = 0
-					players[playerName]["state"] = 0
-				end
-			else
-				players[playerName]["timeOut"] = 0
-			end
+-- 			if playerInfo["state"] == 2 then
+-- 				players[playerName]["timeOut"] = players[playerName]["timeOut"] + 1
+-- 				if playerInfo["timeOut"] >= SPRINT_TIMEOUT*10 then
+-- 					players[playerName]["timeOut"] = 0
+-- 					players[playerName]["state"] = 0
+-- 				end
+-- 			else
+-- 				players[playerName]["timeOut"] = 0
+-- 			end
 			
 
 			if playerMovement == true and control.aux1 and not control.sneak then				-- sprinting (pressed e)
@@ -104,12 +104,12 @@ minetest.register_globalstep(function(dtime)
 			elseif playerForward == true and playerInfo["state"] == 0 and not control.sneak then		-- moving
 				players[playerName]["state"] = 1
 				pp.sprint = 0
-			elseif playerMovement == false and playerInfo["state"] == 1 then				-- primed
-				players[playerName]["state"] = 2
-				pp.sprint = 0
-			elseif playerForward == true and playerInfo["state"] == 2 then					-- sprinting
-				players[playerName]["state"] = 3
-				pp.sprint = 1
+-- 			elseif playerMovement == false and playerInfo["state"] == 1 then				-- primed
+-- 				players[playerName]["state"] = 2
+-- 				pp.sprint = 0
+-- 			elseif playerForward == true and playerInfo["state"] == 2 then					-- sprinting
+-- 				players[playerName]["state"] = 3
+-- 				pp.sprint = 1
 			end
 		end
 	end

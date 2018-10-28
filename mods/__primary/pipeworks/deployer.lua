@@ -109,10 +109,10 @@ minetest.register_node("pipeworks:deployer_off", {
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec",
-				"invsize[8,9;]"..
-				"label[0,0;Deployer]"..
-				"list[current_name;main;4,1;3,3;]"..
-				"list[current_player;main;0,5;8,4;]")
+				"invsize[10,9;]"..
+				"label[1,0;Deployer]"..
+				"list[current_name;main;5,1;3,3;]"..
+				"list[current_player;main;0,5;10,4;]")
 		meta:set_string("infotext", "Deployer")
 		local inv = meta:get_inventory()
 		inv:set_size("main", 3*3)
@@ -150,10 +150,10 @@ minetest.register_node("pipeworks:deployer_on", {
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec",
-				"invsize[8,9;]"..
-				"label[0,0;Deployer]"..
-				"list[current_name;main;4,1;3,3;]"..
-				"list[current_player;main;0,5;8,4;]")
+				"invsize[10,9;]"..
+				"label[1,0;Deployer]"..
+				"list[current_name;main;5,1;3,3;]"..
+				"list[current_player;main;0,5;10,4;]")
 		meta:set_string("infotext", "Deployer")
 		local inv = meta:get_inventory()
 		inv:set_size("main", 3*3)

@@ -17,22 +17,22 @@ local getdir = {
 ejector.make_inventory = function(pos, pagenum)
 	local page = 
 	"label[0.4,0.1;Inventory]".."button[2,0;2,1;page1;Configuration]"..
-	"list[current_name;main;2.45,1.5;4,3;]"
+	"list[current_name;main;2.95,1.5;4,3;]"
 	if pagenum == 1 then
 		page = 
 		"button[0,0;2,1;page0;Inventory]".."label[2.15,0.1;Configuration]"..
-		"list[current_name;red;0.25,1.5;4,1;]".."image[0,1.25;5.4,1.6;mechanism_ejector_cfg_red.png]"..
-		"list[current_name;cyan;4.55,1.5;4,1;]".."image[4.3,1.25;5.4,1.6;mechanism_ejector_cfg_cyan.png]"..
-		"list[current_name;green;0.25,2.85;4,1;]".."image[0,2.6;5.4,1.6;mechanism_ejector_cfg_green.png]"..
-		"list[current_name;magenta;4.55,2.85;4,1;]".."image[4.3,2.6;5.4,1.6;mechanism_ejector_cfg_magenta.png]"..
-		"list[current_name;blue;0.25,4.2;4,1;]".."image[0,3.95;5.4,1.6;mechanism_ejector_cfg_blue.png]"..
-		"list[current_name;yellow;4.55,4.2;4,1;]".."image[4.3,3.95;5.4,1.6;mechanism_ejector_cfg_yellow.png]"
+		"list[current_name;red;0.75,1.5;4,1;]".."image[0.5,1.25;5.4,1.6;mechanism_ejector_cfg_red.png]"..
+		"list[current_name;cyan;5.05,1.5;4,1;]".."image[4.8,1.25;5.4,1.6;mechanism_ejector_cfg_cyan.png]"..
+		"list[current_name;green;0.75,2.85;4,1;]".."image[0.5,2.6;5.4,1.6;mechanism_ejector_cfg_green.png]"..
+		"list[current_name;magenta;5.05,2.85;4,1;]".."image[4.8,2.6;5.4,1.6;mechanism_ejector_cfg_magenta.png]"..
+		"list[current_name;blue;0.75,4.2;4,1;]".."image[0.5,3.95;5.4,1.6;mechanism_ejector_cfg_blue.png]"..
+		"list[current_name;yellow;5.05,4.2;4,1;]".."image[4.8,3.95;5.4,1.6;mechanism_ejector_cfg_yellow.png]"
 	end
 
 	ejector.inv_formspec = 
-		"size[9,10]"..
+		"size[10,10]"..
 		page..
-		"list[current_player;main;0.45,6;8,4;]"
+		"list[current_player;main;0,6;10,4;]"
 	local meta = minetest.get_meta(pos)
 	meta:set_string("formspec",ejector.inv_formspec)
 	meta:set_string("infotext", "Ejector")

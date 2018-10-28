@@ -1,4 +1,4 @@
---this is an alternate version of machine.lua that uses no metadata, but a global table instead. not used due to it having no noticeable benefit.
+--This is an alternate version of machine.lua that uses no metadata, but a global table instead. Not used due to it having no noticeable benefit. May also be outdated.
 
 machine = {
 	{-0.5,-0.5,-0.5,0.5,0.5,0.5}, --Machine_Core

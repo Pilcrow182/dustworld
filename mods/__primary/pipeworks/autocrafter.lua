@@ -56,11 +56,11 @@ minetest.register_node("pipeworks:autocrafter",{
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec",
-				"size[8,11]"..
-				"list[current_name;recipe;0,0;3,3;]"..
-				"list[current_name;src;0,3.5;8,3;]"..
-				"list[current_name;dst;4,0;4,3;]"..
-				"list[current_player;main;0,7;8,4;]")
+				"size[10,11]"..
+				"list[current_name;recipe;1,0;3,3;]"..
+				"list[current_name;src;1,3.5;8,3;]"..
+				"list[current_name;dst;5,0;4,3;]"..
+				"list[current_player;main;0,7;10,4;]")
 		meta:set_string("infotext", "Autocrafter")
 		local inv = meta:get_inventory()
 		inv:set_size("src",3*8)

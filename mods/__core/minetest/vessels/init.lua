@@ -2,13 +2,12 @@
 -- See README.txt for licensing and other information.
 
 local vessels_shelf_formspec =
-	"size[8,7;]" ..
+	"size[10,7;]" ..
 	default.gui_bg ..
 	default.gui_bg_img ..
 	default.gui_slots ..
 	"list[context;vessels;0,0.3;8,2;]" ..
-	"list[current_player;main;0,2.85;8,1;]" ..
-	"list[current_player;main;0,4.08;8,3;8]" ..
+	"list[current_player;main;0,2.85;8,4;]" ..
 	"listring[context;vessels]" ..
 	"listring[current_player;main]" ..
 	default.get_hotbar_bg(0, 2.85)

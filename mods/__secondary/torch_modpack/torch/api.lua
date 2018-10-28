@@ -248,7 +248,7 @@ function torch.register_torch(material, drop, groups)
 				for p2 = 0,5 do
 					if param2 == p2 and get_node(p2_to_pos[p2]).name == "air" then
 						minetest.remove_node(pos)
-						minetest.add_item(pos, "default:torch")
+						minetest.add_item(pos, drop)
 					end
 				end
 			end

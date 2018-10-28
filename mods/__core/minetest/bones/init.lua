@@ -16,7 +16,7 @@ local bones_formspec =
 	default.gui_bg ..
 	default.gui_bg_img ..
 	default.gui_slots ..
-	"list[current_name;main;1,0.3;8,4;]" ..
+	"list[current_name;main;0,0.3;10,4;]" ..
 	"list[current_player;main;0,4.85;10,4;]" ..
 	"listring[current_name;main]" ..
 	"listring[current_player;main]"
@@ -249,7 +249,7 @@ minetest.register_on_dieplayer(function(player)
 
 	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
-	inv:set_size("main", 8 * 4)
+	inv:set_size("main", 10 * 4)
 
 	for _, list_name in ipairs(player_inventory_lists) do
 		for i = 1, player_inv:get_size(list_name) do

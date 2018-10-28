@@ -1,40 +1,38 @@
-__core/minetest/bones/init.lua
-__core/minetest/creative/inventory.lua
-__core/minetest/default/chests.lua
-__core/minetest/default/furnace.lua
-__core/minetest/default/init.lua
-__core/minetest/default/nodes.lua
-__core/minetest/sfinv/api.lua
-__core/minetest/sfinv/init.lua
-__core/minetest/vessels/init.lua
-__extra/carts/storage_cart.lua
-__extra/instacabin/models/apartment.we
-__extra/instacabin/models/cabin.we
-__extra/instacabin/models/cobble_gen.we
-__extra/instacabin/models/greenhouse.we
-__extra/instacabin/models/house.we
-__extra/instacabin/models/house_large.we
-__extra/instacabin/models/obsidian_gen.we
-__extra/instacabin/models/tower.we
-__extra/instacabin/models/tower_large.we
-__extra/instacabin/models/vault.we
-__extra/instacabin/models/warehouse.we
-__extra/instacabin/models/warehouse_large.we
-__extra/more_biomes/structures/mines/init.lua
-__extra/more_biomes/structures/ruins/init.lua
-__primary/crash_site/models/ship_main.we
-__primary/hoverbot/init.lua
-__primary/inventory_plus/3d_armor/3d_armor/init.lua
-__primary/inventory_plus/bags/init.lua
-__primary/inventory_plus/inventory_plus/compat.lua
-__primary/mechanism/ejector.lua
-__primary/mechanism/ejector.old.lua
-__primary/mechanism/hopper.lua
-__primary/mining_laser/init.lua
-__primary/pipeworks/autocrafter.lua
-__primary/pipeworks/deployer.lua
-__primary/pipeworks/item_transport.lua
-__primary/pipeworks/tubes.lua
-__primary/survivalist/machine.lua
-__secondary/chestplus/compat.lua
-__secondary/chestplus/init.lua
+[X] __core/minetest/bones/init.lua
+[X] __core/minetest/default/chests.lua
+[X] __core/minetest/default/furnace.lua
+[X] __core/minetest/default/init.lua
+[X] __core/minetest/default/nodes.lua
+[X] __core/minetest/sfinv/api.lua
+[X] __core/minetest/sfinv/init.lua
+[X] __core/minetest/vessels/init.lua
+[X] __extra/carts/storage_cart.lua
+[ ] __extra/instacabin/models/apartment.we
+[ ] __extra/instacabin/models/cabin.we
+[ ] __extra/instacabin/models/cobble_gen.we
+[ ] __extra/instacabin/models/greenhouse.we
+[ ] __extra/instacabin/models/house.we
+[ ] __extra/instacabin/models/house_large.we
+[ ] __extra/instacabin/models/obsidian_gen.we
+[ ] __extra/instacabin/models/tower.we
+[ ] __extra/instacabin/models/tower_large.we
+[ ] __extra/instacabin/models/vault.we
+[ ] __extra/instacabin/models/warehouse.we
+[ ] __extra/instacabin/models/warehouse_large.we
+[X] __extra/more_biomes/structures/mines/init.lua
+[X] __extra/more_biomes/structures/ruins/init.lua
+[X] __primary/crash_site/models/ship_main.we
+[X] __primary/hoverbot/init.lua
+[X] __primary/inventory_plus/3d_armor/3d_armor/init.lua
+[X] __primary/inventory_plus/bags/init.lua
+[X] __primary/inventory_plus/inventory_plus/compat.lua
+[X] __primary/mechanism/ejector.lua
+[X] __primary/mechanism/hopper.lua
+[X] __primary/mining_laser/init.lua
+[X] __primary/pipeworks/autocrafter.lua
+[X] __primary/pipeworks/deployer.lua
+[X] __primary/pipeworks/item_transport.lua
+[X] __primary/pipeworks/tubes.lua
+[X] __primary/survivalist/machine.lua
+[X] __secondary/chestplus/compat.lua
+[X] __secondary/chestplus/init.lua

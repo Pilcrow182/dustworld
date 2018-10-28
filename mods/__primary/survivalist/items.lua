@@ -145,7 +145,7 @@ survivalist.clone_item("default:leaves", "default:leaves", {
 			local drop = "default:leaves"
 			if math.random(1,20) == 10 then drop = "survivalist:oak_sapling" end
 			minetest.add_item(pos, drop)
-			itemstack:add_wear(65535/99)
+			itemstack:add_wear(65535/297)
 			puncher:set_wielded_item(itemstack)
 		elseif wielded == "survivalist:crook" then
 			minetest.remove_node(pos)
@@ -164,6 +164,67 @@ survivalist.clone_item("default:leaves", "default:leaves", {
 })
 
 minetest.register_alias("survivalist:oak_leaves", "default:leaves")
+
+survivalist.clone_item("default:apple", "survivalist:apple", {
+	groups = {snappy=3, leafdecay=3, flammable=2, not_in_creative_inventory=1},
+	drop = {
+		items = {
+			{items = {'default:apple'}, rarity = 1}
+		}
+	},
+})
+
+survivalist.clone_item("default:apple", "default:apple", {
+	drawtype = "allfaces_optional",
+	tiles = {"default_leaves.png"},
+	wield_image = "default_apple.png",
+	paramtype = "light",
+	selection_box = {type = "fixed", fixed = {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5}},
+	groups = {snappy=3, leafdecay=3, flammable=2},
+	drop = {
+		max_items = 1,
+		items = {
+			{
+				-- player will get sapling with 1/20 chance
+				items = {'default:sapling'},
+				rarity = 20,
+			}
+		}
+	},
+	on_punch = function(pos, node, puncher)
+		if not puncher then return end
+		local itemstack = puncher:get_wielded_item()
+		local wielded = itemstack:get_name()
+		if wielded == "survivalist:shears" then
+			minetest.remove_node(pos)
+			local drop = "default_leaves"
+			if math.random(1,20) == 10 then drop = "survivalist:oak_sapling" end
+			minetest.add_item(pos, drop)
+			itemstack:add_wear(65535/297)
+			puncher:set_wielded_item(itemstack)
+		elseif wielded == "survivalist:crook" then
+			minetest.remove_node(pos)
+			local drop = "survivalist:oak_sapling"
+			if math.random(1,3) >= 2 then drop = "survivalist:silkworm" end
+			if math.random(1,5) == 3 then minetest.add_item(pos, drop) end
+			itemstack:add_wear(65535/99)
+			puncher:set_wielded_item(itemstack)
+		elseif wielded == "survivalist:silkworm" then
+			minetest.set_node(pos, {name="survivalist:silk_leaves"})
+			itemstack:take_item(1)
+			puncher:set_wielded_item(itemstack)
+		end
+	end,
+	on_place = function(itemstack, placer, pointed_thing)
+		if minetest.registered_nodes[minetest.env:get_node(pointed_thing.under).name].on_rightclick then
+			return minetest.registered_nodes[minetest.env:get_node(pointed_thing.under).name].on_rightclick(pointed_thing.under, minetest.env:get_node(pointed_thing.under), placer, itemstack)
+		else
+			minetest.env:set_node(pointed_thing.above, {name="survivalist:apple"})
+			itemstack:take_item()
+			return itemstack
+		end
+	end
+})
 
 survivalist.clone_item("default:leaves", "survivalist:apple_leaves", {
 	description = "Apple Tree Leaves",
@@ -188,7 +249,7 @@ survivalist.clone_item("default:leaves", "survivalist:apple_leaves", {
 			local drop = "survivalist:apple_leaves"
 			if math.random(1,20) == 10 then drop = "survivalist:apple_sapling" end
 			minetest.add_item(pos, drop)
-			itemstack:add_wear(65535/99)
+			itemstack:add_wear(65535/297)
 			puncher:set_wielded_item(itemstack)
 		elseif wielded == "survivalist:crook" then
 			minetest.remove_node(pos)
@@ -236,7 +297,7 @@ survivalist.clone_item("default:leaves", "survivalist:silk_leaves", {
 			if math.random(1,5) == 3 then drop = "survivalist:silkworm" end            -- 4% chance for worms
 			if math.random(1,5) == 3 then minetest.add_item(pos, drop) end             -- 16% chance for string
 			minetest.add_item(pos, drop)
-			itemstack:add_wear(65535/99)
+			itemstack:add_wear(65535/297)
 			puncher:set_wielded_item(itemstack)
 		elseif wielded == "survivalist:crook" then
 			minetest.remove_node(pos)
@@ -409,8 +470,14 @@ minetest.register_abm({
 	end
 })
 
+local leaves = {"default:apple", "survivalist:oak_leaves", "survivalist:apple_leaves", "survivalist:silk_leaves"}
+
+if minetest.get_modpath("farming_plus") ~= nil then
+	leaves = {"default:apple", "survivalist:oak_leaves", "survivalist:apple_leaves", "survivalist:silk_leaves", "farming_plus:banana", "farming_plus:banana_leaves", "farming_plus:cocoa", "farming_plus:cocoa_leaves"}
+end
+
 default.register_leafdecay({
 	trunks = {"default:tree"},
-	leaves = {"default:apple", "survivalist:oak_leaves", "survivalist:apple_leaves", "survivalist:silk_leaves"},
+	leaves = leaves,
 	radius = 3,
 })

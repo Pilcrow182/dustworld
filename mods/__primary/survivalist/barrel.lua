@@ -93,7 +93,7 @@ end
 
 local dirt_input = {
 	"default:apple", "default:sapling", "default:junglegrass", "poisonivy:sproutling",
-	"default:leaves", "survivalist:acorn", "survivalist:oak_sapling",
+	"default:leaves","survivalist:apple",  "survivalist:acorn", "survivalist:oak_sapling",
 	"survivalist:apple_leaves", "survivalist:apple_core" , "survivalist:apple_sapling"
 }
 for _,name in ipairs(dirt_input) do
