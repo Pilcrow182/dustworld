@@ -14,7 +14,7 @@ SUFFOCATION_DAMAGE = 1						-- amount of suffocation damage a player takes every
 NORMAL_PHYSICS = {speed = 1, jump = 1, gravity = 1}		-- set the player physics to a sane default when a player is not sprinting
 SPRINT_VALUES = {speed = 0.8, jump = 0.2, gravity = 0}		-- these values are added to normal speed, jump, and gravity when sprinting
 SPRINT_STAMINA = 20						-- higher numbers means a player can sprint for a longer amount of time
-SPRINT_TIMEOUT = 1						-- seconds allowed between the first and second button presses when double-tapping
+-- SPRINT_TIMEOUT = 1						-- seconds allowed between the first and second button presses when double-tapping
 
 -- compatability with Pilcrow's Wasteland mod
 if minetest.get_modpath("wasteland") then

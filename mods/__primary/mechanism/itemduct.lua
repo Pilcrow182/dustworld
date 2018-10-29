@@ -220,9 +220,9 @@ itemduct.register_pipe("_bent", {
 minetest.register_craft({
 	output = 'mechanism:itemduct 8',
 	recipe = {
-		{'default:steel_ingot', 'default:steel_ingot', 'default:steel_ingot'},
-		{'', '', ''},
-		{'default:steel_ingot', 'default:steel_ingot', 'default:steel_ingot'},
+		{'default:steel_ingot', '', 'default:steel_ingot'},
+		{'default:steel_ingot', '', 'default:steel_ingot'},
+		{'default:steel_ingot', '', 'default:steel_ingot'},
 	}
 })
 
@@ -230,9 +230,9 @@ if minetest.get_modpath("flint") ~= nil then
 	minetest.register_craft({
 		output = 'mechanism:itemduct 4',
 		recipe = {
-			{'flint:flintstone', 'flint:flintstone', 'flint:flintstone'},
-			{'', '', ''},
-			{'flint:flintstone', 'flint:flintstone', 'flint:flintstone'},
+			{'flint:flintstone', '', 'flint:flintstone'},
+			{'flint:flintstone', '', 'flint:flintstone'},
+			{'flint:flintstone', '', 'flint:flintstone'},
 		}
 	})
 end

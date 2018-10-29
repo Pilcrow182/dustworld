@@ -57,7 +57,7 @@ for _,name in ipairs({"rope", "end"}) do
     air_equivalent = true,
     sunlight_propagates = true,
     paramtype = "light",
-    tile_images = { "ropeblock_"..name..".png" },
+    tiles = { "ropeblock_"..name..".png" },
     drawtype = "plantlike",
     groups = {flammable=2, not_in_creative_inventory=1},
     drop = ""

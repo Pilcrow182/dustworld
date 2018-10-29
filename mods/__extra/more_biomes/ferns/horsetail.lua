@@ -32,7 +32,7 @@ minetest.register_node("ferns:horsetail_01", {
 	tiles = {"ferns_horsetail_01.png"},
 	inventory_image = "ferns_horsetail_01.png",
 	walkable = false,
-	groups = {snappy=3,flammable=2,attached_node=1,horsetail=1},
+	groups = {snappy=3,flammable=2,attached_node=1,horsetail=1,food=2},
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",

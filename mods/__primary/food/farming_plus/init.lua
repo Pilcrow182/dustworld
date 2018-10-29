@@ -52,6 +52,9 @@ dofile(minetest.get_modpath("farming_plus").."/carrots.lua")
 -- ========= COCOA =========
 dofile(minetest.get_modpath("farming_plus").."/cocoa.lua")
 
+-- ========= COMPAT =========
+dofile(minetest.get_modpath("farming_plus").."/compat.lua")
+
 -- ========= LEAFDECAY =========
 default.register_leafdecay({
 	trunks = {"default:tree"},

@@ -28,6 +28,8 @@ end
 
 dofile(minetest.get_modpath("ferns").."/crafting.lua")
 
+dofile(minetest.get_modpath("ferns").."/leafdecay.lua")
+
 -----------------------------------------------------------------------------------------------
 print("[Mod] "..title.." ["..version.."] ["..mname.."] Loaded...")
 -----------------------------------------------------------------------------------------------

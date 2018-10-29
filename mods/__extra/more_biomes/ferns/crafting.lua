@@ -29,6 +29,7 @@ minetest.register_alias("archaeplantae:fiddlehead",      "ferns:fiddlehead")
 minetest.register_craftitem("ferns:fiddlehead", {
 	description = "Fiddlehead",
 	inventory_image = "ferns_fiddlehead.png",
+	groups = {food=2},
 	on_use = minetest.item_eat(-1), -- slightly poisonous when raw
 })
 minetest.register_craft({
@@ -40,6 +41,7 @@ minetest.register_craft({
 minetest.register_craftitem("ferns:fiddlehead_roasted", {
 	description = "Roasted Fiddlehead",
 	inventory_image = "ferns_fiddlehead_roasted.png",
+	groups = {food=2},
 	on_use = minetest.item_eat(1), -- edible when cooked
 })
 -----------------------------------------------------------------------------------------------
@@ -63,6 +65,7 @@ minetest.register_alias("archaeplantae:ferntuber_roasted",      "ferns:ferntuber
 minetest.register_craftitem("ferns:ferntuber_roasted", {
 	description = "Roasted Fern Tuber",
 	inventory_image = "ferns_ferntuber_roasted.png",
+	groups = {food=2},
 	on_use = minetest.item_eat(3),
 })
 -----------------------------------------------------------------------------------------------

@@ -129,7 +129,7 @@ minetest.register_node("trees:vine", {
   air_equivalent = true,
   sunlight_propagates = true,
   paramtype = "light",
-  tile_images = { "trees_vine.png" },
+  tiles = { "trees_vine.png" },
   drawtype = "plantlike",
   groups = {snappy = 3, flammable=2, not_in_creative_inventory=1},
   sounds =  default.node_sound_leaves_defaults(),

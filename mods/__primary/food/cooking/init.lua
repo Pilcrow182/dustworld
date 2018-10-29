@@ -209,7 +209,7 @@ minetest.register_node("cooking:pie_basket", {
     },
     sunlight_propagates = true,
     on_use = minetest.item_eat(20),
-    groups = {choppy=2,dig_immediate=3,flammable=1},
+    groups = {choppy=2,dig_immediate=3,flammable=1,food=2},
 })
 
 minetest.register_craft({
@@ -248,6 +248,7 @@ minetest.register_craft({
 minetest.register_craftitem("cooking:banana_bread", {
 	description = "Banana Bread",
 	inventory_image = "cooking_banana_bread.png",
+	groups = {food=2},
 	on_use = minetest.item_eat(20)
 })
 

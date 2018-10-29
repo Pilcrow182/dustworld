@@ -18,7 +18,8 @@ end
 
 survivalist.supported_leaves = {
 	"default:apple", "default:leaves", "default:jungle_leaves", "survivalist:apple_leaves", "trees:leaves_palm", "trees:leaves_mangrove", "trees:leaves_conifer",
-	"trees:leaves_birch", "trees:leaves_green", "trees:leaves_yellow", "trees:leaves_red", "trees:leaves_green_viney", "trees:leaves_yellow_viney", "trees:leaves_red_viney"
+	"trees:leaves_birch", "trees:leaves_green", "trees:leaves_yellow", "trees:leaves_red", "trees:leaves_green_viney", "trees:leaves_yellow_viney", "trees:leaves_red_viney",
+	"farming_plus:banana_leaves", "farming_plus:cocoa_leaves"
 }
 
 survivalist.clone_item("bucket:bucket_empty", "bucket:bucket_empty", {

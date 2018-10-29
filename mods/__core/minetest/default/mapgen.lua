@@ -1473,7 +1473,7 @@ function default.register_mgv6_decorations()
 		y_min = 1,
 		decoration = "default:papyrus",
 		height = 2,
-		height_max = 4,
+		y_max = 4,
 		spawn_by = "default:water_source",
 		num_spawn_by = 1,
 	})
@@ -1497,7 +1497,7 @@ function default.register_mgv6_decorations()
 		y_min = 1,
 		decoration = "default:cactus",
 		height = 3,
-	        height_max = 4,
+	        y_max = 4,
 	})
 
 	-- Long grasses
@@ -1917,7 +1917,7 @@ function default.register_decorations()
 		y_min = 4,
 		decoration = "default:cactus",
 		height = 2,
-		height_max = 5,
+		y_max = 5,
 	})
 
 	-- Papyrus

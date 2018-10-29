@@ -297,7 +297,7 @@ minetest.register_node("mining_laser:beam", {
 	air_equivalent = false,
 	sunlight_propagates = true,
 	paramtype = "light",
-	tile_images = { "mining_laser_beam.png" },
+	tiles = { "mining_laser_beam.png" },
 	drawtype = "plantlike",
 	after_dig_node = function(pos, oldnode, oldmetadata, digger) return mining_laser.check_beam_source({x = pos.x, y = pos.y - 1, z = pos.z}) end,
 	groups = {not_in_creative_inventory=1},

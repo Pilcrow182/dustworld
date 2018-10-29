@@ -65,6 +65,5 @@ minetest.register_node("farming_plus:banana", {
 	walkable = false,
 	groups = {fleshy=3,dig_immediate=3,flammable=2,leafdecay=3,leafdecay_drop=1,food=2},
 	sounds = default.node_sound_defaults(),
-	
 	on_use = minetest.item_eat(6),
 })

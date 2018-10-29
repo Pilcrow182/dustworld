@@ -475,12 +475,12 @@ minetest.register_craft({
 -- Mesecon support
 --
 
-minetest.register_node(":default:rail", {
+minetest.register_node("carts:rail", {
 	description = "Rail",
 	drawtype = "raillike",
-	tiles = {"default_rail.png", "default_rail_curved.png", "default_rail_t_junction.png", "default_rail_crossing.png"},
-	inventory_image = "default_rail.png",
-	wield_image = "default_rail.png",
+	tiles = {"carts_rail.png", "carts_rail_curved.png", "carts_rail_t_junction.png", "carts_rail_crossing.png"},
+	inventory_image = "carts_rail.png",
+	wield_image = "carts_rail.png",
 	paramtype = "light",
 	is_ground_content = true,
 	walkable = false,
@@ -491,6 +491,8 @@ minetest.register_node(":default:rail", {
 	},
 	groups = {bendy=2,snappy=1,dig_immediate=2,attached_node=1,rail=1,connect_to_raillike=1},
 })
+
+minetest.register_alias("default:rail", "carts:rail")
 
 minetest.register_node("carts:powerrail", {
 	description = "Powered Rail",

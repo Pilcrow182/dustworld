@@ -111,3 +111,9 @@ plantslib:register_generate_plant({
   },
   "abstract_trees.grow_birchtree"
 )
+
+default.register_leafdecay({
+	trunks = {"trees:tree_birch", "trees:tree_birch_mossy", "trees:tree_birch_horizontal"},
+	leaves = {"trees:leaves_birch"},
+	radius = 3,
+})
