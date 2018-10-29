@@ -47,7 +47,7 @@ mesebay.make_formspec = function (pos)
 			formspec = formspec .. "item_image_button["..(start_x)..","..(start_y)..";1,1;"..name[1]..";item"..count..";]"
 			count = count + 1
 		end
-		formspec = formspec .. "label[0,9.77;"..message.."]"
+		formspec = formspec .. "label[0,9.85;"..message.."]"
 	meta:set_string("formspec", formspec)
 end
 

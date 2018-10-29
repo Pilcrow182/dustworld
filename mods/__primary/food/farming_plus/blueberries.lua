@@ -86,8 +86,8 @@ minetest.register_node("farming_plus:blueberry", {
 minetest.register_craftitem("farming_plus:blueberry_item", {
 	description = "Blueberry",
 	inventory_image = "farming_blueberry.png",
+	groups = {berry=1,food=2},
 	on_use = minetest.item_eat(3),
-	groups = {berry=1},
 })
 
 farming:add_plant("farming_plus:blueberry", {"farming_plus:blueberry_1", "farming_plus:blueberry_2", "farming_plus:blueberry_3"}, 50, 20)

@@ -36,6 +36,7 @@ function survivalist.swap_machine(pos, machine_type)
 	local meta=minetest.get_meta(pos)
 	local meta0=meta:to_table()
 
+	local becomes = "survivalist:machine_"..machine_type.."_1"
 	for i=1,3 do
 		if nn == "survivalist:machine_"..machine_type.."_"..i then becomes = "survivalist:machine_"..machine_type.."_"..i+1 end
 	end
@@ -50,7 +51,10 @@ function survivalist.register_machine(machine_type, itemtable)
 	local function check_input(input)
 		local conversion = nil
 		for i=1,#itemtable do
-			if input == itemtable[i][1] then conversion = itemtable[i] end
+			local item = minetest.registered_items[input]
+			if input == itemtable[i][1] or ( item and item.groups and item.groups[itemtable[i][1]] ) then
+				return itemtable[i]
+			end
 		end
 		return conversion
 	end
@@ -284,21 +288,18 @@ function survivalist.register_machine(machine_type, itemtable)
 end
 
 survivalist.register_machine("grinder", {
-	{"default:cobble", "default:gravel"},
 	{"default:gravel", "default:sand"},
-	{"default:sand", "wasteland:dust"},
-	{"default:desert_stone", "default:desert_sand"},
-	{"default:desert_sand", "wasteland:dust"},
-	{"default:desert_sand", "wasteland:dust"},
-	{"survivalist:oak_sapling", "survivalist:mulch"},
-	{"survivalist:apple_sapling", "survivalist:mulch"},
-	{"default:sapling", "survivalist:mulch"},
-	{"default:apple", "survivalist:mulch"},
+	{"default:desert_stone", "default:desert_sand"}, -- NOTE: This is recognized first and used instead of "group:stone" below
+-- 	{"default:apple", "survivalist:mulch"},
 	{"default:cactus", "survivalist:mulch"},
-	{"default:leaves", "survivalist:mulch"},
-	{"survivalist:apple", "survivalist:mulch"},
-	{"survivalist:apple_leaves", "survivalist:mulch"},
+-- 	{"survivalist:apple", "survivalist:mulch"},
 	{"flint:flintstone_block", "default:gravel"},
+	{"stone", "default:gravel"},        -- TODO: Change code to recognize "group:stone"     instead of just "stone"
+	{"sand", "wasteland:dust"},         -- TODO: Change code to recognize "group:sand"      instead of just "sand"
+	{"sapling", "survivalist:mulch"},   -- TODO: Change code to recognize "group:sapling"   instead of just "sapling"
+	{"leaves", "survivalist:mulch"},    -- TODO: Change code to recognize "group:leaves"    instead of just "leaves"
+	{"leafdecay", "survivalist:mulch"}, -- TODO: Change code to recognize "group:leafdecay" instead of just "leafdecay"
+	{"food", "survivalist:mulch"},      -- TODO: Change code to recognize "group:food"      instead of just "food"
 })
 survivalist.register_machine("compressor", {
 	{"default:coalblock", "default:diamond"},

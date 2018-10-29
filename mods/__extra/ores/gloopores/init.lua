@@ -132,7 +132,8 @@ local function add_ore(modname, mineral_name, oredef)
 			inventory_image = toolimg_base..toolname..'.png',
 			tool_capabilities = {
 				max_drop_level=3,
-				groupcaps=tooldef
+				groupcaps=tooldef,
+				damage_groups=tooldef.damage
 			}
 		}
 		
@@ -221,19 +222,23 @@ local oredefs = {
 		makes = {ore=true, block=true, lump=true, ingot=true, chest=false},
 		tools = {
 			pick = {
-				cracky={times={[2]=0.65, [3]=0.40}, uses=40, maxlevel=1}
+				cracky={times={[2]=0.65, [3]=0.40}, uses=40, maxlevel=1},
+				damage={fleshy=4}
 			},
 			shovel = {
-				crumbly={times={[2]=0.60, [3]=0.35}, uses=40, maxlevel=1}
+				crumbly={times={[2]=0.60, [3]=0.35}, uses=40, maxlevel=1},
+				damage={fleshy=3}
 			},
 			axe = {
 				choppy={times={[2]=0.65, [3]=0.40}, uses=40, maxlevel=1},
-				fleshy={times={[2]=0.65, [3]=0.40}, uses=40, maxlevel=1}
+				fleshy={times={[2]=0.65, [3]=0.40}, uses=40, maxlevel=1},
+				damage={fleshy=4}
 			},
 			sword = {
 				fleshy={times={[2]=0.80, [3]=0.60}, uses=40, maxlevel=1},
 				snappy={times={[2]=0.80, [3]=0.60}, uses=40, maxlevel=1},
-				choppy={times={[3]=0.80}, uses=40, maxlevel=0}
+				choppy={times={[3]=0.80}, uses=40, maxlevel=0},
+				damage={fleshy=6}
 			}
 		},
 		punchint = 1.00
@@ -247,19 +252,23 @@ local oredefs = {
 		makes = {ore=true, block=false, lump=true, ingot=true, chest=false},
 		tools = {
 			pick = {
-				cracky={times={[1]=3.00, [2]=1.20, [3]=0.80}, uses=300, maxlevel=1}
+				cracky={times={[1]=3.00, [2]=1.20, [3]=0.80}, uses=300, maxlevel=1},
+				damage={fleshy=4}
 			},
 			shovel = {
-				crumbly={times={[1]=1.50, [2]=0.75, [3]=0.45}, uses=300, maxlevel=1}
+				crumbly={times={[1]=1.50, [2]=0.75, [3]=0.45}, uses=300, maxlevel=1},
+				damage={fleshy=3}
 			},
 			axe = {
 				choppy={times={[1]=3.00, [2]=1.00, [3]=0.70}, uses=300, maxlevel=1},
-				fleshy={times={[2]=1.30, [3]=0.70}, uses=300, maxlevel=1}
+				fleshy={times={[2]=1.30, [3]=0.70}, uses=300, maxlevel=1},
+				damage={fleshy=4}
 			},
 			sword = {
 				fleshy={times={[2]=1.00, [3]=0.80}, uses=300, maxlevel=1},
 				snappy={times={[2]=1.00, [3]=0.80}, uses=300, maxlevel=1},
-				choppy={times={[3]=1.20}, uses=300, maxlevel=0}
+				choppy={times={[3]=1.20}, uses=300, maxlevel=0},
+				damage={fleshy=6}
 			}
 		},
 		punchint = 0.60

@@ -470,10 +470,10 @@ minetest.register_abm({
 	end
 })
 
-local leaves = {"default:apple", "survivalist:oak_leaves", "survivalist:apple_leaves", "survivalist:silk_leaves"}
+local leaves = {"default:apple", "survivalist:apple", "survivalist:oak_leaves", "survivalist:apple_leaves", "survivalist:silk_leaves"}
 
 if minetest.get_modpath("farming_plus") ~= nil then
-	leaves = {"default:apple", "survivalist:oak_leaves", "survivalist:apple_leaves", "survivalist:silk_leaves", "farming_plus:banana", "farming_plus:banana_leaves", "farming_plus:cocoa", "farming_plus:cocoa_leaves"}
+	leaves = {"default:apple", "survivalist:apple", "survivalist:oak_leaves", "survivalist:apple_leaves", "survivalist:silk_leaves", "farming_plus:banana", "farming_plus:banana_leaves", "farming_plus:cocoa", "farming_plus:cocoa_leaves"}
 end
 
 default.register_leafdecay({
