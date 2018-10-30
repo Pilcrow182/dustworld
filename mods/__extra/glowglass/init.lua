@@ -72,3 +72,41 @@ minetest.register_craft({
 	type = "shapeless",
 	recipe = {"default:torch", "default:torch", "default:obsidian_glass"},
 })
+
+if minetest.get_modpath("hardened_glass") then
+	minetest.register_node("glowglass:hardened", {
+		description = "Hardened Glow Glass",
+		drawtype = "glasslike",
+		tiles = {"glowglass_hardened.png"},
+		inventory_image = minetest.inventorycube("glowglass_hardened.png"),
+		paramtype = "light",
+		sunlight_propagates = true,
+		light_source = 11,
+		groups = {snappy=2,cracky=2,oddly_breakable_by_hand=2},
+		sounds = default.node_sound_glass_defaults(),
+	})
+
+	minetest.register_node("glowglass:superhardened", {
+		description = "Super Hardened Glow Glass",
+		drawtype = "glasslike",
+		tiles = {"glowglass_hardened.png"},
+		inventory_image = minetest.inventorycube("glowglass_hardened.png"),
+		paramtype = "light",
+		sunlight_propagates = true,
+		light_source = 15,
+		groups = {snappy=2,cracky=2,oddly_breakable_by_hand=2},
+		sounds = default.node_sound_glass_defaults(),
+	})
+
+	minetest.register_craft({
+		output = "glowglass:hardened 1",
+		type = "shapeless",
+		recipe = {"default:torch", "hardened_glass:glass"},
+	})
+
+	minetest.register_craft({
+		output = "glowglass:superhardened 1",
+		type = "shapeless",
+		recipe = {"default:torch", "default:torch", "hardened_glass:glass"},
+	})
+end
