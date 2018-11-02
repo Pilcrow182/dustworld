@@ -8,16 +8,11 @@ survivalist.supported_leaves = {
 -- custom leafdecay so silk leaves will decay from *ALL* tree types (note: experimental; it may eat your hamster)
 minetest.register_on_dignode(function(pos, oldnode, digger)
 	if minetest.get_item_group(oldnode.name, "tree") or oldnode.name == "survivalist:silk_leaves" then
-		if minetest.find_node_near(pos, 1, {"survivalist:silk_leaves"}) then
-			for xoff = -1,1,1 do
-				for yoff = -1,1,1 do
-					for zoff = -1,1,1 do
-						local newpos = {x = pos.x + xoff, y = pos.y + yoff, z = pos.z + zoff}
-						if minetest.get_node(newpos).name == "survivalist:silk_leaves" and not minetest.find_node_near(newpos, 4, {"group:tree"}) then
-							minetest.after(math.random(1,15), function(pos) minetest.dig_node(pos) end, newpos)
-						end
-					end
-				end
+		local minp = {x = pos.x - 1, y = pos.y - 1, z = pos.z - 1}
+		local maxp = {x = pos.x + 1, y = pos.y + 1, z = pos.z + 1}
+		for _,leafpos in pairs(minetest.find_nodes_in_area(minp, maxp, "survivalist:silk_leaves")) do
+			if not minetest.find_node_near(leafpos, 4, {"group:tree"}) then
+				minetest.after(math.random(1,15), function(pos) minetest.dig_node(pos) end, leafpos)
 			end
 		end
 	end
