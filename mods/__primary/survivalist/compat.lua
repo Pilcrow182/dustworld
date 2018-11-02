@@ -1,3 +1,28 @@
+-- all nodes that can become silk leaves (note: no problems will be caused if the node doesn't actually exist)
+survivalist.supported_leaves = {
+	"default:apple", "default:leaves", "default:jungleleaves", "survivalist:apple_leaves", "trees:leaves_palm", "trees:leaves_mangrove", "trees:leaves_conifer",
+	"trees:leaves_birch", "trees:leaves_green", "trees:leaves_yellow", "trees:leaves_red", "trees:leaves_green_viney", "trees:leaves_yellow_viney", "trees:leaves_red_viney",
+	"farming_plus:banana_leaves", "farming_plus:cocoa_leaves"
+}
+
+-- custom leafdecay so silk leaves will decay from *ALL* tree types (note: experimental; it may eat your hamster)
+minetest.register_on_dignode(function(pos, oldnode, digger)
+	if minetest.get_item_group(oldnode.name, "tree") or oldnode.name == "survivalist:silk_leaves" then
+		if minetest.find_node_near(pos, 1, {"survivalist:silk_leaves"}) then
+			for xoff = -1,1,1 do
+				for yoff = -1,1,1 do
+					for zoff = -1,1,1 do
+						local newpos = {x = pos.x + xoff, y = pos.y + yoff, z = pos.z + zoff}
+						if minetest.get_node(newpos).name == "survivalist:silk_leaves" and not minetest.find_node_near(newpos, 4, {"group:tree"}) then
+							minetest.after(math.random(1,15), function(pos) minetest.dig_node(pos) end, newpos)
+						end
+					end
+				end
+			end
+		end
+	end
+end)
+
 survivalist.use_bucket = function(itemstack, user, pointed_thing)
 	-- Must be pointing to node
 	if pointed_thing.type ~= "node" then
@@ -15,12 +40,6 @@ survivalist.use_bucket = function(itemstack, user, pointed_thing)
 		return ItemStack({name = liquiddef.itemname, metadata = tostring(node.param2)})
 	end
 end
-
-survivalist.supported_leaves = {
-	"default:apple", "default:leaves", "default:jungle_leaves", "survivalist:apple_leaves", "trees:leaves_palm", "trees:leaves_mangrove", "trees:leaves_conifer",
-	"trees:leaves_birch", "trees:leaves_green", "trees:leaves_yellow", "trees:leaves_red", "trees:leaves_green_viney", "trees:leaves_yellow_viney", "trees:leaves_red_viney",
-	"farming_plus:banana_leaves", "farming_plus:cocoa_leaves"
-}
 
 survivalist.clone_item("bucket:bucket_empty", "bucket:bucket_empty", {
 	on_use = function(itemstack, user, pointed_thing)

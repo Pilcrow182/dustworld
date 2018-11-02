@@ -73,7 +73,7 @@ abstract_trees.trees_register_nodes_tree = function(name, sapling_rarity)
 	default.register_leafdecay({
 		trunks = {"trees:tree_"..name},
 		leaves = {"trees:leaves_"..name},
-		radius = 3,
+		radius = 4,
 	})
 
 	if minetest.get_modpath("survivalist") then

@@ -104,9 +104,6 @@ minetest.register_abm({
 						minetest.set_node(adjacent[i], {name = "survivalist:silk_leaves"})
 				       end
 				end
--- 				if name == "default:leaves" or name == "survivalist:apple_leaves" then
--- 					minetest.set_node(adjacent[i], {name = "survivalist:silk_leaves"})
--- 				end
 			end
 		end
 	end

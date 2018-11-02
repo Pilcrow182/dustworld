@@ -286,8 +286,8 @@ minetest.register_node("trees:jungletree_sapling", {
 --leafdecay
 default.register_leafdecay({
   trunks = {"default:jungletree"},
-  leaves = {"trees:leaves_green", "trees:leaves_yellow", "trees:leaves_red", "trees:leaves_green_viney", "trees:leaves_yellow_viney", "trees:leaves_red_viney"},
-  radius = 3,
+  leaves = {"default:jungleleaves", "trees:leaves_green", "trees:leaves_yellow", "trees:leaves_red", "trees:leaves_green_viney", "trees:leaves_yellow_viney", "trees:leaves_red_viney"},
+  radius = 4,
 })
 
 --abm
@@ -338,3 +338,26 @@ plantslib:register_generate_plant({
   },
   "abstract_trees.grow_jungletree"
 )
+
+-- ========== LEGACY ==========
+
+local function clone_item(name, newname, newdef)
+	local fulldef = {}
+	local olddef = minetest.registered_items[name]
+	if not olddef then return false end
+	for k,v in pairs(olddef) do fulldef[k]=v end
+	for k,v in pairs(newdef) do fulldef[k]=v end
+	minetest.register_item(":"..newname, fulldef)
+end
+
+clone_item("trees:jungletree_sapling", "default:junglesapling", {})
+
+minetest.register_abm({
+	nodenames = {"default:jungleleaves"},
+	interval = 1,
+	chance = 1,
+	action = function(pos, node)
+		local leaves = { "trees:leaves_green", "trees:leaves_yellow", "trees:leaves_red", "trees:leaves_green_viney", "trees:leaves_yellow_viney", "trees:leaves_red_viney" }
+		minetest.set_node(pos, {name=leaves[math.random(1,6)]})
+	end
+})

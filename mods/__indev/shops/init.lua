@@ -11,24 +11,23 @@ minetest.register_node("shops:shopkeeper_upper", {
 	},
 	drawtype = "nodebox",
 	paramtype = "light",
+	groups = {oddly_breakable_by_hand=3},
 	node_box = {
 		type = "fixed",
 		fixed = {
-			{-4/16, 0/16,-5/16, 4/16, 8/16, 3/16}, -- Head
-			{-8/16,-8/16,-3/16, 8/16, 0/16, 1/16}, -- Torso
+			{-4/16,  0/16,-4/16, 4/16, 8/16, 4/16}, -- Head
+			{-8/16, -8/16,-2/16, 8/16, 0/16, 2/16}, -- Torso
 		}
 	},
 	selection_box = {
 		type = "fixed",
 		fixed = {
-			{-4/16, 0/16,-5/16, 4/16,24/16, 3/16}, -- Head
-			{-8/16,-12/16,-3/16, 8/16,16/16, 1/16}, -- Torso
-			{-4/16,-24/16,-3/16, 4/16, 4/16, 1/16}, -- Legs
+			{0,0,0,0,0,0}, -- None
 		},
 	}
 })
 
-minetest.register_node("shops:shopkeeper_lower", {
+minetest.register_node("shops:shopkeeper", {
 	tiles = {
 		"shops_shopkeeper_lower_top.png",
 		"shops_shopkeeper_lower_bottom.png",
@@ -39,19 +38,20 @@ minetest.register_node("shops:shopkeeper_lower", {
 	},
 	drawtype = "nodebox",
 	paramtype = "light",
+	groups = {oddly_breakable_by_hand=3},
 	node_box = {
 		type = "fixed",
 		fixed = {
-			{-8/16, 4/16,-3/16, 8/16, 8/16, 1/16}, -- Butt
-			{-4/16,-8/16,-3/16, 4/16, 4/16, 1/16}, -- Legs
+			{-8/16, 4/16,-2/16, 8/16, 8/16, 2/16}, -- Butt
+			{-4/16,-8/16,-2/16, 4/16, 4/16, 2/16}, -- Legs
 		}
 	},
 	selection_box = {
 		type = "fixed",
 		fixed = {
-			{-4/16,16/16,-5/16, 4/16,24/16, 3/16}, -- Head
-			{-8/16, 4/16,-3/16, 8/16,16/16, 1/16}, -- Torso
-			{-4/16,-8/16,-3/16, 4/16, 4/16, 1/16}, -- Legs
+			{-4/16,16/16,-4/16, 4/16,24/16, 4/16}, -- Head
+			{-8/16, 4/16,-2/16, 8/16,16/16, 2/16}, -- Torso
+			{-4/16,-8/16,-2/16, 4/16, 4/16, 2/16}, -- Legs
 		},
 	}
 })

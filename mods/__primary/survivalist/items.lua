@@ -276,13 +276,13 @@ survivalist.clone_item("default:leaves", "survivalist:silk_leaves", {
 				{
 					-- player will get sapling with 1/sapling_rarity chance
 					items = {'survivalist:silkworm'},
-					rarity = 20,                                               -- 5% chance for worms
+					rarity = 10,                                               -- 10% chance for worms
 				},
 				{
 					-- player will get silk only if he get no worms,
 					-- this is because max_items is 1
 					items = {'survivalist:silk_string'},
-					rarity = 20,                                               -- 5% chance for string
+					rarity = 10,                                               -- 10% chance for string
 				}
 		}
 	},
@@ -470,10 +470,10 @@ minetest.register_abm({
 	end
 })
 
-local leaves = {"default:apple", "survivalist:apple", "survivalist:oak_leaves", "survivalist:apple_leaves", "survivalist:silk_leaves"}
+local leaves = {"default:apple", "survivalist:apple", "survivalist:oak_leaves", "survivalist:apple_leaves"}
 
 if minetest.get_modpath("farming_plus") ~= nil then
-	leaves = {"default:apple", "survivalist:apple", "survivalist:oak_leaves", "survivalist:apple_leaves", "survivalist:silk_leaves", "farming_plus:banana", "farming_plus:banana_leaves", "farming_plus:cocoa", "farming_plus:cocoa_leaves"}
+	leaves = {"default:apple", "survivalist:apple", "survivalist:oak_leaves", "survivalist:apple_leaves", "farming_plus:banana", "farming_plus:banana_leaves", "farming_plus:cocoa", "farming_plus:cocoa_leaves"}
 end
 
 default.register_leafdecay({

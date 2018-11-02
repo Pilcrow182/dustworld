@@ -1,6 +1,6 @@
-Minetest 0.4.7 mod: Simple helicopter
+Minetest 0.5.0 mod: Lag-free helicopter
 =======================
-by Pavel_S
+by Pilcrow (textures and models by Pavel_S)
 
 License of source code:
 -----------------------
@@ -9,4 +9,3 @@ WTFPL
 License of media (textures and sounds):
 ---------------------------------------
 WTFPL
-

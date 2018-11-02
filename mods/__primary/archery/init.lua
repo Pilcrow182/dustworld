@@ -108,18 +108,18 @@ minetest.register_entity("archery:arrow_entity", THROWING_ARROW_ENTITY)
 minetest.register_craft({
 	output = 'archery:bow',
 	recipe = {
-		{'survivalist:silk_string', 'default:wood', ''},
-		{'survivalist:silk_string', '', 'default:wood'},
-		{'survivalist:silk_string', 'default:wood', ''},
+		{'survivalist:silk_string', 'group:wood', ''},
+		{'survivalist:silk_string', '', 'group:wood'},
+		{'survivalist:silk_string', 'group:wood', ''},
 	}
 })
 
 minetest.register_craft({
 	output = 'archery:bow',
 	recipe = {
-		{'', 'default:wood', 'survivalist:silk_string'},
-		{'default:wood', '', 'survivalist:silk_string'},
-		{'', 'default:wood', 'survivalist:silk_string'},
+		{'', 'group:wood', 'survivalist:silk_string'},
+		{'group:wood', '', 'survivalist:silk_string'},
+		{'', 'group:wood', 'survivalist:silk_string'},
 	}
 })
 
