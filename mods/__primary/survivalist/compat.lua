@@ -2,7 +2,8 @@
 survivalist.supported_leaves = {
 	"default:apple", "default:leaves", "default:jungleleaves", "survivalist:apple_leaves", "trees:leaves_palm", "trees:leaves_mangrove", "trees:leaves_conifer",
 	"trees:leaves_birch", "trees:leaves_green", "trees:leaves_yellow", "trees:leaves_red", "trees:leaves_green_viney", "trees:leaves_yellow_viney", "trees:leaves_red_viney",
-	"farming_plus:banana_leaves", "farming_plus:cocoa_leaves"
+	"farming_plus:banana_leaves", "farming_plus:cocoa_leaves", "default:acacia_leaves", "default:aspen_leaves", "default:pine_needles",
+	"default:bush_leaves", "default:acacia_bush_leaves", "default:pine_bush_needles"
 }
 
 -- custom leafdecay so silk leaves will decay from *ALL* tree types (note: experimental; it may eat your hamster)
