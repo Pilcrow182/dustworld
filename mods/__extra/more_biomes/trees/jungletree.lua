@@ -357,7 +357,13 @@ minetest.register_abm({
 	interval = 2,
 	chance = 1,
 	action = function(pos, node)
-		local leaves = {"trees:leaves_green", "trees:leaves_yellow", "trees:leaves_red", "trees:leaves_green_viney"}
-		minetest.set_node(pos, {name=leaves[math.random(1,4)]})
+		local leaves = {"trees:leaves_green", "trees:leaves_yellow", "trees:leaves_red"}
+		local leave = leaves[math.random(1,3)]
+		if math.random(0,10) == 5 then
+			minetest.env:add_node(pos, {name=leave.."_viney"})
+			abstract_trees.add_vine({x=pos.x, y=pos.y-1, z=pos.z})
+		else
+			minetest.env:add_node(pos, {name=leave})
+		end
 	end
 })
