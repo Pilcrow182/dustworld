@@ -354,10 +354,10 @@ clone_item("trees:jungletree_sapling", "default:junglesapling", {})
 
 minetest.register_abm({
 	nodenames = {"default:jungleleaves"},
-	interval = 1,
+	interval = 2,
 	chance = 1,
 	action = function(pos, node)
-		local leaves = { "trees:leaves_green", "trees:leaves_yellow", "trees:leaves_red", "trees:leaves_green_viney", "trees:leaves_yellow_viney", "trees:leaves_red_viney" }
-		minetest.set_node(pos, {name=leaves[math.random(1,6)]})
+		local leaves = {"trees:leaves_green", "trees:leaves_yellow", "trees:leaves_red", "trees:leaves_green_viney"}
+		minetest.set_node(pos, {name=leaves[math.random(1,4)]})
 	end
 })
