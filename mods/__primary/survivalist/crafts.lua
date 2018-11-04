@@ -58,14 +58,16 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_craft({
-	output = 'survivalist:shears',
-	recipe = {
-		{'default:steel_ingot', '', 'default:steel_ingot'},
-		{'', 'group:stick', ''},
-		{'group:stick', '', 'group:stick'},
-	}
-})
+for _,item in pairs({'default:steel_ingot', 'flint:flintstone', 'gloopores:alatro_ingot', 'gloopores:akalin_ingot'}) do
+	minetest.register_craft({
+		output = 'survivalist:shears',
+		recipe = {
+			{item, '', item},
+			{'', 'group:stick', ''},
+			{'group:stick', '', 'group:stick'},
+		}
+	})
+end
 
 minetest.register_craft({
 	output = 'survivalist:silk',

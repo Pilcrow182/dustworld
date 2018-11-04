@@ -45,6 +45,45 @@ minetest.register_node("flolife:leaves", {
 	sounds = default.node_sound_leaves_defaults(),
 })
 
+if minetest.get_modpath("survivalist") then
+	minetest.override_item("flolife:leaves", {
+		drop = {
+			max_items = 1,
+			items = {
+				{
+					-- player will get sapling with 1/sapling_rarity chance
+					items = {'flolife:sapling'},
+					rarity = 20,
+				}
+			}
+		},
+		on_punch = function(pos, node, puncher)
+			if not puncher then return end
+			local itemstack = puncher:get_wielded_item()
+			local wielded = itemstack:get_name()
+			if wielded == "survivalist:shears" then
+				minetest.remove_node(pos)
+				local drop = 'flolife:leaves'
+				if math.random(1,20) == 10 then drop = 'flolife:sapling' end
+				minetest.add_item(pos, drop)
+				itemstack:add_wear(65535/297)
+				puncher:set_wielded_item(itemstack)
+			elseif wielded == "survivalist:crook" then
+				minetest.remove_node(pos)
+				local drop = 'flolife:leaves'
+				if math.random(1,3) >= 2 then drop = "survivalist:silkworm" end
+				if math.random(1,5) == 3 then minetest.add_item(pos, drop) end
+				itemstack:add_wear(65535/99)
+				puncher:set_wielded_item(itemstack)
+			elseif wielded == "survivalist:silkworm" then
+				minetest.set_node(pos, {name="survivalist:silk_leaves"})
+				itemstack:take_item(1)
+				puncher:set_wielded_item(itemstack)
+			end
+		end,
+	})
+end
+
 minetest.register_node("flolife:wood", {
 	description = "Floatoak Planks",
 	tiles = {"flolife_wood.png"},
@@ -153,3 +192,11 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 		farming:generate_tree({x=pos.x, y=pos.y+1, z=pos.z}, "flolife:tree", "flolife:leaves", {"flolands:floatsand"}, {["flolife:fruit"]=20})
 	end
 end)
+
+-- ========== LEAFDECAY ==========
+
+default.register_leafdecay({
+	trunks = {"flolife:tree"},
+	leaves = {"flolife:fruit", "flolife:leaves"},
+	radius = 3,
+})

@@ -165,11 +165,23 @@ survivalist.clone_item("default:leaves", "default:leaves", {
 
 minetest.register_alias("survivalist:oak_leaves", "default:leaves")
 
+minetest.register_craftitem("survivalist:apple_item", {
+	description = "Apple",
+	inventory_image = "default_apple.png",
+	wield_image = "default_apple.png",
+	groups = {food=2},
+	on_use = minetest.item_eat(2),
+})
+
 survivalist.clone_item("default:apple", "survivalist:apple", {
 	groups = {snappy=3, leafdecay=3, flammable=2, not_in_creative_inventory=1},
 	drop = {
+		max_items = 1,
 		items = {
-			{items = {'default:apple'}, rarity = 1}
+			{
+				items = {'survivalist:apple_item'},
+				rarity = 1,
+			}
 		}
 	},
 })
@@ -441,7 +453,7 @@ minetest.register_craftitem("survivalist:mulch", {
 				if growing == "survivalist:oak_sapling" then
 					survivalist.grow_tree(pointed_thing.under, "default:tree", "survivalist:oak_leaves", "survivalist:oak_leaves")
 				elseif growing == "survivalist:apple_sapling" then
-					survivalist.grow_tree(pointed_thing.under, "default:tree", "survivalist:apple_leaves", "default:apple")
+					survivalist.grow_tree(pointed_thing.under, "default:tree", "survivalist:apple_leaves", "survivalist:apple")
 				elseif growing == "default:sapling" then
 					survivalist.grow_tree(pointed_thing.under, "default:tree", "default:leaves", "default:apple")
 				elseif minetest.get_modpath("bonemeal") ~= nil then
