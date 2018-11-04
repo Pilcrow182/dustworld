@@ -212,14 +212,14 @@ for color = 1, 3 do
         local wielded = itemstack:get_name()
         if wielded == "survivalist:shears" then
           minetest.remove_node(pos)
-          local drop = "trees:leaves_green_viney"
+          local drop = leave_name
           if math.random(1,20) == 10 then drop = "trees:sapling_"..name end
           minetest.add_item(pos, drop)
           itemstack:add_wear(65535/297)
           puncher:set_wielded_item(itemstack)
         elseif wielded == "survivalist:crook" then
           minetest.remove_node(pos)
-          local drop = "trees:leaves_green_viney"
+          local drop = leave_name
           if math.random(1,3) >= 2 then drop = "survivalist:silkworm" end
           if math.random(1,5) == 3 then minetest.add_item(pos, drop) end
           itemstack:add_wear(65535/99)
@@ -248,14 +248,14 @@ for color = 1, 3 do
         local wielded = itemstack:get_name()
         if wielded == "survivalist:shears" then
           minetest.remove_node(pos)
-          local drop = "trees:leaves_green_viney"
+          local drop = leave_name.."_viney"
           if math.random(1,20) == 10 then drop = "trees:sapling_"..name end
           minetest.add_item(pos, drop)
           itemstack:add_wear(65535/297)
           puncher:set_wielded_item(itemstack)
         elseif wielded == "survivalist:crook" then
           minetest.remove_node(pos)
-          local drop = "trees:leaves_green_viney"
+          local drop = leave_name.."_viney"
           if math.random(1,3) >= 2 then drop = "survivalist:silkworm" end
           if math.random(1,5) == 3 then minetest.add_item(pos, drop) end
           itemstack:add_wear(65535/99)

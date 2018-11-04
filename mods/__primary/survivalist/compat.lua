@@ -1,8 +1,8 @@
--- all nodes that can become silk leaves (note: no problems will be caused if the node doesn't actually exist)
+-- all nodes that can become silk leaves (note: problems will NOT be caused if the node doesn't actually exist)
 survivalist.supported_leaves = {
 	"default:apple", "default:leaves", "default:jungleleaves", "survivalist:apple_leaves", "trees:leaves_palm", "trees:leaves_mangrove", "trees:leaves_conifer",
 	"trees:leaves_birch", "trees:leaves_green", "trees:leaves_yellow", "trees:leaves_red", "trees:leaves_green_viney", "trees:leaves_yellow_viney", "trees:leaves_red_viney",
-	"farming_plus:banana_leaves", "farming_plus:cocoa_leaves", "default:acacia_leaves", "default:aspen_leaves", "default:pine_needles",
+	"farming_plus:banana_leaves", "farming_plus:cocoa_leaves", "default:acacia_leaves", "default:aspen_leaves", "default:pine_needles", "flolife:leaves",
 	"default:bush_leaves", "default:acacia_bush_leaves", "default:pine_bush_needles"
 }
 

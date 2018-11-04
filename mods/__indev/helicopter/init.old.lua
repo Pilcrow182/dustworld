@@ -2,44 +2,52 @@ helicopter = {}
 
 helicopter.using_heli = {}
 
-helicopter.player_state = {}
-
+local DEBUG = false
 local debug_msg = function(message)
-	minetest.chat_send_all(message)
-	minetest.log("action", message)
+	if DEBUG then
+		minetest.chat_send_all(message)
+		minetest.log("action", message)
+	end
 end
 
 local timer = 0
 minetest.register_globalstep(function(dtime)
-	for name,_ in pairs(helicopter.using_heli) do
-		if not helicopter.player_state[name] then helicopter.player_state[name] = {} end
-		helicopter.player_state[name].old = helicopter.player_state[name].current or "idle"
-		local ctrl = minetest.get_player_by_name(name):get_player_control()
-		local state = "idle"
-		if ctrl.jump then
-			state = "jumping"
-		elseif ctrl.sneak then
-			state = "sneaking"
-		end
-		helicopter.player_state[name].current = state
-	end
 	timer = timer + dtime
-	if timer >= 0.2 then
+	if timer >= 0.1 then
 		timer = 0
 		for name,_ in pairs(helicopter.using_heli) do
+			debug_msg("processing player '"..name.."'...")
 			local player = minetest.get_player_by_name(name)
 			local velocity = player:get_player_velocity()
-			local player_state = helicopter.player_state[name].current
-			local physics = {speed = 2, jump = 0, gravity = 0}
-			if player_state == "jumping" and velocity.y < 8 then
-				physics = {speed = 2, jump = 0, gravity = -0.5}
-			elseif player_state == "sneaking" and velocity.y > -8 then
-				physics = {speed = 2, jump = 0, gravity =  0.5}
--- 			elseif player_state == "idle" and velocity.y > -1 and velocity.y < 1 then
--- 				physics = {speed = 2, jump = 0, gravity = velocity.y/8}
+			local ctrl = player:get_player_control()
+			if ctrl.jump and velocity.y < 10 then
+				player:set_physics_override({speed = 2, jump = 0, gravity = -1.0})
+				debug_msg("player '"..name.."' is jumping (vertical velocity is "..velocity.y..")")
+			elseif ctrl.sneak and velocity.y > -10 then
+				player:set_physics_override({speed = 2, jump = 0, gravity = 1.0})
+				debug_msg("player '"..name.."' is sneaking (vertical velocity is "..velocity.y..")")
+			else
+				if velocity.y > 0.9 then
+					player:set_physics_override({speed = 2, jump = 0, gravity = 0.3})
+				elseif velocity.y < -0.9 then
+					player:set_physics_override({speed = 2, jump = 0, gravity = -0.3})
+				else
+					if velocity.y > 0.6 then
+						player:set_physics_override({speed = 2, jump = 0, gravity = 0.1})
+					elseif velocity.y < -0.6 then
+						player:set_physics_override({speed = 2, jump = 0, gravity = -0.1})
+					else
+						if velocity.y > 0 then
+							player:set_physics_override({speed = 2, jump = 0, gravity = 0.01})
+						elseif velocity.y < 0 then
+							player:set_physics_override({speed = 2, jump = 0, gravity = -0.01})
+						else
+							player:set_physics_override({speed = 2, jump = 0, gravity = 0})
+						end
+					end
+				end
+				debug_msg("player '"..name.."' is idle (vertical velocity is "..velocity.y..")")
 			end
-			player:set_physics_override(physics)
--- 			debug_msg("player '"..name.."' is "..player_state.." (physics="..minetest.pos_to_string({x=physics.speed, y=physics.jump,z=physics.gravity})..", velocity="..minetest.pos_to_string(velocity)..")...")
 		end
 	end
 end)
@@ -83,7 +91,6 @@ minetest.register_craftitem("helicopter:heli", {
 	else
 		minetest.chat_send_player(username, "Heli mode enabled")
 		helicopter.using_heli[username] = user:get_physics_override()
-		user:set_physics_override({speed = 2, jump = 0, gravity = 0})
 		if pp and pp.disable then pp.disable[username] = true end
 	end
 	end
