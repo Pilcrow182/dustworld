@@ -4,6 +4,12 @@ helicopter.using_heli = {}
 
 helicopter.player_state = {}
 
+helicopter.speed = tonumber(minetest.setting_get("helicopter_speed"))
+if not helicopter.speed then
+	helicopter.speed = 4
+	minetest.setting_set("helicopter_speed", tostring(helicopter.speed))
+end
+
 local debug_msg = function(message)
 	minetest.chat_send_all(message)
 	minetest.log("action", message)
@@ -19,7 +25,14 @@ minetest.register_globalstep(function(dtime)
 		if ctrl.jump then
 			state = "jumping"
 		elseif ctrl.sneak then
+			ctrl.sneak = nil
 			state = "sneaking"
+		elseif ctrl.aux1 then
+			ctrl.up    = nil
+			ctrl.down  = nil
+			ctrl.left  = nil
+			ctrl.right = nil
+			state = "stopping"
 		end
 		helicopter.player_state[name].current = state
 	end
@@ -27,19 +40,20 @@ minetest.register_globalstep(function(dtime)
 	if timer >= 0.2 then
 		timer = 0
 		for name,_ in pairs(helicopter.using_heli) do
+			local heli_speed = helicopter.speed
 			local player = minetest.get_player_by_name(name)
 			local velocity = player:get_player_velocity()
 			local player_state = helicopter.player_state[name].current
-			local physics = {speed = 2, jump = 0, gravity = 0}
-			if player_state == "jumping" and velocity.y < 8 then
-				physics = {speed = 2, jump = 0, gravity = -0.5}
-			elseif player_state == "sneaking" and velocity.y > -8 then
-				physics = {speed = 2, jump = 0, gravity =  0.5}
--- 			elseif player_state == "idle" and velocity.y > -1 and velocity.y < 1 then
--- 				physics = {speed = 2, jump = 0, gravity = velocity.y/8}
+			local physics = {speed = heli_speed/4, jump = 0, gravity = 0, sneak = false, sneak_glitch = false}
+			if player_state == "jumping" and velocity.y < heli_speed then
+				physics.gravity = -heli_speed/16
+			elseif player_state == "sneaking" and velocity.y > -heli_speed then
+				physics.gravity =  heli_speed/16
+			elseif player_state == "stopping" then
+				physics.gravity = velocity.y/heli_speed
 			end
 			player:set_physics_override(physics)
--- 			debug_msg("player '"..name.."' is "..player_state.." (physics="..minetest.pos_to_string({x=physics.speed, y=physics.jump,z=physics.gravity})..", velocity="..minetest.pos_to_string(velocity)..")...")
+			debug_msg("player '"..name.."' is "..player_state.." (physics="..minetest.pos_to_string({x=physics.speed, y=physics.jump,z=physics.gravity})..", velocity="..minetest.pos_to_string(velocity)..")...")
 		end
 	end
 end)
