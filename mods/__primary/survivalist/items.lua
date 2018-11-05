@@ -180,7 +180,7 @@ survivalist.clone_item("default:apple", "survivalist:apple", {
 	},
 })
 
-minetest.override_item("default:apple", {
+survivalist.clone_item("default:apple", "default:apple", {
 	drawtype = "allfaces_optional",
 	tiles = {"default_leaves.png"},
 	wield_image = "default_apple.png",

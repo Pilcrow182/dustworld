@@ -1,6 +1,5 @@
 local known_foods = {
 	["default:apple"] = 5,
-	["survivalist:apple_item"] = 5,
 	["default:scorched_stuff"] = 2,
 	["farming:bread"] = 15,
 	["farming:pumpkin_bread"] = 20,
