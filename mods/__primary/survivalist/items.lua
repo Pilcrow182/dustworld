@@ -165,34 +165,29 @@ survivalist.clone_item("default:leaves", "default:leaves", {
 
 minetest.register_alias("survivalist:oak_leaves", "default:leaves")
 
-minetest.register_craftitem("survivalist:apple_item", {
-	description = "Apple",
-	inventory_image = "default_apple.png",
-	wield_image = "default_apple.png",
-	groups = {food=2},
-	on_use = minetest.item_eat(2),
-})
+minetest.register_alias("survivalist:apple_item", "default:apple")
 
 survivalist.clone_item("default:apple", "survivalist:apple", {
-	groups = {snappy=3, leafdecay=3, flammable=2, not_in_creative_inventory=1},
+	groups = {fleshy = 3, dig_immediate = 3, flammable = 2, leafdecay = 3, food = 2, not_in_creative_inventory=1},
 	drop = {
 		max_items = 1,
 		items = {
 			{
-				items = {'survivalist:apple_item'},
+				items = {'default:apple'},
 				rarity = 1,
 			}
 		}
 	},
 })
 
-survivalist.clone_item("default:apple", "default:apple", {
+minetest.override_item("default:apple", {
 	drawtype = "allfaces_optional",
 	tiles = {"default_leaves.png"},
 	wield_image = "default_apple.png",
 	paramtype = "light",
 	selection_box = {type = "fixed", fixed = {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5}},
-	groups = {snappy=3, leafdecay=3, flammable=2},
+	groups = {snappy=3, leafdecay=3, flammable=2, leafdecay_drop = 1},
+-- 	groups = {fleshy = 3, dig_immediate = 3, flammable = 2, leafdecay = 3, leafdecay_drop = 1, food = 2},
 	drop = {
 		max_items = 1,
 		items = {

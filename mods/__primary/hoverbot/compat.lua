@@ -1,3 +1,5 @@
+if not nodeupdate then nodeupdate = function() return end end
+
 hoverbot.compat = {
 	["before_rightclick"] = function(pos, node, player, itemstack, pointed_thing)
 		return
