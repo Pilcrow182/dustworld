@@ -2,11 +2,9 @@ helicopter = {}
 
 helicopter.using_heli = {}
 
-helicopter.player_state = {}
-
 helicopter.speed = tonumber(minetest.setting_get("helicopter_speed"))
 if not helicopter.speed then
-	helicopter.speed = 4
+	helicopter.speed = 8
 	minetest.setting_set("helicopter_speed", tostring(helicopter.speed))
 end
 
@@ -17,43 +15,33 @@ end
 
 local timer = 0
 minetest.register_globalstep(function(dtime)
-	for name,_ in pairs(helicopter.using_heli) do
-		if not helicopter.player_state[name] then helicopter.player_state[name] = {} end
-		helicopter.player_state[name].old = helicopter.player_state[name].current or "idle"
-		local ctrl = minetest.get_player_by_name(name):get_player_control()
-		local state = "idle"
-		if ctrl.jump then
-			state = "jumping"
-		elseif ctrl.sneak then
-			ctrl.sneak = nil
-			state = "sneaking"
-		elseif ctrl.aux1 then
-			ctrl.up    = nil
-			ctrl.down  = nil
-			ctrl.left  = nil
-			ctrl.right = nil
-			state = "stopping"
-		end
-		helicopter.player_state[name].current = state
-	end
 	timer = timer + dtime
 	if timer >= 0.2 then
 		timer = 0
 		for name,_ in pairs(helicopter.using_heli) do
-			local heli_speed = helicopter.speed
 			local player = minetest.get_player_by_name(name)
 			local velocity = player:get_player_velocity()
-			local player_state = helicopter.player_state[name].current
+			local heli_speed = helicopter.speed
 			local physics = {speed = heli_speed/4, jump = 0, gravity = 0, sneak = false, sneak_glitch = false}
-			if player_state == "jumping" and velocity.y < heli_speed then
-				physics.gravity = -heli_speed/16
-			elseif player_state == "sneaking" and velocity.y > -heli_speed then
-				physics.gravity =  heli_speed/16
-			elseif player_state == "stopping" then
+			local ctrl = player:get_player_control()
+
+			local player_state = "idle"
+			if ctrl.aux1 then
+				player_state = "stopping"
 				physics.gravity = velocity.y/heli_speed
+
+			elseif ctrl.jump then
+				player_state = "jumping"
+				physics.gravity = -(heli_speed-velocity.y)/10
+
+			elseif ctrl.sneak then
+				player_state = "sneaking"
+				physics.gravity =  (heli_speed+velocity.y)/10
+
 			end
+
 			player:set_physics_override(physics)
-			debug_msg("player '"..name.."' is "..player_state.." (physics="..minetest.pos_to_string({x=physics.speed, y=physics.jump,z=physics.gravity})..", velocity="..minetest.pos_to_string(velocity)..")...")
+-- 			debug_msg("player '"..name.."' is "..player_state.." (physics="..minetest.pos_to_string({x=physics.speed, y=physics.jump,z=physics.gravity})..", velocity="..minetest.pos_to_string(velocity)..")...")
 		end
 	end
 end)

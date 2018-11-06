@@ -164,7 +164,8 @@ if FLOLANDS then
 		and minp.z >= FLOZMIN and maxp.z <= FLOZMAX then
 			local fl_starttime = os.clock()
 			if DEBUG then
-				print ("[flolands] Generating structure at ("..math.ceil((minp.x+maxp.x)/2)..","..math.ceil((minp.y+maxp.y)/2)..","..math.ceil((minp.z+maxp.z)/2)..")")
+				minetest.log("action", "[flolands] Lag warning: Generating structure at ("..math.ceil((minp.x+maxp.x)/2)..","..math.ceil((minp.y+maxp.y)/2)..","..math.ceil((minp.z+maxp.z)/2)..")")
+				minetest.chat_send_all("[flolands] Lag warning: Generating structure at ("..math.ceil((minp.x+maxp.x)/2)..","..math.ceil((minp.y+maxp.y)/2)..","..math.ceil((minp.z+maxp.z)/2)..")")
 			end
 			-- Generate Structure.
 			local perlin1 = get_perlin(SEEDDIFF1 + minp.y * 100, OCTAVES1, PERSISTENCE1, SCALE1)
@@ -266,7 +267,8 @@ if FLOLANDS then
 
 			local fl_gentime = (os.clock() - fl_starttime)
 			if DEBUG then
-				print ("[flolands] Structure completed in "..fl_gentime.." seconds")
+				minetest.log("action", "[flolands] Structure completed in "..fl_gentime.." seconds")
+				minetest.chat_send_all("[flolands] Structure completed in "..fl_gentime.." seconds")
 			end
 		end
 	end)
