@@ -100,14 +100,21 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_craft({
-	output = 'helicopter:cabin',
-	recipe = {
-		{'', 'group:wood', ''},
-		{'group:wood', 'default:mese_crystal','default:glass'},
-		{'group:wood','group:wood','group:wood'},
-	}
-})
+for _,glass in pairs({
+	"default:glass", "default:obsidian_glass",
+	"hardened_glass:glass",
+	"glowglass:basic", "glowglass:super", "glowglass:black", "glowglass:superblack", "glowglass:hardened", "glowglass:superhardened",
+	"flolands:floatglass"}) do
+
+	minetest.register_craft({
+		output = 'helicopter:cabin',
+		recipe = {
+			{'', 'group:wood', ''},
+			{'group:wood', 'default:mese_crystal',glass},
+			{'group:wood','group:wood','group:wood'},
+		}
+	})
+end
 
 minetest.register_craft({
 	output = 'helicopter:heli',
@@ -116,4 +123,3 @@ minetest.register_craft({
 		{'helicopter:blades', 'helicopter:cabin',''},
 	}
 })
-
