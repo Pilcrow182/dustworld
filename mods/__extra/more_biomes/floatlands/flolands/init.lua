@@ -48,7 +48,7 @@ local floyminq = 80 * math.floor((FLOYMIN + 32) / 80) - 32
 minetest.register_node("flolands:floatstone", {
 	description = "Floatstone",
 	tiles = {"flolands_floatstone.png"},
-	groups = {cracky=3},
+	groups = {cracky=3, stone=1},
 	sounds = default.node_sound_stone_defaults(),
 })
 
@@ -65,7 +65,7 @@ minetest.register_node("flolands:talinite_ore", {
 minetest.register_node("flolands:floatsand", {
 	description = "Turquoise Sand",
 	tiles = {"flolands_floatsand.png"},
-	groups = {crumbly=3, falling_node=1},
+	groups = {crumbly=3, falling_node=1, sand=1},
 	sounds = default.node_sound_sand_defaults(),
 })
 
