@@ -275,7 +275,24 @@ local oredefs = {
 	},
 	talinite = {
 		makes = {ore=true, block=false, lump=true, ingot=true, chest=false},
-		tools = {},
+		tools = {
+			pick = {
+				cracky={times={[1]=4.00, [2]=1.60, [3]=0.80}, uses=10, maxlevel=2},
+				damage={fleshy=4}
+			},
+			shovel = {
+				crumbly = {times={[1]=1.50, [2]=0.90, [3]=0.40}, uses=15, maxlevel=2},
+				damage={fleshy=3}
+			},
+			axe = {
+				choppy={times={[1]=2.50, [2]=1.40, [3]=1.00}, uses=10, maxlevel=2},
+				damage={fleshy=4}
+			},
+			sword = {
+				snappy={times={[1]=2.5, [2]=1.20, [3]=0.35}, uses=15, maxlevel=2},
+				damage={fleshy=6}
+			}
+		},
 		punchint = 0.45
 	},
 	akalin = {
