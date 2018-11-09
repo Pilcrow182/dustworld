@@ -78,7 +78,7 @@ function survivalist.register_siftable(longname, def)
 	local fullness = {9, 7, 5}
 
 	for i=1,2 do
-		minetest.register_node("survivalist:sieve_"..nicename.."_"..i,{
+		minetest.register_node(":survivalist:sieve_"..nicename.."_"..i,{
 			tiles = {base_image.."^survivalist_sieve_top.png", base_image.."^survivalist_sieve_bottom.png", base_image.."^survivalist_sieve_side.png"},
 			drawtype = "nodebox",
 			paramtype = "light",
@@ -98,7 +98,7 @@ function survivalist.register_siftable(longname, def)
 		})
 	end
 
-	minetest.register_node("survivalist:sieve_"..nicename.."_3",{
+	minetest.register_node(":survivalist:sieve_"..nicename.."_3",{
 		tiles = {base_image.."^survivalist_sieve_top.png", base_image.."^survivalist_sieve_bottom.png", base_image.."^survivalist_sieve_side.png"},
 		drawtype = "nodebox",
 		paramtype = "light",

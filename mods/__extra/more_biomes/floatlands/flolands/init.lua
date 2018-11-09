@@ -39,8 +39,6 @@ local SCALE3 = 128 -- 128 -- Approximate horizontal distance over which island c
 
 flolands = {}
 
-dofile(minetest.get_modpath("flolands").."/stairs.lua")
-
 local floyminq = 80 * math.floor((FLOYMIN + 32) / 80) - 32
 
 -- Nodes.
@@ -158,14 +156,20 @@ if FLOLANDS then
 		local get_perlin = minetest.get_perlin
 		local get_node = minetest.get_node
 		local add_node = minetest.add_node
+		
+		local tree_spawner = {}
 
 		if minp.y >= floyminq and minp.y <= floyminq + (FLOLEV - 1) * 80
 		and minp.x >= FLOXMIN and maxp.x <= FLOXMAX
 		and minp.z >= FLOZMIN and maxp.z <= FLOZMAX then
 			local fl_starttime = os.clock()
 			if DEBUG then
-				minetest.log("action", "[flolands] Lag warning: Generating structure at ("..math.ceil((minp.x+maxp.x)/2)..","..math.ceil((minp.y+maxp.y)/2)..","..math.ceil((minp.z+maxp.z)/2)..")")
-				minetest.chat_send_all("[flolands] Lag warning: Generating structure at ("..math.ceil((minp.x+maxp.x)/2)..","..math.ceil((minp.y+maxp.y)/2)..","..math.ceil((minp.z+maxp.z)/2)..")")
+				local message = "[flolands] Lag warning: Generating structure"
+				if VERBOSE then
+					message = message.." at ("..math.ceil((minp.x+maxp.x)/2)..","..math.ceil((minp.y+maxp.y)/2)..","..math.ceil((minp.z+maxp.z)/2)..")"
+				end
+				minetest.log("action", message)
+				minetest.chat_send_all(message)
 			end
 			-- Generate Structure.
 			local perlin1 = get_perlin(SEEDDIFF1 + minp.y * 100, OCTAVES1, PERSISTENCE1, SCALE1)
@@ -180,96 +184,116 @@ if FLOLANDS then
 			local midy = y0 + yl * 0.5
 			-- Loop through columns in chunk.
 			for i = 0, xl do
-			for k = 0, zl do
 				local x = x0 + i
-				local z = z0 + k
-				local noise3 = perlin3:get2d({x=x,y=z})
-				local pmidy = midy + noise3 / 1.5 * AMPY
-				-- Loop through nodes in column.
-				for j = 0, yl do
-					local y = y0 + j
-					local vi = area:index(x, y, z)
-					local noise1 = perlin1:get3d({x=x,y=y,z=z})
-					local offset = 0
-					if y > pmidy then
-						offset = (y - pmidy) / TGRAD
-					else
-						offset = (pmidy - y) / BGRAD
-					end
-					-- Add floatstone or mese block.
-					local noise1off = noise1 - offset - RAR
-					if noise1off > 0 and noise1off < 0.7 then
-						local noise2 = perlin2:get3d({x=x,y=y,z=z})
-						if noise2 - noise1off > -0.7 then
-							if math.random(1,MATCHA) ~= 23 then
-								if math.random(1, 6) ~= 3 then
-									data[vi] = c_floatstone
+				for k = 0, zl do
+					local z = z0 + k
+					local noise3 = perlin3:get2d({x=x,y=z})
+					local pmidy = midy + noise3 / 1.5 * AMPY
+					-- Loop through nodes in column.
+					for j = 0, yl do
+						local y = y0 + j
+						local vi = area:index(x, y, z)
+						local noise1 = perlin1:get3d({x=x,y=y,z=z})
+						local offset = 0
+						if y > pmidy then
+							offset = (y - pmidy) / TGRAD
+						else
+							offset = (pmidy - y) / BGRAD
+						end
+						-- Add floatstone or mese block.
+						local noise1off = noise1 - offset - RAR
+						if noise1off > 0 and noise1off < 0.7 then
+							local noise2 = perlin2:get3d({x=x,y=y,z=z})
+							if noise2 - noise1off > -0.7 then
+								if math.random(1,MATCHA) ~= 23 then
+									if math.random(1, 6) ~= 3 then
+										data[vi] = c_floatstone
+									else
+										data[vi] = c_talinite
+									end
 								else
-									data[vi] = c_talinite
-								end
-							else
-								if math.random(1,FLOCHA) ~= math.ceil(FLOCHA/2) then
-									data[vi] = c_mese
-								else
-									data[vi] = c_floc
+									if math.random(1,FLOCHA) ~= math.ceil(FLOCHA/2) then
+										data[vi] = c_mese
+									else
+										data[vi] = c_floc
+									end
 								end
 							end
 						end
 					end
 				end
 			end
-			
+
+			local c_air = minetest.get_content_id("air")
+			local c_ignore = minetest.get_content_id("ignore")
+			local c_sand = minetest.get_content_id("flolands:floatsand")
+			local c_grass = minetest.get_content_id("flolife:floatgrass")
+			local c_leaves = minetest.get_content_id("flolife:leaves")
+
+			for i = 0, xl do
+				local x = x0 + i
+				for k = 0, zl do
+					local z = z0 + k
+					-- Find ground level.
+					local ground_y = nil
+					for y=maxp.y,minp.y,-1 do
+						local vi = area:index(x, y, z)
+						if data[vi] ~= c_air and data[vi] ~= c_ignore then
+							ground_y = y
+							break
+						end
+					end
+					-- Add 1 or 2 nodes depth of floatsand and possibly floatgrass/floatoak.
+					if ground_y then
+						local y = ground_y
+						local vi = area:index(x, y, z)
+						local nodesbelow = {
+							area:index(x, y-1, z),
+							area:index(x, y-2, z),
+							area:index(x, y-3, z),
+							area:index(x, y-4, z)
+						}
+						if data[nodesbelow[1]] ~= c_air and data[nodesbelow[1]] ~= c_ignore and data[nodesbelow[1]] ~= c_leaves
+						and data[nodesbelow[2]] ~= c_air and data[nodesbelow[2]] ~= c_ignore and data[nodesbelow[2]] ~= c_leaves then
+							data[vi] = c_sand
+							if data[nodesbelow[3]] ~= c_air and data[nodesbelow[3]] ~= c_ignore and data[nodesbelow[3]] ~= c_leaves
+							and data[nodesbelow[4]] ~= c_air and data[nodesbelow[4]] ~= c_ignore and data[nodesbelow[4]] ~= c_leaves then
+								data[area:index(x, y-1, z)] = c_sand
+							end
+							if data[area:index(x, y+1, z)] == c_air
+							and math.random(0, 20) == 10 then
+								if math.random(0, 8) ~= 4 then
+									data[area:index(x, y+1, z)] = c_grass
+								else
+									tree_spawner[minetest.pos_to_string({x = x, y = y + 1, z = z})] = true
+								end
+							end
+						end
+					end
+				end
+			end
+
 			vm:set_data(data)
 			vm:set_lighting({day=0, night=0})
 			vm:calc_lighting()
 			vm:write_to_map(data)
-			
-			end
 
-			-- Generate surface.
-			for i = 0, xl do
-			for k = 0, zl do
-				local x = x0 + i
-				local z = z0 + k
-				-- Find ground level.
-				local ground_y = nil
-				for y=maxp.y,minp.y,-1 do
-					if get_node({x=x,y=y,z=z}).name ~= "air" then
-						ground_y = y
-						break
-					end
-				end
-				-- Add 1 or 2 nodes depth of floatsand and possibly floatgrass.
-				if ground_y then
-					if get_node({x=x,y=ground_y-1,z=z}).name ~= "air"
-					and get_node({x=x,y=ground_y-1,z=z}).name ~= "flolife:leaves"
-					and get_node({x=x,y=ground_y-2,z=z}).name ~= "air"
-					and get_node({x=x,y=ground_y-2,z=z}).name ~= "flolife:leaves" then
-						add_node({x=x,y=ground_y,z=z},{name="flolands:floatsand"})
-						if get_node({x=x,y=ground_y-3,z=z}).name ~= "air"
-						and get_node({x=x,y=ground_y-3,z=z}).name ~= "flolife:leaves"
-						and get_node({x=x,y=ground_y-4,z=z}).name ~= "air"
-						and get_node({x=x,y=ground_y-4,z=z}).name ~= "flolife:leaves" then
-							add_node({x=x,y=ground_y-1,z=z},{name="flolands:floatsand"})
-						end
-						if get_node({x=x,y=ground_y+1,z=z}).name == "air"
-						and math.random(0, 20) == 10 then
-							if math.random(0, 8) ~= 4 then
-								add_node({x=x,y=ground_y+1,z=z},{name="flolife:floatgrass"})
-							else
-								farming:generate_tree({x=x,y=ground_y+1,z=z}, "flolife:tree", "flolife:leaves", {"flolands:floatsand"}, {["flolife:fruit"]=20})
-							end
-						end
-					end
-				end
-			end
+			for p,_ in pairs(tree_spawner) do
+				farming:generate_tree(minetest.string_to_pos(p), "flolife:tree", "flolife:leaves", {"flolands:floatsand"}, {["flolife:fruit"]=20})
 			end
 
 			local fl_gentime = (os.clock() - fl_starttime)
 			if DEBUG then
-				minetest.log("action", "[flolands] Structure completed in "..fl_gentime.." seconds")
-				minetest.chat_send_all("[flolands] Structure completed in "..fl_gentime.." seconds")
+				local message = "[flolands] Structure completed"
+				if VERBOSE then
+					message = message.." in "..fl_gentime.." seconds"
+				end
+				minetest.log("action", message)
+				minetest.chat_send_all(message)
 			end
 		end
 	end)
 end
+
+dofile(minetest.get_modpath("flolands").."/stairs.lua")
+dofile(minetest.get_modpath("flolands").."/survivalist.lua")

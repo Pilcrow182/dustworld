@@ -304,6 +304,8 @@ end
 survivalist.register_machine("grinder", {
 	{"default:gravel", "default:sand"},
 	{"default:desert_stone", "default:desert_sand"}, -- NOTE: This is recognized first and used instead of "group:stone" below
+	{"default:desert_cobble", "default:desert_sand"},
+	{"flolands:floatstone", "flolands:floatsand"},
 	{"default:cactus", "survivalist:mulch"},
 	{"group:stone", "default:gravel"},
 	{"group:sand", "wasteland:dust"},
@@ -317,7 +319,8 @@ survivalist.register_machine("compressor", {
 	{"default:gravel", "default:cobble"},
 	{"default:sand", "default:gravel"},
 	{"wasteland:dust", "default:sand"},
-	{"default:desert_sand", "default:desert_stone"},
+	{"default:desert_sand", "default:desert_cobble"},
+	{"flolands:floatsand", "flolands:floatstone"},
 	{"survivalist:mulch", "default:coal_lump"},
 	{"bed:bed_bottom", "bed:minibed"},
 })
