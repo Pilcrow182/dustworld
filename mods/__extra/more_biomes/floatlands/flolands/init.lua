@@ -17,8 +17,8 @@ local TGRAD = 24 -- 24 -- Noise gradient to create top surface. Tallness of isla
 local BGRAD = 24 -- 24 -- Noise gradient to create bottom surface. Tallness of island bottom.
 local MATCHA = 2197 -- 2197 = 13^3 -- 1/x chance of rare material.
 local FLOCHA = 3 -- 23 -- 1/x chance rare material is floatcrystalblock.
-local DEBUG = true
-local VERBOSE = false
+local DEBUG = false -- Enable debugging output (true/false).
+local VERBOSE = false -- Enable MORE debugging output (true/false).
 
 local SEEDDIFF1 = 3683 -- 3D perlin1 for island generation.
 local OCTAVES1 = 5 -- 5
@@ -276,10 +276,12 @@ if FLOLANDS then
 			vm:set_data(data)
 			vm:set_lighting({day=0, night=0})
 			vm:calc_lighting()
-			vm:write_to_map(data)
+			vm:write_to_map()
 
 			for p,_ in pairs(tree_spawner) do
-				farming:generate_tree(minetest.string_to_pos(p), "flolife:tree", "flolife:leaves", {"flolands:floatsand"}, {["flolife:fruit"]=20})
+				minetest.after(0.2, function(pos)
+					farming:generate_tree(pos, "flolife:tree", "flolife:leaves", {"flolands:floatsand"}, {["flolife:fruit"]=20})
+				end, minetest.string_to_pos(p))
 			end
 
 			local fl_gentime = (os.clock() - fl_starttime)
