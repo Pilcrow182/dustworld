@@ -64,6 +64,7 @@ deployer_on = function(pos, node)
 	for i, stack in ipairs(invlist) do
 		if stack:get_name() ~= nil and stack:get_name() ~= "" and minetest.get_node(pos1).name == "air" then --obtain the first non-empty item slow
 			local placer = {
+				is_player = function() return false end,
 				get_player_name = function() return "deployer" end,
 				getpos = function() return pos end,
 				get_player_control = function() return {jump=false,right=false,left=false,LMB=false,RMB=false,sneak=false,aux1=false,down=false,up=false} end,

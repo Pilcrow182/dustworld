@@ -85,6 +85,7 @@ function break_node (pos, n_param)
 	end
 
 	local digger = {
+		is_player = function() return false end,
 		get_player_name = function() return "node_breaker" end,
 		getpos = function() return pos end,
 		get_player_control = function() return {jump=false,right=false,left=false,LMB=false,RMB=false,sneak=false,aux1=false,down=false,up=false} end,
