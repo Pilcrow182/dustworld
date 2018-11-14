@@ -63,6 +63,7 @@ mechanism.pushpull = function(src, dst, reverse_order, fuel_output)
 				if dstlabel then
 					repeat c = c - 1 until dstinv:room_for_item(dstlabel, {name=name, count=c, wear=wear})
 					dstinv:add_item(dstlabel, {name=name, count=c, wear=wear})
+					minetest.get_node_timer(dst):start(1.0)
 				elseif dstms ~= 0 then
 					if (dstitem ~= "" and dstitem ~= name) or (dstamount + count > 9999) then return false end
 					if dstwear ~= wear and dstitem ~= "" then return false end

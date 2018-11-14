@@ -16,15 +16,16 @@ local rtc_selbox =
 	fixed = {{ -8/16, -8/16, -8/16, 8/16, -3/16, 8/16 }}
 }
 
-local on_digiline_receive = function (pos, node, channel, msg)
-	local setchan = minetest.env:get_meta(pos):get_string("channel")
+local on_digiline_receive = function (pos, _, channel, msg)
+	local setchan = minetest.get_meta(pos):get_string("channel")
 	if channel == setchan and msg == GET_COMMAND then
-		local timeofday = minetest.env:get_timeofday()
-		digiline:receptor_send(pos, digiline.rules.default, channel, timeofday)
+		local timeofday = minetest.get_timeofday()
+		digilines.receptor_send(pos, digilines.rules.default, channel, timeofday)
 	end
 end
 
-minetest.register_node("digilines_rtc:rtc", {
+minetest.register_alias("digilines_rtc:rtc", "digilines:rtc")
+minetest.register_node("digilines:rtc", {
 	description = "Digiline Real Time Clock (RTC)",
 	drawtype = "nodebox",
 	tiles = {"digilines_rtc.png"},
@@ -34,7 +35,7 @@ minetest.register_node("digilines_rtc:rtc", {
 	groups = {dig_immediate=2},
 	selection_box = rtc_selbox,
 	node_box = rtc_nodebox,
-	digiline = 
+	digiline =
 	{
 		receptor = {},
 		effector = {
@@ -42,12 +43,17 @@ minetest.register_node("digilines_rtc:rtc", {
 		},
 	},
 	on_construct = function(pos)
-		local meta = minetest.env:get_meta(pos)
+		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec", "field[channel;Channel;${channel}]")
 	end,
-	on_receive_fields = function(pos, formname, fields, sender)
-		local meta = minetest.env:get_meta(pos)
-		fields.channel = fields.channel or ""
-		meta:set_string("channel", fields.channel)
+	on_receive_fields = function(pos, _, fields, sender)
+		local name = sender:get_player_name()
+		if minetest.is_protected(pos, name) and not minetest.check_player_privs(name, {protection_bypass=true}) then
+			minetest.record_protection_violation(pos, name)
+			return
+		end
+		if (fields.channel) then
+			minetest.get_meta(pos):set_string("channel", fields.channel)
+		end
 	end,
 })

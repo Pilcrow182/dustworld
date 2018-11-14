@@ -21,15 +21,16 @@ local lsensor_selbox =
 	fixed = {{ -8/16, -8/16, -8/16, 8/16, -3/16, 8/16 }}
 }
 
-local on_digiline_receive = function (pos, node, channel, msg)
-	local setchan = minetest.env:get_meta(pos):get_string("channel")
+local on_digiline_receive = function (pos, _, channel, msg)
+	local setchan = minetest.get_meta(pos):get_string("channel")
 	if channel == setchan and msg == GET_COMMAND then
-		local lightval = minetest.env:get_node_light(pos)
-		digiline:receptor_send(pos, digiline.rules.default, channel, lightval)
+		local lightval = minetest.get_node_light(pos)
+		digilines.receptor_send(pos, digilines.rules.default, channel, lightval)
 	end
 end
 
-minetest.register_node("digilines_lightsensor:lightsensor", {
+minetest.register_alias("digilines_lightsensor:lightsensor", "digilines:lightsensor")
+minetest.register_node("digilines:lightsensor", {
 	description = "Digiline Lightsensor",
 	drawtype = "nodebox",
 	tiles = {"digilines_lightsensor.png"},
@@ -38,7 +39,7 @@ minetest.register_node("digilines_lightsensor:lightsensor", {
 	groups = {dig_immediate=2},
 	selection_box = lsensor_selbox,
 	node_box = lsensor_nodebox,
-	digiline = 
+	digiline =
 	{
 		receptor = {},
 		effector = {
@@ -46,12 +47,17 @@ minetest.register_node("digilines_lightsensor:lightsensor", {
 		},
 	},
 	on_construct = function(pos)
-		local meta = minetest.env:get_meta(pos)
+		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec", "field[channel;Channel;${channel}]")
 	end,
-	on_receive_fields = function(pos, formname, fields, sender)
-		local meta = minetest.env:get_meta(pos)
-		fields.channel = fields.channel or ""
-		meta:set_string("channel", fields.channel)
+	on_receive_fields = function(pos, _, fields, sender)
+		local name = sender:get_player_name()
+		if minetest.is_protected(pos, name) and not minetest.check_player_privs(name, {protection_bypass=true}) then
+			minetest.record_protection_violation(pos, name)
+			return
+		end
+		if (fields.channel) then
+			minetest.get_meta(pos):set_string("channel", fields.channel)
+		end
 	end,
 })

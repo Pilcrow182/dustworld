@@ -136,6 +136,7 @@ ejector.push = function(dst, name, wear)
 
 	if dstlabel and dstinv:room_for_item(dstlabel, {name=name, count=1, wear=wear}) then
 		dstinv:add_item(dstlabel, {name=name, count=1, wear=wear})
+		minetest.get_node_timer(dst):start(1.0)
 		return true
 	elseif dstms ~= 0 and ( dstitem == "" or ( dstitem == name and dstwear == wear ) ) and dstamount + 1 <= 9999 then
 		dstmeta:set_string("stored", name)
