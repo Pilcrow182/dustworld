@@ -25,18 +25,17 @@ local function can_insert(pos, stack)
 	return can
 end
 
-local tubeconn = pipeworks_enabled and "^pipeworks_tube_connection_wooden.png" or ""
 local tubescan = pipeworks_enabled and function(pos) pipeworks.scan_for_tube_objects(pos) end or nil
 
 minetest.register_alias("digilines_inventory:chest", "digilines:chest")
 minetest.register_node("digilines:chest", {
 	description = "Digiline Chest",
 	tiles = {
-		"default_chest_top.png"..tubeconn,
-		"default_chest_top.png"..tubeconn,
-		"default_chest_side.png"..tubeconn,
-		"default_chest_side.png"..tubeconn,
-		"default_chest_side.png"..tubeconn,
+		"default_chest_top.png",
+		"default_chest_top.png",
+		"default_chest_side.png",
+		"default_chest_side.png",
+		"default_chest_side.png",
 		"default_chest_front.png",
 	},
 	paramtype2 = "facedir",
