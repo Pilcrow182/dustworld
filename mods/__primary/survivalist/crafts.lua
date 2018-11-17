@@ -206,6 +206,15 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	output = 'survivalist:machine_autosieve',
+	recipe = {
+		{'survivalist:motor'},
+		{'survivalist:sieve'},
+		{'default:chest'},
+	}
+})
+
+minetest.register_craft({
 	output = 'survivalist:gear_wood',
 	recipe = {
 		{'', 'group:stick', ''},

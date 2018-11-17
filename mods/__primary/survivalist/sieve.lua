@@ -18,6 +18,8 @@ sieve = {
 
 survivalist.siftable = {}
 
+survivalist.sieve_lookup = {}
+
 function survivalist.check_siftable(itemname)
 	local output = false
 	for _,name in ipairs(survivalist.siftable) do
@@ -74,6 +76,8 @@ function survivalist.register_siftable(longname, def)
 	for _,name in ipairs(def.droprates) do
 		table.insert(droprates, {items = {name[1]}, rarity = name[2]})
 	end
+
+	survivalist.sieve_lookup[longname] = droprates
 
 	local fullness = {9, 7, 5}
 
@@ -192,3 +196,5 @@ survivalist.register_siftable("default:desert_sand", {
 -- average    : 6, 7,  7,  8, 13, 17, 22, 26
 -- linear     : 5, 8, 11, 14, 17, 20, 23, 26
 -- curve(0.6) : 5, 6,  8, 10, 13, 17, 21, 26
+
+dofile(minetest.get_modpath("survivalist").."/autosieve.lua")

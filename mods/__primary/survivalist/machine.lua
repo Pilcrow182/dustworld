@@ -9,14 +9,20 @@ machine = {
 	}
 }
 
-function survivalist.get_machine_active_formspec(pos, percent)
+function survivalist.get_machine_active_formspec(pos, percent, output_size)
+	if output_size then
+		hoffset = (math.sqrt(output_size)-2)/2
+	else
+		output_size = 4
+		hoffset = 0
+	end
 	local formspec =
 		"size[10,9]"..
-		"image[2,2;1,1;default_furnace_fire_bg.png^[lowpart:"..
+		"image["..2-hoffset..",2;1,1;default_furnace_fire_bg.png^[lowpart:"..
 		(100-percent)..":default_furnace_fire_fg.png]"..
-		"list[current_name;fuel;3,3;1,1;]"..
-		"list[current_name;src;3,1;1,1;]"..
-		"list[current_name;dst;6,1;2,2;]"..
+		"list[current_name;fuel;"..3-hoffset..",3;1,1;]"..
+		"list[current_name;src;"..3-hoffset..",1;1,1;]"..
+		"list[current_name;dst;"..6-hoffset..",1;"..math.sqrt(output_size)..","..math.sqrt(output_size)..";]"..
 		"list[current_player;main;0,5;10,4;]"
 	return formspec
 end
