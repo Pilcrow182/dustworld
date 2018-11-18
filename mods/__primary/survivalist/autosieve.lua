@@ -64,7 +64,6 @@ local get_output = function(input)
 		if math.random(1,2) == 2 then j=1+#droprates-i else j=i end
 		if math.random(1,droprates[j].rarity) == math.ceil(droprates[j].rarity/2) then output = droprates[j].items[1] break end
 	end
-	minetest.chat_send_all("returning output "..tostring(output))
 	return output
 end
 
@@ -117,24 +116,17 @@ minetest.register_abm({
 		local valid_input = check_input(inv:get_stack("src", 1):get_name())
 
 		if ( output ~= "" or valid_input ) and ( rtime > 0 or take_fuel(inv, meta) ) then
-			minetest.chat_send_all("processing output "..output)
 			ttime = meta:get_int("ttime")
 			rtime = meta:get_int("rtime")
 
 			if string.find(minetest.get_node(pos).name, "_on") then
-				minetest.chat_send_all("autosieve is on, processing output "..output)
 				if step >= 3 then
-					minetest.chat_send_all("trying to create output "..output)
 					if inv:room_for_item("dst", {name=output, count=1}) then
-						minetest.chat_send_all("there is room for output "..output)
 						inv:add_item("dst", output)
 						meta:set_string("output", "")
 						meta:set_string("step", 0)
-					else
-						minetest.chat_send_all("no room for output "..output)
 					end
 				else
-					minetest.chat_send_all("step ~= 3 (step = "..step..")")
 					if output == "" then take_src(inv, meta) end
 					step = step + 1
 					meta:set_string("step", step)

@@ -58,7 +58,8 @@ abstract_trees.trees_register_nodes_tree = function(name, sapling_rarity)
 		groups = {
 			snappy = 2,
 			dig_immediate = 3,
-			flammable = 2
+			flammable = 2,
+			sapling = 1,
 		},
 		sounds = default.node_sound_defaults(),
 	})

@@ -6,7 +6,7 @@ minetest.register_node("farming_plus:banana_sapling", {
 	wield_image = "farming_banana_sapling.png",
 	paramtype = "light",
 	walkable = false,
-	groups = {dig_immediate=3,flammable=2},
+	groups = {dig_immediate=3,flammable=2,sapling = 1},
 	sounds = default.node_sound_defaults(),
 })
 

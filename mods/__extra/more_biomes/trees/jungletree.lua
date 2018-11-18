@@ -280,7 +280,7 @@ minetest.register_node("trees:jungletree_sapling", {
   wield_image = "trees_jungletree_sapling.png",
   paramtype = "light",
   walkable = false,
-  groups = {snappy=2,dig_immediate=3,flammable=2},
+  groups = {snappy=2,dig_immediate=3,flammable=2,sapling = 1},
 })
 
 --leafdecay

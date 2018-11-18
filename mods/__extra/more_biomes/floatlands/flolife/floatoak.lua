@@ -7,7 +7,7 @@ minetest.register_node("flolife:sapling", {
 	paramtype = "light",
 	light_source = 11,
 	walkable = false,
-	groups = {dig_immediate=3,flammable=2},
+	groups = {dig_immediate=3,flammable=2,sapling = 1},
 	sounds = default.node_sound_defaults(),
 })
 
