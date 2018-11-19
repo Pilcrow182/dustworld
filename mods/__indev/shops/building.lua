@@ -72,6 +72,7 @@ end
 
 shops.spawn_shop = function(pos)
 	minetest.log("action", "[MOD] shops -- building new shop at "..minetest.pos_to_string(pos))
+-- 	minetest.chat_send_all("[MOD] shops -- building new shop at "..minetest.pos_to_string(pos))
 	for _,entry in pairs(get_map()) do
 		entry.x, entry.y, entry.z = entry.x + pos.x, entry.y + pos.y, entry.z + pos.z
 		minetest.after(math.random(1, 6) / 2, function(entry)
@@ -91,9 +92,39 @@ minetest.register_chatcommand("spawn_shop", {
 	end,
 })
 
+local valid_spawn = function(pos)
+	local ignore = minetest.find_node_near(pos, 6, {"ignore"})
+	if ignore then return false end
+	for x = pos.x - 6, pos.x do
+		for z = pos.z - 2, pos.z + 4 do
+			local node = minetest.get_node({x = x, y = pos.y, z = z})
+			for _,name in pairs({"air", "default:water_source", "default:water_flowing"}) do
+				if node.name == name then return false end
+			end
+		end
+	end
+	return true
+end
+
+local find_surface = function(x, z)
+	local vm = minetest.get_voxel_manip()
+	local ground_level, y, pos, node = nil, nil, nil, nil
+	for y = 96, -100, -1 do   
+		pos = {x = x, y = y, z = z}
+		vm:read_from_map(pos, pos)
+		node = minetest.get_node(pos)
+		if not ( node.name == "air" or node.name == "ignore" or string.find(node.name, "leaves") ) then
+			if string.find(node.name, "tree") then break end -- don't spawn inside trees
+			ground_level = y
+			break
+		end
+	end
+	if not ground_level then return false end
+	return {x=x, y=ground_level, z=z}
+end
+
 minetest.register_on_generated(function(minp, maxp, blockseed)
-	if math.random(1, 100) > 10 then return end -- 10% chance of generating trader hut
-	local tmp = {x=(maxp.x-minp.x)/2+minp.x, y=(maxp.y-minp.y)/2+minp.y, z=(maxp.z-minp.z)/2+minp.z}
-	local pos = minetest.env:find_node_near(tmp, maxp.x-minp.x, {"default:dirt_with_grass"})
-	if pos then shops.spawn_shop(pos) end
+	if math.random(1, 100) > 5 then return end -- 5% chance of generating trader hut
+	local pos = find_surface((maxp.x - minp.x) / 2 + minp.x, (maxp.z - minp.z) / 2 + minp.z)
+	if pos and valid_spawn(pos) then shops.spawn_shop(pos) end
 end)
