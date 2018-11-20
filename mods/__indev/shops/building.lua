@@ -98,6 +98,7 @@ local valid_spawn = function(pos)
 	for x = pos.x - 6, pos.x do
 		for z = pos.z - 2, pos.z + 4 do
 			local node = minetest.get_node({x = x, y = pos.y, z = z})
+			if string.find(node.name, "tree") then return false end -- don't overwrite trees
 			for _,name in pairs({"air", "default:water_source", "default:water_flowing"}) do
 				if node.name == name then return false end
 			end
@@ -114,7 +115,6 @@ local find_surface = function(x, z)
 		vm:read_from_map(pos, pos)
 		node = minetest.get_node(pos)
 		if not ( node.name == "air" or node.name == "ignore" or string.find(node.name, "leaves") ) then
-			if string.find(node.name, "tree") then break end -- don't spawn inside trees
 			ground_level = y
 			break
 		end

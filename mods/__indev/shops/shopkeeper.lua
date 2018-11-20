@@ -92,13 +92,28 @@ minetest.register_node("shops:shopkeeper", {
 		return remove_top(pos)
 	end,
 	on_construct = function(pos)
-		local meta = minetest.get_meta(pos)
-		meta:set_string("formspec",
-			"size[4,1]"..
-			"label[0,-0.2;Shopkeeper:]"..
-			"label[0.3,0.3;Sorry, I can't sell you anything yet!]")
-		meta:set_string("infotext", "Shopkeeper")
-		local inv = meta:get_inventory()
-		inv:set_size("main",10*5)
+		shops.update_inventory(pos)
+	end,
+	on_punch = function(pos, node, puncher, pointed_thing)
+		minetest.chat_send_player(puncher:get_player_name(), "Updated shopkeeper at "..minetest.pos_to_string(pos))
+		shops.update_inventory(pos)
+	end,
+	allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
+		return shops.allow_move(pos, from_list, from_index, to_list, to_index, count, player)
+	end,
+	on_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
+		return shops.on_move(pos, from_list, from_index, to_list, to_index, count, player)
+	end,
+	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
+		return shops.allow_put(pos, listname, index, stack, player)
+	end,
+	on_metadata_inventory_put = function(pos, listname, index, stack, player)
+		return shops.on_put(pos, listname, index, stack, player)
+	end,
+	allow_metadata_inventory_take = function(pos, listname, index, stack, player)
+		return shops.allow_take(pos, listname, index, stack, player)
+	end,
+	on_metadata_inventory_take = function(pos, listname, index, stack, player)
+		return shops.on_take(pos, listname, index, stack, player)
 	end,
 })

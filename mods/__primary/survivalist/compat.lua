@@ -144,6 +144,6 @@ if minetest.get_modpath("mobf") == nil then
 	end
 end
 
-if minetest.get_modpath("bonemeal") == nil then minetest.register_alias("bonemeal:bonemeal", "default:clay_lump") end
+if minetest.get_modpath("bonemeal") == nil then minetest.register_alias("bonemeal:bonemeal", "survivalist:mulch") end
 if minetest.get_modpath("flint") == nil then minetest.register_alias("flint:flintstone", "survivalist:rock") end
 if minetest.get_modpath("wasteland") == nil then minetest.register_alias("wasteland:dust", "default:sand") end
