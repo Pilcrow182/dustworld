@@ -68,7 +68,7 @@ bonemeal.grow = function(pointed_thing)
 		if math.random(0,2) == 1 then
 			trunkgen = "default:tree"
 			leavesgen = "survivalist:apple_leaves"
-			fruitgen = "default:apple"
+			fruitgen = "survivalist:apple"
 			survivalist.grow_tree(pos, trunkgen, leavesgen, fruitgen)
 		end
 

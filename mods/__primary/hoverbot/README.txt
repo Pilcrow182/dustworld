@@ -1,4 +1,4 @@
-Hoverbot mod, by Pilcrow, version 0.5.1
+Hoverbot mod, by Pilcrow, version 0.5.2
 
 ###############################################################################
  ALERT:  This is a -WIP- version of the hoverbot mod. IT MAY EAT YOUR HAMSTER!
@@ -38,8 +38,8 @@ hoverbot use an item that executes an undocumented function WILL cause a crash.
 ===============================================================================
 
 Licenses:
-code -- WTFPL
-http://www.wtfpl.net/txt/copying/
+code -- ISC
+see LICENSE.txt
 
-textures -- CC BY-SA 3.0
-https://creativecommons.org/licenses/by-sa/3.0/
+textures -- CC BY 4.0
+https://creativecommons.org/licenses/by/4.0/

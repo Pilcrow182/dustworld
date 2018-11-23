@@ -6,7 +6,7 @@ minetest.register_node("farming_plus:cocoa_sapling", {
 	wield_image = "farming_cocoa_sapling.png",
 	paramtype = "light",
 	walkable = false,
-	groups = {dig_immediate=3,flammable=2},
+	groups = {dig_immediate=3,flammable=2,sapling = 1},
 	sounds = default.node_sound_defaults(),
 })
 
@@ -15,7 +15,7 @@ minetest.register_node("farming_plus:cocoa_leaves", {
 	drawtype = "allfaces_optional",
 	tiles = {"farming_banana_leaves.png"},
 	paramtype = "light",
-	groups = {snappy=3, leafdecay=3, flammable=2, not_in_creative_inventory=1},
+	groups = {snappy=3, leafdecay=3, flammable=2, leaves=1},
 	drop = {
 		max_items = 1,
 		items = {

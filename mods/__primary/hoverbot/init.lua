@@ -1,3 +1,23 @@
+--[[
+
+  Programmable robot ('hoverbot') mod for Minetest
+
+  Copyright (C) 2018 Pilcrow182
+
+  Permission to use, copy, modify, and/or distribute this software for
+  any purpose with or without fee is hereby granted, provided that the
+  above copyright notice and this permission notice appear in all copies.
+
+  THE SOFTWARE IS PROVIDED "AS IS" AND ISC DISCLAIMS ALL WARRANTIES
+  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL ISC BE LIABLE FOR ANY
+  SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN
+  AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING
+  OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+]]--
+
 hoverbot = {}
 
 dofile(minetest.get_modpath("hoverbot").."/command_items.lua")
@@ -49,8 +69,8 @@ local make_page = function(pagenum, last_tab, tabsize)
 			"label[5.65,3.0;Fuel:]"..					-- fuel label
 			"list[current_name;fuel;5.5,3.5;1,1;]"..			-- fuel slot
 			"button[5,4.3;2,1;dump;Dump]"..					-- fuel dump button
-			"label[2.5,5.5;Your Inventory:]"..				-- player inventory label
-			"list[current_player;main;2,6;8,4;]"				-- player inventory
+			"label[1.5,5.5;Your Inventory:]"..				-- player inventory label
+			"list[current_player;main;1,6;10,4;]"				-- player inventory
 	else
 		hoverbot["page"..pagenum] = ribbon..					-- page ribbon
 			"label[0.5,1;Current Code:]"..					-- codebox label
@@ -131,18 +151,19 @@ hoverbot.clear_trash = function(pos)
 end
 
 hoverbot.add_fuel = function(pos)
-	local fueltype = "hoverbot:fuel"
 	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
 	local inputstack = inv:get_stack("fuel", 1)
+	local time = minetest.get_craft_result({method="fuel",width=1,items={inputstack}}).time
+
+	if time == 0 then return false end
+
+	local fueltype = "hoverbot:fuel"
 	local input = inputstack:get_count()
 	local fuel = tonumber(meta:get_string("fuel")) or 0
 	local fuelmax = minetest.registered_items[fueltype].stack_max
-	local time = minetest.get_craft_result({method="fuel",width=1,items={inputstack}}).time
 	local addfuel = math.ceil(time/2)
 
-	if input == 0 then return false end
-	
 	local subcount = 0
 	while subcount < input and fuel + (addfuel * (subcount + 1)) <= fuelmax do subcount = subcount + 1 end
 	if subcount == 0 then return false end

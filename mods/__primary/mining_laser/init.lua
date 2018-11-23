@@ -214,13 +214,13 @@ end
 
 mining_laser.get_formspec = function(state)
 	local formspec =
-		"size[8,9]"..
-		"list[current_name;main;0,0;8,2;]"..
-		"label[2.2,2.6;Fuel:]"..
-		"list[current_name;fuel;2,3;1,1;]"..
-		"label[5.1,2.6;Power:]"..
-		"image_button[5,3;1,1;mining_laser_power_"..state..".png;power;]"..
-		"list[current_player;main;0,5;8,4;]"
+		"size[10,9]"..
+		"list[current_name;main;1,0;8,2;]"..
+		"label[3.2,2.6;Fuel:]"..
+		"list[current_name;fuel;3,3;1,1;]"..
+		"label[6.1,2.6;Power:]"..
+		"image_button[6,3;1,1;mining_laser_power_"..state..".png;power;]"..
+		"list[current_player;main;0,5;10,4;]"
 	return formspec
 end
 
@@ -297,7 +297,7 @@ minetest.register_node("mining_laser:beam", {
 	air_equivalent = false,
 	sunlight_propagates = true,
 	paramtype = "light",
-	tile_images = { "mining_laser_beam.png" },
+	tiles = { "mining_laser_beam.png" },
 	drawtype = "plantlike",
 	after_dig_node = function(pos, oldnode, oldmetadata, digger) return mining_laser.check_beam_source({x = pos.x, y = pos.y - 1, z = pos.z}) end,
 	groups = {not_in_creative_inventory=1},

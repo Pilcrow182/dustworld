@@ -79,7 +79,7 @@ minetest.register_abm({
 	chance = 20,
 --	chance = 4,
 	action = function(pos)
-		survivalist.grow_tree(pos, "default:tree", "survivalist:apple_leaves", "default:apple")
+		survivalist.grow_tree(pos, "default:tree", "survivalist:apple_leaves", "survivalist:apple")
 	end
 })
 
@@ -99,10 +99,23 @@ minetest.register_abm({
 		for i=1,6 do
 			if math.random(0,2) == 1 then
 				local name = minetest.get_node(adjacent[i]).name
-				if name == "default:leaves" or name == "survivalist:apple_leaves" then
-					minetest.set_node(adjacent[i], {name = "survivalist:silk_leaves"})
+				for _,leafname in pairs(survivalist.supported_leaves) do
+					if name == leafname then
+						minetest.set_node(adjacent[i], {name = "survivalist:silk_leaves"})
+				       end
 				end
 			end
 		end
 	end
 })
+
+minetest.register_on_generated(function(minp, maxp, blockseed)
+	if math.random(1, 100) > 25 then
+		return
+	end
+	local tmp = {x=(maxp.x-minp.x)/2+minp.x, y=(maxp.y-minp.y)/2+minp.y, z=(maxp.z-minp.z)/2+minp.z}
+	local pos = minetest.env:find_node_near(tmp, maxp.x-minp.x, {"default:dirt_with_grass"})
+	if pos ~= nil then
+		farming:generate_tree({x=pos.x, y=pos.y+1, z=pos.z}, "default:tree", "survivalist:apple_leaves",  {"default:dirt", "default:dirt_with_grass"}, {["survivalist:apple"]=10})
+	end
+end)

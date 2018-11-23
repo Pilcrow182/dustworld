@@ -94,19 +94,25 @@ local chest_locked = clone_node("default:chest_locked")
 minetest.register_node("chestplus:mese_locked", chest_locked)
 
 minetest.register_craft({
-    output = 'chestplus:mese',
-    recipe = {
-        {'default:mese_crystal', 'default:mese_crystal', 'default:mese_crystal'},
-        {'default:mese_crystal', '', 'default:mese_crystal'},
-        {'default:mese_crystal', 'default:mese_crystal', 'default:mese_crystal'},
-    }
+	output = 'chestplus:mese',
+	recipe = {
+		{'default:mese_crystal', 'default:mese_crystal', 'default:mese_crystal'},
+		{'default:mese_crystal', '', 'default:mese_crystal'},
+		{'default:mese_crystal', 'default:mese_crystal', 'default:mese_crystal'},
+	}
 })
 
 minetest.register_craft({
-    output = 'chestplus:mese_locked',
-    recipe = {
-        {'default:mese_crystal', 'default:mese_crystal', 'default:mese_crystal'},
-        {'default:mese_crystal', 'default:steel_ingot', 'default:mese_crystal'},
-        {'default:mese_crystal', 'default:mese_crystal', 'default:mese_crystal'},
-    }
+	output = 'chestplus:mese_locked',
+	recipe = {
+		{'default:mese_crystal', 'default:mese_crystal', 'default:mese_crystal'},
+		{'default:mese_crystal', 'default:steel_ingot', 'default:mese_crystal'},
+		{'default:mese_crystal', 'default:mese_crystal', 'default:mese_crystal'},
+	}
+})
+
+minetest.register_craft( {
+	type = 'shapeless',
+	output = 'chestplus:mese_locked',
+	recipe = {'chestplus:mese', 'default:steel_ingot'},
 })

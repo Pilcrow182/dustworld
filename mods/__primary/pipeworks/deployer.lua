@@ -64,6 +64,7 @@ deployer_on = function(pos, node)
 	for i, stack in ipairs(invlist) do
 		if stack:get_name() ~= nil and stack:get_name() ~= "" and minetest.get_node(pos1).name == "air" then --obtain the first non-empty item slow
 			local placer = {
+				is_player = function() return false end,
 				get_player_name = function() return "deployer" end,
 				getpos = function() return pos end,
 				get_player_control = function() return {jump=false,right=false,left=false,LMB=false,RMB=false,sneak=false,aux1=false,down=false,up=false} end,
@@ -88,7 +89,7 @@ end
 
 minetest.register_node("pipeworks:deployer_off", {
 	description = "Deployer",
-	tile_images = {"pipeworks_deployer_top.png","pipeworks_deployer_bottom.png","pipeworks_deployer_side2.png","pipeworks_deployer_side1.png",
+	tiles = {"pipeworks_deployer_top.png","pipeworks_deployer_bottom.png","pipeworks_deployer_side2.png","pipeworks_deployer_side1.png",
 			"pipeworks_deployer_back.png","pipeworks_deployer_front_off.png"},
 	mesecons = {effector={action_on=deployer_on,action_off=deployer_off}},
 	tube={insert_object=function(pos,node,stack,direction)
@@ -109,10 +110,10 @@ minetest.register_node("pipeworks:deployer_off", {
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec",
-				"invsize[8,9;]"..
-				"label[0,0;Deployer]"..
-				"list[current_name;main;4,1;3,3;]"..
-				"list[current_player;main;0,5;8,4;]")
+				"invsize[10,9;]"..
+				"label[1,0;Deployer]"..
+				"list[current_name;main;5,1;3,3;]"..
+				"list[current_player;main;0,5;10,4;]")
 		meta:set_string("infotext", "Deployer")
 		local inv = meta:get_inventory()
 		inv:set_size("main", 3*3)
@@ -128,7 +129,7 @@ minetest.register_node("pipeworks:deployer_off", {
 
 minetest.register_node("pipeworks:deployer_on", {
 	description = "Deployer",
-	tile_images = {"pipeworks_deployer_top.png","pipeworks_deployer_bottom.png","pipeworks_deployer_side2.png","pipeworks_deployer_side1.png",
+	tiles = {"pipeworks_deployer_top.png","pipeworks_deployer_bottom.png","pipeworks_deployer_side2.png","pipeworks_deployer_side1.png",
 			"pipeworks_deployer_back.png","pipeworks_deployer_front_on.png"},
 	mesecons = {effector={action_on=deployer_on,action_off=deployer_off}},
 	tube={insert_object=function(pos,node,stack,direction)
@@ -150,10 +151,10 @@ minetest.register_node("pipeworks:deployer_on", {
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec",
-				"invsize[8,9;]"..
-				"label[0,0;Deployer]"..
-				"list[current_name;main;4,1;3,3;]"..
-				"list[current_player;main;0,5;8,4;]")
+				"invsize[10,9;]"..
+				"label[1,0;Deployer]"..
+				"list[current_name;main;5,1;3,3;]"..
+				"list[current_player;main;0,5;10,4;]")
 		meta:set_string("infotext", "Deployer")
 		local inv = meta:get_inventory()
 		inv:set_size("main", 3*3)

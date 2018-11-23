@@ -17,9 +17,9 @@ minetest.register_craft({
 minetest.register_craft({
 	output = 'survivalist:barrel',
 	recipe = {
-		{'default:wood', '', 'default:wood'},
-		{'default:wood', '', 'default:wood'},
-		{'default:wood', 'stairs:slab_wood', 'default:wood'},
+		{'group:wood', '', 'group:wood'},
+		{'group:wood', '', 'group:wood'},
+		{'group:wood', 'stairs:slab_wood', 'group:wood'},
 	}
 })
 
@@ -35,17 +35,8 @@ minetest.register_craft({
 minetest.register_craft({
 	output = 'survivalist:sieve',
 	recipe = {
-		{'default:wood', 'survivalist:silk_mesh', 'default:wood'},
+		{'group:wood', 'survivalist:silk_mesh', 'group:wood'},
 		{'group:stick', '', 'group:stick'},
-	}
-})
-
-minetest.register_craft({
-	output = 'survivalist:barrel',
-	recipe = {
-		{'default:wood', '', 'default:wood'},
-		{'default:wood', '', 'default:wood'},
-		{'default:wood', 'stairs:slab_wood', 'default:wood'},
 	}
 })
 
@@ -58,14 +49,16 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_craft({
-	output = 'survivalist:shears',
-	recipe = {
-		{'default:steel_ingot', '', 'default:steel_ingot'},
-		{'', 'group:stick', ''},
-		{'group:stick', '', 'group:stick'},
-	}
-})
+for _,item in pairs({'default:steel_ingot', 'flint:flintstone', 'gloopores:alatro_ingot', 'gloopores:akalin_ingot'}) do
+	minetest.register_craft({
+		output = 'survivalist:shears',
+		recipe = {
+			{item, '', item},
+			{'', 'group:stick', ''},
+			{'group:stick', '', 'group:stick'},
+		}
+	})
+end
 
 minetest.register_craft({
 	output = 'survivalist:silk',
@@ -200,6 +193,15 @@ minetest.register_craft({
 	recipe = {
 		{'survivalist:motor'},
 		{'survivalist:machine_compressor_1'},
+	}
+})
+
+minetest.register_craft({
+	output = 'survivalist:machine_autosieve',
+	recipe = {
+		{'survivalist:motor'},
+		{'survivalist:sieve'},
+		{'default:chest'},
 	}
 })
 

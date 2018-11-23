@@ -18,9 +18,9 @@ minetest.register_node("pipeworks:filter", {
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec",
-				"invsize[8,6.5;]"..
-				"list[current_name;main;0,0;8,2;]"..
-				"list[current_player;main;0,2.5;8,4;]")
+				"invsize[10,6.5;]"..
+				"list[current_name;main;1,0;8,2;]"..
+				"list[current_player;main;0,2.5;10,4;]")
 		meta:set_string("infotext", "Filter")
 		local inv = meta:get_inventory()
 		inv:set_size("main", 8*4)
@@ -116,9 +116,9 @@ minetest.register_node("pipeworks:mese_filter", {
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec",
-				"invsize[8,6.5;]"..
-				"list[current_name;main;0,0;8,2;]"..
-				"list[current_player;main;0,2.5;8,4;]")
+				"invsize[10,6.5;]"..
+				"list[current_name;main;1,0;8,2;]"..
+				"list[current_player;main;0,2.5;10,4;]")
 		meta:set_string("infotext", "Mese filter")
 		local inv = meta:get_inventory()
 		inv:set_size("main", 8*4)
@@ -343,7 +343,7 @@ minetest.register_entity("pipeworks:tubed_item", {
 			leftover = stack
 		end
 		--drop_pos=minetest.find_node_near(self.start_pos,1,"air")
-		--if drop_pos and not leftover:is_empty() then minetest.item_drop(leftover,"",drop_pos) end
+		--if drop_pos and not leftover:is_empty() then minetest.item_drop(leftover,nil,drop_pos) end
 		--self.object:remove()
 		if leftover:is_empty() then
 			self.object:remove()
@@ -361,7 +361,7 @@ minetest.register_entity("pipeworks:tubed_item", {
 		if go_next (self.start_pos, velocity, stack)==0 then
 			drop_pos=minetest.find_node_near({x=self.start_pos.x+velocity.x,y=self.start_pos.y+velocity.y,z=self.start_pos.z+velocity.z}, 1, "air")
 			if drop_pos then 
-				minetest.item_drop(stack, "", drop_pos)
+				minetest.item_drop(stack, nil, drop_pos)
 				self.object:remove()
 			end
 		end

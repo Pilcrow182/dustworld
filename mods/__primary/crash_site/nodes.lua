@@ -185,7 +185,7 @@ minetest.register_node("crash_site:fuel", {
 	liquid_renewable = false,
 	damage_per_second = 2,
 	post_effect_color = {a=192, r=222, g=200, b=20},
-	groups = {liquid=2, hot=2, igniter=1},
+	groups = {liquid=2, hot=2},
 })
 
 minetest.register_node("crash_site:fuel_flowing", {
@@ -221,7 +221,7 @@ minetest.register_node("crash_site:fuel_flowing", {
 	liquid_renewable = false,
 	damage_per_second = 2,
 	post_effect_color = {a=192, r=222, g=200, b=20},
-	groups = {liquid=2, hot=2, igniter=1, not_in_creative_inventory=1},
+	groups = {liquid=2, hot=2, not_in_creative_inventory=1},
 })
 
 bucket.register_liquid(

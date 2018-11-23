@@ -9,14 +9,20 @@ machine = {
 	}
 }
 
-function survivalist.get_machine_active_formspec(pos, percent)
+function survivalist.get_machine_active_formspec(pos, percent, output_size)
+	if output_size then
+		hoffset = (math.sqrt(output_size)-2)/2
+	else
+		output_size = 4
+		hoffset = 0
+	end
 	local formspec =
 		"size[10,9]"..
-		"image[2,2;1,1;default_furnace_fire_bg.png^[lowpart:"..
+		"image["..2-hoffset..",2;1,1;default_furnace_fire_bg.png^[lowpart:"..
 		(100-percent)..":default_furnace_fire_fg.png]"..
-		"list[current_name;fuel;3,3;1,1;]"..
-		"list[current_name;src;3,1;1,1;]"..
-		"list[current_name;dst;6,1;2,2;]"..
+		"list[current_name;fuel;"..3-hoffset..",3;1,1;]"..
+		"list[current_name;src;"..3-hoffset..",1;1,1;]"..
+		"list[current_name;dst;"..6-hoffset..",1;"..math.sqrt(output_size)..","..math.sqrt(output_size)..";]"..
 		"list[current_player;main;0,5;10,4;]"
 	return formspec
 end
@@ -36,6 +42,7 @@ function survivalist.swap_machine(pos, machine_type)
 	local meta=minetest.get_meta(pos)
 	local meta0=meta:to_table()
 
+	local becomes = "survivalist:machine_"..machine_type.."_1"
 	for i=1,3 do
 		if nn == "survivalist:machine_"..machine_type.."_"..i then becomes = "survivalist:machine_"..machine_type.."_"..i+1 end
 	end
@@ -47,10 +54,27 @@ function survivalist.swap_machine(pos, machine_type)
 end
 
 function survivalist.register_machine(machine_type, itemtable)
+	local function group_match(target, input)
+		local target_split = {}
+		for match in (target..":"):gmatch("(.-):") do
+			table.insert(target_split, match)
+		end
+		if target_split[1] ~= "group" then
+			return false
+		else
+			local item = minetest.registered_items[input]
+			if item and item.groups and item.groups[target_split[2]] then
+				return true
+			end
+		end
+	end
+
 	local function check_input(input)
 		local conversion = nil
 		for i=1,#itemtable do
-			if input == itemtable[i][1] then conversion = itemtable[i] end
+			if input == itemtable[i][1] or group_match(itemtable[i][1], input) then
+				return itemtable[i]
+			end
 		end
 		return conversion
 	end
@@ -284,27 +308,25 @@ function survivalist.register_machine(machine_type, itemtable)
 end
 
 survivalist.register_machine("grinder", {
-	{"default:cobble", "default:gravel"},
 	{"default:gravel", "default:sand"},
-	{"default:sand", "wasteland:dust"},
-	{"default:desert_stone", "default:desert_sand"},
-	{"default:desert_sand", "wasteland:dust"},
-	{"default:desert_sand", "wasteland:dust"},
-	{"survivalist:oak_sapling", "survivalist:mulch"},
-	{"survivalist:apple_sapling", "survivalist:mulch"},
-	{"default:sapling", "survivalist:mulch"},
-	{"default:apple", "survivalist:mulch"},
+	{"default:desert_stone", "default:desert_sand"}, -- NOTE: This is recognized first and used instead of "group:stone" below
+	{"default:desert_cobble", "default:desert_sand"},
+	{"flolands:floatstone", "flolands:floatsand"},
 	{"default:cactus", "survivalist:mulch"},
-	{"default:leaves", "survivalist:mulch"},
-	{"survivalist:apple_leaves", "survivalist:mulch"},
-	{"flint:flintstone_block", "default:gravel"},
+	{"group:stone", "default:gravel"},
+	{"group:sand", "wasteland:dust"},
+	{"group:sapling", "survivalist:mulch"},
+	{"group:leaves", "survivalist:mulch"},
+	{"group:leafdecay", "survivalist:mulch"},
+	{"group:food", "survivalist:mulch"},
 })
 survivalist.register_machine("compressor", {
 	{"default:coalblock", "default:diamond"},
 	{"default:gravel", "default:cobble"},
 	{"default:sand", "default:gravel"},
 	{"wasteland:dust", "default:sand"},
-	{"default:desert_sand", "default:desert_stone"},
+	{"default:desert_sand", "default:desert_cobble"},
+	{"flolands:floatsand", "flolands:floatstone"},
 	{"survivalist:mulch", "default:coal_lump"},
 	{"bed:bed_bottom", "bed:minibed"},
 })

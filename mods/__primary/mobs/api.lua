@@ -2,11 +2,37 @@ mobs = {}
 
 local getnum = function(test)
 	if type(test) == "number" then
-		return test
+		return math.max(-2000000, math.min(test, 2000000))
 	else
-	minetest.log("action", "[MOD] "..minetest.get_current_modname().." -- encountered invalid number when setting mob velocity")
+	minetest.log("action", "[MOD] "..minetest.get_current_modname().." -- encountered invalid number when setting mob velocity/acceleration")
 		return 0
 	end
+end
+
+local get_damage = function(self, hitter, tflp, tool_capabilities)
+	local weapon = hitter:get_wielded_item()
+	local weapon_def = weapon:get_definition() or {}
+
+	local damage = 0
+	local armor = self.object:get_armor_groups() or {}
+	local tmp
+
+	if tflp == 0 then tflp = 0.2 end
+
+	for group,_ in pairs( (tool_capabilities.damage_groups or {}) ) do
+
+		tmp = tflp / (tool_capabilities.full_punch_interval or 1.4)
+
+		if tmp < 0 then
+			tmp = 0.0
+		elseif tmp > 1 then
+			tmp = 1.0
+		end
+
+		damage = damage + (tool_capabilities.damage_groups[group] or 0) * tmp * ((armor[group] or 0) / 100.0)
+	end
+
+	return damage
 end
 
 function mobs:register_mob(name, def)
@@ -152,7 +178,7 @@ function mobs:register_mob(name, def)
 				end
 				local x = math.sin(yaw) * -2
 				local z = math.cos(yaw) * 2
-				self.object:setacceleration({x=x, y=-10, z=z})
+				self.object:setacceleration({x=getnum(x), y=-10, z=getnum(z)})
 			else
 				self.object:setacceleration({x=0, y=-10, z=0})
 			end
@@ -566,7 +592,7 @@ function mobs:register_mob(name, def)
 			return minetest.serialize(tmp)
 		end,
 		
-		on_punch = function(self, hitter)
+		on_punch = function(self, hitter, tflp, tool_capabilities, dir)
 			if hitter and hitter:is_player() and hitter:get_inventory() then
 				local itemstack = hitter:get_wielded_item()
 				local itemdef = itemstack:get_definition()
@@ -580,7 +606,7 @@ function mobs:register_mob(name, def)
 						hitter:set_wielded_item(itemstack)
 					end
 				end
-				if self.object:get_hp() <= 0 then
+				if self.object:get_hp() < get_damage(self, hitter, tflp, tool_capabilities) then
 					for _,drop in ipairs(self.drops) do
 						if math.random(1, drop.chance) == 1 then
 							if itemdef.name == "archery:bow" or itemdef.name == "throwing:bow" then

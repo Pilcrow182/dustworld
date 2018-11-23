@@ -64,9 +64,9 @@ end
 
 hopper.make_inventory = function(pos)
 	hopper.inv_formspec = 
-		"size[8,7]"..
-		"list[current_name;main;1.5,1;5,1;]"..
-		"list[current_player;main;0,3;8,4;]"
+		"size[10,7]"..
+		"list[current_name;main;2.5,1;5,1;]"..
+		"list[current_player;main;0,3;10,4;]"
 
 	local meta = minetest.get_meta(pos)
 	meta:set_string("formspec",hopper.inv_formspec)

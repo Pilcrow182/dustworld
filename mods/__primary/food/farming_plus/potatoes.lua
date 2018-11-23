@@ -70,6 +70,7 @@ minetest.register_node("farming_plus:potatoe", {
 minetest.register_craftitem("farming_plus:potatoe_item", {
 	description = "Potatoe",
 	inventory_image = "farming_potatoe.png",
+	groups = {food=2},
 	on_use = minetest.item_eat(4),
 })
 
