@@ -17,9 +17,9 @@ minetest.register_craft({
 minetest.register_craft({
 	output = 'survivalist:barrel',
 	recipe = {
-		{'default:wood', '', 'default:wood'},
-		{'default:wood', '', 'default:wood'},
-		{'default:wood', 'stairs:slab_wood', 'default:wood'},
+		{'group:wood', '', 'group:wood'},
+		{'group:wood', '', 'group:wood'},
+		{'group:wood', 'stairs:slab_wood', 'group:wood'},
 	}
 })
 
@@ -35,17 +35,8 @@ minetest.register_craft({
 minetest.register_craft({
 	output = 'survivalist:sieve',
 	recipe = {
-		{'default:wood', 'survivalist:silk_mesh', 'default:wood'},
+		{'group:wood', 'survivalist:silk_mesh', 'group:wood'},
 		{'group:stick', '', 'group:stick'},
-	}
-})
-
-minetest.register_craft({
-	output = 'survivalist:barrel',
-	recipe = {
-		{'default:wood', '', 'default:wood'},
-		{'default:wood', '', 'default:wood'},
-		{'default:wood', 'stairs:slab_wood', 'default:wood'},
 	}
 })
 

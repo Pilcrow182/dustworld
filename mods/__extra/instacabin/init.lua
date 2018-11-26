@@ -2,7 +2,7 @@
 -- ENVIRONMENT --
 -----------------
 
-BUILD_MODE = false
+BUILD_MODE = true
 
 
 ------------
@@ -64,6 +64,8 @@ instacabin.build = function(n, value, env, disp, placer)
 		if rot == 2 then entry.x, entry.y, entry.z = originx - entry.x, originy + entry.y, originz - entry.z end -- 180 degree rotation
 		if rot == 3 then entry.x, entry.y, entry.z = originx - entry.z, originy + entry.y, originz + entry.x end -- 270 degree rotation
 
+		if not entry.param2 then entry.param2 = 0 end
+
 		local pt2 = "none"
 		if entry and entry.name and minetest.registered_nodes[entry.name] and minetest.registered_nodes[entry.name].paramtype2 then
 			pt2 = minetest.registered_nodes[entry.name].paramtype2
@@ -85,15 +87,18 @@ instacabin.build = function(n, value, env, disp, placer)
 					end
 				end
 			end
-		elseif pt2 ~= "none" and pt2 ~= "flowingliquid" then
-			minetest.chat_send_all("ERROR:: Rotation unsupported for node "..entry.name.." at pos "..minetest.pos_to_string(entry))
-			print("ERROR:: Rotation unsupported for node "..entry.name.." at pos "..minetest.pos_to_string(entry))
+-- 		elseif pt2 ~= "none" and pt2 ~= "flowingliquid" then
+-- 			local message = "ERROR:: Rotation unsupported for node "..entry.name.." at pos "..minetest.pos_to_string(entry)
+-- 			minetest.chat_send_all(message)
+-- 			minetest.log("action", message)
 		end
 
 		if minetest.registered_nodes[entry.name] then
 			add_node(entry, entry)
 		else
-			minetest.log("[MOD] instacabin -- error placing node "..entry.name.." (node does not exist?)")
+			local message = "[MOD] instacabin -- error placing node "..entry.name.." at pos "..minetest.pos_to_string(entry).." (node does not exist?)"
+			minetest.chat_send_all(message)
+			minetest.log("action", message)
 		end
 		minetest.after(.5, function() return end)
 
@@ -175,7 +180,7 @@ minetest.register_node("instacabin:void", {
 ----------
 
 local instabuild_list = {
-	{"Empty Shack", "shack", "instacabin_shack.png", 5, 1, 4},
+	{"Empty Shack", "shack", "instacabin_shack.png", 4, 1, 3}, -- 5, 1, 4
 
 	{"House", "house", "instacabin_house_bronze.png", 7, 1, 4},
 	{"Large House", "house_large", "instacabin_house_silver.png", 11, 7, 3},

@@ -29,12 +29,12 @@ mesebay.make_formspec = function (pos)
 		formspec = formspec .. "label[9.5,0.4;Buy...]"
 		formspec = formspec .. "button[10.3,0.3;1,1;buy_one;One]"
 		formspec = formspec .. "button[11.3,0.3;1,1;buy_ten;Ten]"
-		formspec = formspec .. "button[12.3,0.3;1,1;buy_max;Max]"
+		formspec = formspec .. "button[12.3,0.3;1,1;buy_stack;Stack]"
 
 		formspec = formspec .. "label[9.5,1.05;Sell...]"
 		formspec = formspec .. "button[10.3,0.95;1,1;sell_one;One]"
 		formspec = formspec .. "button[11.3,0.95;1,1;sell_ten;Ten]"
-		formspec = formspec .. "button[12.3,0.95;1,1;sell_max;Max]"
+		formspec = formspec .. "button[12.3,0.95;1,1;sell_stack;Stack]"
 
 		local count = 0
 		for _,name in ipairs(mesebay.market) do
@@ -72,18 +72,18 @@ mesebay.on_receive_fields = function (pos, formname, fields, sender)
 		elseif fields.buy_ten then
 			mesebay.buy_item(selected, price, sender, credit, 10)
 			fields.buy_ten = false
-		elseif fields.buy_max then
-			mesebay.buy_item(selected, price, sender, credit, 0)
-			fields.buy_max = false
+		elseif fields.buy_stack then
+			mesebay.buy_item(selected, price, sender, credit, ItemStack(selected):get_stack_max())
+			fields.buy_stack = false
 		elseif fields.sell_one then
 			mesebay.sell_item(selected, price, sender, credit, 1)
 			fields.sell_one = false
 		elseif fields.sell_ten then
 			mesebay.sell_item(selected, price, sender, credit, 10)
 			fields.sell_ten = false
-		elseif fields.sell_max then
-			mesebay.sell_item(selected, price, sender, credit, 0)
-			fields.sell_max = false
+		elseif fields.sell_stack then
+			mesebay.sell_item(selected, price, sender, credit, ItemStack(selected):get_stack_max())
+			fields.sell_stack = false
 		else
 			message = 'Selected "'..selected..'"'
 		end

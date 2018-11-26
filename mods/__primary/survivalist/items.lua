@@ -184,10 +184,9 @@ survivalist.clone_item("default:apple", "default:apple", {
 	drawtype = "allfaces_optional",
 	tiles = {"default_leaves.png"},
 	wield_image = "default_apple.png",
-	paramtype = "light",
+	walkable = true,
 	selection_box = {type = "fixed", fixed = {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5}},
-	groups = {snappy=3, leafdecay=3, flammable=2, leafdecay_drop = 1},
--- 	groups = {fleshy = 3, dig_immediate = 3, flammable = 2, leafdecay = 3, leafdecay_drop = 1, food = 2},
+	groups = {snappy=3, leafdecay=3, flammable=2, leafdecay_drop = 1, food = 2},
 	drop = {
 		max_items = 1,
 		items = {
@@ -223,10 +222,10 @@ survivalist.clone_item("default:apple", "default:apple", {
 		end
 	end,
 	on_place = function(itemstack, placer, pointed_thing)
-		if minetest.registered_nodes[minetest.env:get_node(pointed_thing.under).name].on_rightclick then
-			return minetest.registered_nodes[minetest.env:get_node(pointed_thing.under).name].on_rightclick(pointed_thing.under, minetest.env:get_node(pointed_thing.under), placer, itemstack)
+		if minetest.registered_nodes[minetest.get_node(pointed_thing.under).name].on_rightclick then
+			return minetest.registered_nodes[minetest.get_node(pointed_thing.under).name].on_rightclick(pointed_thing.under, minetest.get_node(pointed_thing.under), placer, itemstack)
 		else
-			minetest.env:set_node(pointed_thing.above, {name="survivalist:apple"})
+			minetest.set_node(pointed_thing.above, {name="survivalist:apple"})
 			itemstack:take_item()
 			return itemstack
 		end
@@ -410,9 +409,9 @@ minetest.register_node("survivalist:apple_sapling", {
 	description = "Apple Tree Sapling",
 	drawtype = "plantlike",
 	visual_scale = 1.0,
-	tiles = {"default_sapling.png"},
-	inventory_image = "default_sapling.png",
-	wield_image = "default_sapling.png",
+	tiles = {"survivalist_apple_sapling.png"},
+	inventory_image = "survivalist_apple_sapling.png",
+	wield_image = "survivalist_apple_sapling.png",
 	paramtype = "light",
 	walkable = false,
 	selection_box = {

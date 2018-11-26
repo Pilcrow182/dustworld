@@ -106,7 +106,7 @@ if minetest.get_modpath("mesecons") == nil then
 	minetest.register_craft({
 		output = "mesecons_pistons:piston_normal_off 2",
 		recipe = {
-			{"default:wood", "default:wood", "default:wood"},
+			{"group:wood", "group:wood", "group:wood"},
 			{"default:cobble", "default:steel_ingot", "default:cobble"},
 			{"default:cobble", "mesecons:wire_00000000_off", "default:cobble"},
 		}
@@ -142,6 +142,17 @@ if minetest.get_modpath("mobf") == nil then
 			inventory_image = "survivalist_subst_bone.png"
 		})
 	end
+end
+
+if minetest.get_modpath("map") then
+	minetest.register_craft({
+		output = "map:mapping_kit",
+		recipe = {
+			{"default:glass", "default:paper", "default:stick"},
+			{"default:steel_ingot", "default:paper", "default:steel_ingot"},
+			{"group:wood", "default:paper", "dye:black"},
+		}
+	})
 end
 
 if minetest.get_modpath("bonemeal") == nil then minetest.register_alias("bonemeal:bonemeal", "survivalist:mulch") end

@@ -121,7 +121,7 @@ minetest.register_node("snow:xmas_tree", {
 	wield_image = "snow_xmas_tree.png",
 	paramtype = "light",
 	walkable = false,
-	groups = {snappy=2,dig_immediate=3,flammable=2},
+	groups = {snappy=2,dig_immediate=3,flammable=2,sapling=1},
 	sounds = default.node_sound_defaults(),
 })
 
@@ -134,7 +134,7 @@ minetest.register_node("snow:sapling_pine", {
 	wield_image = "snow_sapling_pine.png",
 	paramtype = "light",
 	walkable = false,
-	groups = {snappy=2,dig_immediate=3,flammable=2},
+	groups = {snappy=2,dig_immediate=3,flammable=2,saplng=1},
 	sounds = default.node_sound_defaults(),
 })
 
