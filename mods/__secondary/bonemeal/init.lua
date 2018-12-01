@@ -234,6 +234,13 @@ minetest.register_craft({
 	recipe = {{'bonemeal:bonemeal_block'}}
 })
 
+if minetest.get_modpath("dye") ~= nil then
+	minetest.register_craft({
+		output = 'dye:white',
+		recipe = {{'bonemeal:bonemeal'}}
+	})
+end
+
 minetest.register_craft({
 	type = "fuel",
 	recipe = "bonemeal:bonemeal",
