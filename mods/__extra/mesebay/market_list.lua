@@ -93,7 +93,7 @@ mesebay.market = {
 	{"ferns:sapling_giant_tree_fern", 30},
 	{"farming_plus:banana_sapling", 40},
 	{"farming_plus:cocoa_sapling", 40},
-	{"snow:sapling_pine", 20},
+	{"snow:sapling_evergreen", 20},
 	{"snow:xmas_tree", 30},
 	{"trees:sapling_palm", 20},
 	{"trees:sapling_mangrove", 20},

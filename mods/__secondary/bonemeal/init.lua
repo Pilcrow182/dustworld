@@ -72,13 +72,13 @@ bonemeal.grow = function(pointed_thing)
 			survivalist.grow_tree(pos, trunkgen, leavesgen, fruitgen)
 		end
 
-	elseif n.name == "snow:sapling_pine" then
+	elseif n.name == "snow:sapling_evergreen" then
 		minetest.set_node(pos, {name="air"})
-		snow.make_pine(pos,false)
+		snow.make_evergreen(pos,false)
 
 	elseif n.name == "snow:xmas_tree" then
 		minetest.set_node(pos, {name="air"})
-		snow.make_pine(pos,false,true)
+		snow.make_evergreen(pos,false,true)
 
 	elseif n.name == "ferns:sapling_tree_fern" then
 		pos.y = pos.y - 1

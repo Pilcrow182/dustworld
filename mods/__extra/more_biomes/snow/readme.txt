@@ -36,7 +36,7 @@ Snow can be picked up and thrown as snowballs or crafted into snow blocks.
 Snow and ice melts when near warm blocks such as torches or igniters such as lava.
 Snow blocks freeze water source blocks around them.
 Moss can be found in the snow, when moss is placed near cobble it spreads.
-Christmas trees can be found when digging pine needles.
+Christmas trees can be found when digging evergreen needles.
 
 CRAFTING:
 -----------
@@ -72,7 +72,7 @@ Version 1.3
 
 Version 1.2
 
-    Pine trees
+    Evergreen trees
     
     Moss
     
