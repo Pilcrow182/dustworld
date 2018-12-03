@@ -11,7 +11,7 @@ shops.itemlist = {
 	{"instacabin:garden 1", "default:sand 60", "default:junglewood 30"},
 	{"bed:bed_bottom 1", "trees:tree_birch 4", "farming_plus:blueberry_item 25"},
 	{"bags:medium 1", "survivalist:oak_sapling 5", "trees:wood_palm 8"},
-	{"ropeblock:source 1", "default:coal_lump 2", "efault:sand 6"},
+	{"ropeblock:source 1", "default:coal_lump 2", "default:sand 6"},
 	{"bonemeal:bonemeal 10", "default:desert_sand 10", "default:tree 1"},
 	{"map:mapping_kit 1", "default:coal_lump 10", "default:cactus 8"},
 	{"mesebay:laptop 1", "default:tree 99", "default:obsidian 60"},
