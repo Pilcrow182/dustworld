@@ -1,3 +1,13 @@
+local DEBUG, VERBOSE = true, false
+local debug_msg = function(message)
+	if DEBUG then
+		minetest.log("action", message)
+		if VERBOSE then
+			minetest.chat_send_all(message)
+		end
+	end
+end
+
 local layers = {
 	"333333"..
 	"333333"..
@@ -71,11 +81,12 @@ local get_map = function()
 end
 
 shops.spawn_shop = function(pos)
-	minetest.log("action", "[MOD] shops -- building new shop at "..minetest.pos_to_string(pos))
--- 	minetest.chat_send_all("[MOD] shops -- building new shop at "..minetest.pos_to_string(pos))
+	debug_msg("[MOD] shops -- building new shop at "..minetest.pos_to_string(pos))
+	local fill_node = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z})
 	for _,entry in pairs(get_map()) do
 		entry.x, entry.y, entry.z = entry.x + pos.x, entry.y + pos.y, entry.z + pos.z
 		minetest.after(math.random(1, 6) / 2, function(entry)
+			minetest.set_node({x=entry.x, y=entry.y-5, z=entry.z}, fill_node) -- generate shop foundation
 			minetest.set_node(entry, entry) -- entry functions both as pos and as node
 		end, entry)
 	end
@@ -93,38 +104,57 @@ minetest.register_chatcommand("spawn_shop", {
 })
 
 local valid_spawn = function(pos)
+	debug_msg("[MOD] shops -- checking if pos "..minetest.pos_to_string(pos).."is valid")
 	local ignore = minetest.find_node_near(pos, 6, {"ignore"})
 	if ignore then return false end
 	for x = pos.x - 6, pos.x do
 		for z = pos.z - 2, pos.z + 4 do
 			local node = minetest.get_node({x = x, y = pos.y, z = z})
-			if string.find(node.name, "tree") then return false end -- don't overwrite trees
-			for _,name in pairs({"air", "default:water_source", "default:water_flowing"}) do
-				if node.name == name then return false end
+			if string.find(node.name, "tree") or string.find(node.name, "cactus") then return false end -- don't overwrite trees/cactus
+			for _,name in pairs({"default:water_source", "default:water_flowing", "default:river_water_source", "default:river_water_flowing"}) do
+				if node.name == name then return false end -- don't spawn shops in water
 			end
 		end
 	end
+	debug_msg("[MOD] shops -- SUCCESS! Pos "..minetest.pos_to_string(pos).."is valid!")
 	return true
-end
-
-local find_surface = function(x, z)
-	local vm = minetest.get_voxel_manip()
-	local ground_level, y, pos, node = nil, nil, nil, nil
-	for y = 96, -100, -1 do   
-		pos = {x = x, y = y, z = z}
-		vm:read_from_map(pos, pos)
-		node = minetest.get_node(pos)
-		if not ( node.name == "air" or node.name == "ignore" or string.find(node.name, "leaves") ) then
-			ground_level = y
-			break
-		end
-	end
-	if not ground_level then return false end
-	return {x=x, y=ground_level, z=z}
 end
 
 minetest.register_on_generated(function(minp, maxp, blockseed)
 	if math.random(1, 100) > 5 then return end -- 5% chance of generating trader hut
-	local pos = find_surface((maxp.x - minp.x) / 2 + minp.x, (maxp.z - minp.z) / 2 + minp.z)
+
+	-- find surface
+	local c_air = minetest.get_content_id("air")
+	local c_ignore = minetest.get_content_id("ignore")
+	local x, z = math.ceil((maxp.x - minp.x) / 2 + minp.x), math.ceil((maxp.z - minp.z) / 2 + minp.z)
+	debug_msg("[MOD] shops -- trying to find surface at {x = "..x..", z = "..z.."}")
+	local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
+	local data = vm:get_data()
+	local area = VoxelArea:new{MinEdge=emin, MaxEdge=emax}
+	local ground_y = nil
+	for y=maxp.y,minp.y,-1 do
+		local vi = area:index(x, y, z)
+		if data[vi] ~= c_air and data[vi] ~= c_ignore then
+			debug_msg("[MOD] shops -- found surface at pos "..minetest.pos_to_string({x = x, y = y, z = z}))
+			ground_y = y
+			break
+		end
+	end
+	if ground_y == nil then
+		debug_msg("[MOD] shops -- no surface found at {x = "..x..", z = "..z.."}")
+		return false
+	end
+	if ground_y > 100 then
+		debug_msg("[MOD] shops -- refusing to spawn shop at height "..ground_y.."; height is above max of 100")
+		return false
+	end
+	if ground_y < 0 then
+		debug_msg("[MOD] shops -- refusing to spawn shop at height "..ground_y.."; height is below min of 0")
+		return false
+	end
+		
+
+	local pos = {x = x, y = ground_y, z = z}
 	if pos and valid_spawn(pos) then shops.spawn_shop(pos) end
 end)
+
