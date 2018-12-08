@@ -4,38 +4,36 @@ local n3 = { name = "doors:hidden" }
 local n4 = { name = "stairs:slab_junglewood", param2 = 1 }
 local n5 = { name = "instacabin:void" }
 local n6 = { name = "stairs:slab_junglewood", param2 = 21 }
-local n7 = { name = "torch:torch_wood_ceiling" }
+local n8 = { name = "default:meselamp" }
 
-instacabin_new.schems.shack = {
-	size = {x = 5, y = 5, z = 5},
+instacabin.schems.test_shack = {
+	size = {x = 5, y = 6, z = 4},
 	data = {
 		n1, n1, n1, n1, n1,
 		n1, n1, n1, n2, n1,
 		n1, n1, n1, n3, n1,
+		n8, n8, n8, n8, n8,
 		n4, n4, n4, n4, n4,
 		n5, n5, n5, n5, n5,
 
 		n1, n1, n1, n1, n1,
 		n1, n5, n5, n5, n1,
 		n1, n5, n5, n5, n1,
+		n8, n8, n8, n8, n8,
 		n4, n6, n6, n6, n4,
 		n5, n5, n5, n5, n5,
 
 		n1, n1, n1, n1, n1,
 		n1, n5, n5, n5, n1,
 		n1, n5, n5, n5, n1,
-		n4, n6, n7, n6, n4,
-		n5, n5, n4, n5, n5,
-
-		n1, n1, n1, n1, n1,
-		n1, n5, n5, n5, n1,
-		n1, n5, n5, n5, n1,
+		n8, n8, n8, n8, n8,
 		n4, n6, n6, n6, n4,
 		n5, n5, n5, n5, n5,
 
 		n1, n1, n1, n1, n1,
 		n1, n1, n1, n1, n1,
 		n1, n1, n1, n1, n1,
+		n8, n8, n8, n8, n8,
 		n4, n4, n4, n4, n4,
 		n5, n5, n5, n5, n5
 	}
