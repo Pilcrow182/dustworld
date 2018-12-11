@@ -1,38 +1,5 @@
-local BUILD_MODE = false
-
-if BUILD_MODE then
-	VOID = "instacabin_void_build.png"
-else
-	VOID = "instacabin_void.png"
-	minetest.register_abm({
-		nodenames = {"instacabin:void"},
-		interval = 2,
-		chance = 1,
-		action = function(pos, node)
-			minetest.remove_node(pos)
-		end
-	})
-end
-
-minetest.register_node("instacabin:void", {
-	tiles = {VOID},
-	inventory_image = "instacabin_void_inv.png",
-	wield_image = "instacabin_void_inv.png",
-	drawtype = "nodebox",
-	paramtype = "light",
-	node_box = {
-		type = "fixed",
-		fixed = {-0.05, -0.05, -0.05, 0.05, 0.05, 0.05},
-	},
-	sunlight_propagates = true,
-	walkable = false,
-	selection_box = {
-		type = "fixed",
-		fixed = {0, 0, 0, 0, 0, 0},
-	},
-	groups = {dig_immediate=3,not_in_creative_inventory=1},
-	drop = ''
-})
+instacabin = {}
+instacabin.schems = {}
 
 local file_exists = function(filename)
 	local file = io.open(filename,"r")
@@ -44,9 +11,6 @@ local file_exists = function(filename)
 	end
 end
 
-instacabin = {}
-instacabin.schems = {}
-
 instacabin.register_cabin = function(name, entrance)
 	local schem = minetest.get_modpath("instacabin")..name:gsub(".*:", "/models/")..".lua"
 	if schem and file_exists(schem) then
@@ -57,11 +21,18 @@ instacabin.register_cabin = function(name, entrance)
 	end
 
 	local size = instacabin.schems[name:gsub(".*:", "")].size
-	local transform = {
-		  ["0"] = {x = -entrance.x, y = -entrance.y, z = -entrance.z},
-		 ["90"] = {x = -entrance.z, y = -entrance.y, z =  entrance.x-(size.x-1)},
-		["180"] = {x =  entrance.x-(size.x-1), y = -entrance.y, z =  entrance.z-(size.z-1)},
-		["270"] = {x =  entrance.z-(size.z-1), y = -entrance.y, z = -entrance.x}
+	local spawn_transform = {
+		  ["0"] = {x = -entrance.x,          y = -entrance.y, z = -entrance.z         },
+		 ["90"] = {x = -entrance.z,          y = -entrance.y, z =  entrance.x-size.x+1},
+		["180"] = {x =  entrance.x-size.x+1, y = -entrance.y, z =  entrance.z-size.z+1},
+		["270"] = {x =  entrance.z-size.z+1, y = -entrance.y, z = -entrance.x         }
+	}
+
+	local size_transform = {
+		  ["0"] = {x =  size.x-1, y =  size.y-1, z =  size.z-1},
+		 ["90"] = {x =  size.z-1, y =  size.y-1, z =  size.x-1},
+		["180"] = {x =  size.x-1, y =  size.y-1, z =  size.z-1},
+		["270"] = {x =  size.z-1, y =  size.y-1, z =  size.x-1}
 	}
 
 	local filename = name:gsub(":", "_")
@@ -82,13 +53,32 @@ instacabin.register_cabin = function(name, entrance)
 				if math.abs(look_dir.z) >  math.abs(look_dir.x) and look_dir.z <= 0 then rotation = 180 end
 				if math.abs(look_dir.x) >= math.abs(look_dir.z) and look_dir.x <= 0 then rotation = 270 end
 
-				local offset = transform[tostring(rotation)]
+				local offset = spawn_transform[tostring(rotation)]
 				pos = {x = pos.x + offset.x, y = pos.y + offset.y, z = pos.z + offset.z}
 
 				local playername = placer:get_player_name()
 				minetest.log("action", "[MOD] instacabin -- Spawning building at pos "..minetest.pos_to_string(pos)..". Please wait...")
 
 				minetest.place_schematic(pos, instacabin.schems[name:gsub(".*:", "")], rotation, nil, true)
+
+				local endoffset = size_transform[tostring(rotation)]
+				endpos = {x = pos.x + endoffset.x, y = pos.y + endoffset.y, z = pos.z + endoffset.z}
+
+				local replace = {"chestplus:mese", "default:bookshelf", "default:chest", "default:furnace", "homedecor:kitchen_cabinet", "homedecor:kitchen_cabinet_half", "homedecor:kitchen_cabinet_with_sink", "homedecor:microwave_oven", "homedecor:nightstand_mahogany_two_drawers", "homedecor:nightstand_oak_two_drawers", "homedecor:oven", "homedecor:refrigerator_steel"}
+				for _,name in ipairs(replace) do replace[name] = true end
+
+				-- TODO: Replace this with something less system-intensive?
+				for x = math.min(pos.x, endpos.x), math.max(pos.x, endpos.x) do
+					for y = math.min(endpos.y, pos.y), math.max(endpos.y, pos.y) do
+						for z = math.min(pos.z, endpos.z), math.max(pos.z, endpos.z) do
+							local node = minetest.get_node({x = x, y = y, z = z})
+							if replace[node.name] then
+								minetest.set_node({x = x, y = y, z = z}, node)
+							end
+						end
+					end
+				end
+
 				itemstack:take_item()
 			end
 			return itemstack
@@ -97,26 +87,28 @@ instacabin.register_cabin = function(name, entrance)
 end
 
 local buildlist = {
-	["instacabin:shack"]       = {x = 3, y = 1, z = 0},
+	["instacabin:shack"]           = {x =  3, y = 1, z = 0},
 
-	["instacabin:house"]   = {x = 4, y = 1, z = 1},
-	["instacabin:large_house"]   = {x = 3, y = 7, z = 1},
-	["instacabin:mansion"]   = {x = 17, y = 2, z = 2},
+	["instacabin:tower"]           = {x =  4, y = 0, z = 0},
+	["instacabin:large_tower"]     = {x =  4, y = 0, z = 0},
+	["instacabin:apartment"]       = {x =  4, y = 1, z = 0},
 
-	["instacabin:tower"]   = {x = 4, y = 0, z = 0},
-	["instacabin:large_tower"]   = {x = 4, y = 0, z = 0},
-	["instacabin:apartment"]   = {x = 4, y = 1, z = 0},
+	["instacabin:warehouse"]       = {x =  3, y = 0, z = 1},
+	["instacabin:large_warehouse"] = {x =  5, y = 0, z = 1},
+	["instacabin:vault"]           = {x =  7, y = 0, z = 1},
 
-	["instacabin:warehouse"]   = {x = 3, y = 0, z = 1},
-	["instacabin:large_warehouse"]   = {x = 5, y = 0, z = 1},
-	["instacabin:vault"]   = {x = 7, y = 0, z = 1},
+	["instacabin:house"]           = {x =  4, y = 1, z = 1},
+	["instacabin:large_house"]     = {x =  3, y = 7, z = 1},
+	["instacabin:mansion"]         = {x = 17, y = 2, z = 1},
 
-	["instacabin:garden"]   = {x = 3, y = 2, z = 0},
-	["instacabin:large_garden"]   = {x = 4, y = 2, z = 0},
-	["instacabin:greenhouse"]   = {x = 8, y = 1, z = 1}
+	["instacabin:garden"]          = {x =  3, y = 2, z = 0},
+	["instacabin:large_garden"]    = {x =  4, y = 2, z = 0},
+	["instacabin:greenhouse"]      = {x =  8, y = 1, z = 1}
 }
 
 for name, entrance in pairs(buildlist) do
 	instacabin.register_cabin(name, entrance)
 end
+
+dofile(minetest.get_modpath("instacabin").."/crafting.lua")
 

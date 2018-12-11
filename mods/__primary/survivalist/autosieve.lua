@@ -1,6 +1,6 @@
 minetest.register_node("survivalist:machine_autosieve",{
 	description = "autosieve",
-	tiles = {"default_wood.png", "default_wood.png", "survivalist_machine_autosieve.png"},
+	tiles = {"survivalist_barrel.png", "survivalist_barrel.png", "survivalist_machine_autosieve.png"},
 	drawtype = "normal",
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
@@ -25,8 +25,8 @@ minetest.register_node("survivalist:machine_autosieve",{
 minetest.register_node("survivalist:machine_autosieve_on",{
 	description = "autosieve (on)",
 	tiles = {
-		"default_wood.png",
-		"default_wood.png",
+		"survivalist_barrel.png",
+		"survivalist_barrel.png",
 		{ name="survivalist_machine_autosieve_on.png",
 			animation={
 				type="vertical_frames",

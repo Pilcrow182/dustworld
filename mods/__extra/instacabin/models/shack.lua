@@ -1,30 +1,43 @@
-local n1 = { name = "default:wood", param2 = 1 }
-local n2 = { name = "doors:door_wood_a" }
-local n3 = { name = "doors:hidden" }
-local n4 = { name = "stairs:slab_junglewood", param2 = 1 }
-local n5 = { name = "instacabin:void" }
-local n6 = { name = "stairs:slab_junglewood", param2 = 21 }
-local n7 = { name = "torch:torch_wood_ceiling" }
+local n01 = { name = "default:wood", param2 = 1 }
+local n02 = { name = "doors:door_wood_a" }
+local n03 = { name = "doors:hidden" }
+local n04 = { name = "stairs:slab_junglewood", param2 = 1 }
+local n05 = { name = "air" }
+local n06 = { name = "stairs:slab_junglewood", param2 = 21 }
+local n07 = { name = "torch:torch_wood_ceiling" }
 
 instacabin.schems.shack = {
-	yslice_prob = {
-		
-	},
-	size = {
-		y = 5,
-		x = 5,
-		z = 5
-	}
-,
+	size = {x = 5, y = 5, z = 5},
 	data = {
-n1, n1, n1, n1, n1, n1, n1, n1, n2, n1, n1, n1, n1, n3, n1, n4, n4, 
-n4, n4, n4, n5, n5, n5, n5, n5, n1, n1, n1, n1, n1, n1, n5, n5, n5, 
-n1, n1, n5, n5, n5, n1, n4, n6, n6, n6, n4, n5, n5, n5, n5, n5, n1, 
-n1, n1, n1, n1, n1, n5, n5, n5, n1, n1, n5, n5, n5, n1, n4, n6, n7, 
-n6, n4, n5, n5, n4, n5, n5, n1, n1, n1, n1, n1, n1, n5, n5, n5, n1, 
-n1, n5, n5, n5, n1, n4, n6, n6, n6, n4, n5, n5, n5, n5, n5, n1, n1, 
-n1, n1, n1, n1, n1, n1, n1, n1, n1, n1, n1, n1, n1, n4, n4, n4, n4, 
-n4, n5, n5, n5, n5, n5, 
+		n01, n01, n01, n01, n01, -- bottom  --.
+		n01, n01, n01, n02, n01, --           |
+		n01, n01, n01, n03, n01, --            > front
+		n04, n04, n04, n04, n04, --           |
+		n05, n05, n05, n05, n05, --  top    --'
 
+		n01, n01, n01, n01, n01,
+		n01, n05, n05, n05, n01,
+		n01, n05, n05, n05, n01,
+		n04, n06, n06, n06, n04,
+		n05, n05, n05, n05, n05,
+
+		n01, n01, n01, n01, n01,
+		n01, n05, n05, n05, n01,
+		n01, n05, n05, n05, n01,
+		n04, n06, n07, n06, n04,
+		n05, n05, n04, n05, n05,
+
+		n01, n01, n01, n01, n01,
+		n01, n05, n05, n05, n01,
+		n01, n05, n05, n05, n01,
+		n04, n06, n06, n06, n04,
+		n05, n05, n05, n05, n05,
+
+		n01, n01, n01, n01, n01, -- bottom  --.
+		n01, n01, n01, n01, n01, --           |
+		n01, n01, n01, n01, n01, --            > back
+		n04, n04, n04, n04, n04, --           |
+		n05, n05, n05, n05, n05  --  top    --'
+	}
 }
-}
+
