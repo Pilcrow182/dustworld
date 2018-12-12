@@ -8,93 +8,76 @@ local debug_msg = function(message)
 	end
 end
 
-local layers = {
-	"333333"..
-	"333333"..
-	"333333"..
-	"333333"..
-	"333333"..
-	"333333",
+local n01 = { name = "default:desert_sandstone_block" }
+local n02 = { name = "air" }
+local n03 = { name = "stairs:slab_junglewood", param2 = 1 }
+local n04 = { name = "default:desert_stonebrick", param2 = 1 }
+local n05 = { name = "doors:door_wood_b", param2 = 1 }
+local n06 = { name = "doors:hidden" }
+local n07 = { name = "default:glass" }
+local n08 = { name = "default:junglewood", param2 = 1 }
+local n09 = { name = "shops:shopkeeper_upper", param2 = 1 }
 
-	"222222"..
-	"211112"..
-	"211512"..
-	"211592"..
-	"272222"..
-	"111111",
+local map = {
+	size = {x = 6, y = 5, z = 6},
+	data = {
+		n01, n01, n01, n01, n01, n01,
+		n02, n02, n02, n02, n02, n02,
+		n02, n02, n02, n02, n02, n02,
+		n02, n02, n02, n02, n02, n02,
+		n03, n03, n03, n03, n03, n03,
 
-	"222222"..
-	"211112"..
-	"211112"..
-	"211182"..
-	"212662"..
-	"111111",
+		n01, n01, n01, n01, n01, n01,
+		n04, n05, n04, n04, n04, n04,
+		n04, n06, n04, n07, n07, n04,
+		n04, n04, n04, n04, n04, n04,
+		n03, n03, n03, n03, n03, n03,
 
-	"444444"..
-	"555555"..
-	"211112"..
-	"211112"..
-	"222222"..
-	"111111",
+		n01, n01, n01, n01, n01, n01,
+		n04, n02, n02, n08, n02, n04,
+		n04, n02, n02, n02, n09, n04,
+		n04, n02, n02, n02, n02, n04,
+		n03, n03, n03, n03, n03, n03,
 
-	"111111"..
-	"111111"..
-	"444444"..
-	"444444"..
-	"444444"..
-	"444444"
+		n01, n01, n01, n01, n01, n01,
+		n04, n02, n02, n08, n02, n04,
+		n04, n02, n02, n02, n02, n04,
+		n04, n02, n02, n02, n02, n04,
+		n03, n03, n03, n03, n03, n03,
+
+		n01, n01, n01, n01, n01, n01,
+		n04, n02, n02, n02, n02, n04,
+		n04, n02, n02, n02, n02, n04,
+		n08, n08, n08, n08, n08, n08,
+		n02, n02, n02, n02, n02, n02,
+
+		n01, n01, n01, n01, n01, n01,
+		n04, n04, n04, n04, n04, n04,
+		n04, n04, n04, n04, n04, n04,
+		n03, n03, n03, n03, n03, n03,
+		n02, n02, n02, n02, n02, n02
+	}
 }
-
-local nodes = {
-	"air",
-	"default:desert_stonebrick",
-	"default:desert_sandstone_block",
-	"stairs:slab_junglewood",
-	"default:junglewood",
-	"default:glass",
-	"doors:door_wood_b",
-	"shops:shopkeeper_upper",
-	"shops:shopkeeper",
-}
-
-local map = {}
-for y = 1, 5 do
-	for x = 1, 6 do
-		for z = 1, 6 do
-			local strpos = 6 * (x - 1) + z
-			local index = tonumber(layers[y]:sub(strpos, strpos))
-			table.insert(map, {x = x - 6, y = y - 1, z = z - 2, name = nodes[index]})
-		end
-	end
-end
-
--- make an isolated copy of the map created above, so we can modify it without changing the original
-local get_map = function()
-	local out = {}
-	for k1,v1 in pairs(map) do
-		out[k1] = {}
-		for k2,v2 in pairs(v1) do
-			out[k1][k2] = v2
-		end
-	end
-	return out
-end
 
 shops.spawn_shop = function(pos)
 	debug_msg("[MOD] shops -- building new shop at "..minetest.pos_to_string(pos))
+
 	local fill_node = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z})
-	for _,entry in pairs(get_map()) do
-		entry.x, entry.y, entry.z = entry.x + pos.x, entry.y + pos.y, entry.z + pos.z
-		minetest.after(math.random(1, 6) / 2, function(entry)
-			minetest.set_node({x=entry.x, y=entry.y-5, z=entry.z}, fill_node) -- generate shop foundation
-			minetest.set_node(entry, entry) -- entry functions both as pos and as node
-		end, entry)
+	for x = 0, map.size.x-1 do
+		for y = 0, map.size.y-1 do
+			for z = 0, map.size.z-1 do
+				minetest.set_node({x = pos.x + x, y = pos.y - map.size.y + y, z = pos.z + map.size.z - 1 - z}, fill_node) -- generate foundation
+			end
+		end
 	end
+
+	minetest.place_schematic(pos, map, 0, nil, true)
+	minetest.set_node({x = pos.x + 4, y = pos.y + 1, z = pos.z + 2}, {name = "shops:shopkeeper", param2 = 1})
 end
 
 minetest.register_chatcommand("spawn_shop", {
 	params = "",
-	description = "Spawn a shop into the world",
+	description = "Manually spawn a shop somewhere already generated",
 	privs = {protection_bypass=true},
 	func = function(name, param)
 		local pos = minetest.get_player_by_name(name):getpos()

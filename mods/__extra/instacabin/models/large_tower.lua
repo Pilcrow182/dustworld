@@ -11,15 +11,14 @@ local n10 = { name = "torch:torch_wood_wall" }
 local n11 = { name = "default:chest", param2 = 3 }
 local n12 = { name = "default:chest", param2 = 1 }
 local n13 = { name = "torch:torch_wood_wall", param2 = 3 }
-local n14 = { name = "bed:bed_top", param2 = 3 }
-local n15 = { name = "bed:bed_bottom", param2 = 3 }
-local n16 = { name = "bed:bed_bottom", param2 = 1 }
-local n17 = { name = "bed:bed_top", param2 = 1 }
-local n18 = { name = "torch:torch_wood_ceiling" }
-local n19 = { name = "default:ladder_wood", param2 = 5 }
-local n20 = { name = "default:furnace", param2 = 3 }
-local n21 = { name = "default:furnace", param2 = 1 }
-local n22 = { name = "default:ladder_wood", param2 = 4 }
+local n14 = { name = "torch:torch_wood_ceiling" }
+local n15 = { name = "default:furnace", param2 = 3 }
+local n16 = { name = "default:furnace", param2 = 1 }
+local n17 = { name = "default:ladder_wood", param2 = 4 }
+local n18 = { name = "bed:bed_top", param2 = 3 }
+local n19 = { name = "bed:bed_bottom", param2 = 3 }
+local n20 = { name = "bed:bed_bottom", param2 = 1 }
+local n21 = { name = "bed:bed_top", param2 = 1 }
 
 instacabin.schems.large_tower = {
 	size = {x = 9, y = 16, z = 9},
@@ -65,11 +64,11 @@ instacabin.schems.large_tower = {
 		n01, n04, n01, n01, n01, n01, n01, n04, n01,
 		n01, n04, n01, n01, n01, n01, n01, n04, n01,
 		n09, n05, n06, n06, n06, n06, n06, n05, n10,
-		n01, n04, n14, n15, n04, n16, n17, n04, n01,
-		n01, n04, n01, n01, n04, n01, n01, n04, n01,
-		n01, n04, n01, n13, n04, n13, n01, n04, n01,
-		n01, n04, n01, n01, n04, n01, n01, n04, n01,
-		n01, n04, n01, n01, n04, n01, n01, n04, n01,
+		n01, n04, n11, n01, n01, n01, n12, n04, n01,
+		n01, n04, n01, n01, n01, n01, n01, n04, n01,
+		n01, n04, n01, n13, n01, n13, n01, n04, n01,
+		n01, n04, n01, n01, n01, n01, n01, n04, n01,
+		n01, n04, n01, n01, n01, n01, n01, n04, n01,
 		n01, n04, n06, n06, n06, n06, n06, n04, n01,
 		n01, n05, n04, n04, n04, n04, n04, n05, n01,
 		n01, n04, n01, n01, n01, n01, n01, n04, n01,
@@ -80,26 +79,26 @@ instacabin.schems.large_tower = {
 		n01, n04, n01, n01, n01, n01, n01, n04, n01,
 		n01, n04, n10, n01, n01, n01, n09, n04, n01,
 		n01, n04, n01, n01, n01, n01, n01, n04, n01,
-		n01, n04, n01, n18, n01, n18, n01, n04, n01,
+		n01, n04, n01, n14, n01, n14, n01, n04, n01,
 		n01, n05, n06, n06, n06, n06, n06, n05, n01,
-		n01, n04, n01, n01, n19, n01, n01, n04, n01,
-		n01, n04, n01, n01, n19, n01, n01, n04, n01,
-		n01, n04, n10, n01, n19, n01, n09, n04, n01,
-		n01, n04, n01, n01, n19, n01, n01, n04, n01,
-		n01, n04, n01, n18, n19, n18, n01, n04, n01,
-		n01, n04, n06, n06, n19, n06, n06, n04, n01,
-		n09, n05, n04, n04, n19, n04, n04, n05, n10,
+		n01, n04, n11, n01, n01, n01, n12, n04, n01,
+		n01, n04, n01, n01, n01, n01, n01, n04, n01,
+		n01, n04, n10, n01, n01, n01, n09, n04, n01,
+		n01, n04, n01, n01, n01, n01, n01, n04, n01,
+		n01, n04, n01, n14, n01, n14, n01, n04, n01,
+		n01, n04, n06, n06, n06, n06, n06, n04, n01,
+		n09, n05, n04, n04, n04, n04, n04, n05, n10,
 		n01, n04, n01, n01, n01, n01, n01, n04, n01,
 		n01, n04, n10, n01, n01, n01, n09, n04, n01,
 
 		n01, n04, n06, n06, n06, n06, n06, n04, n01,
-		n01, n04, n20, n01, n01, n01, n21, n04, n01,
+		n01, n04, n15, n01, n01, n01, n16, n04, n01,
 		n01, n04, n01, n01, n01, n01, n01, n04, n01,
 		n01, n04, n01, n01, n01, n01, n01, n04, n01,
 		n01, n04, n01, n01, n01, n01, n01, n04, n01,
 		n01, n04, n01, n01, n01, n01, n01, n04, n01,
 		n09, n05, n06, n06, n06, n06, n06, n05, n10,
-		n01, n04, n20, n01, n01, n01, n21, n04, n01,
+		n01, n04, n15, n01, n01, n01, n16, n04, n01,
 		n01, n04, n01, n01, n01, n01, n01, n04, n01,
 		n01, n04, n01, n01, n01, n01, n01, n04, n01,
 		n01, n04, n01, n01, n01, n01, n01, n04, n01,
@@ -110,35 +109,35 @@ instacabin.schems.large_tower = {
 		n01, n01, n01, n01, n01, n01, n01, n01, n01,
 
 		n01, n04, n06, n06, n06, n06, n06, n04, n01,
-		n01, n04, n01, n01, n22, n01, n01, n04, n01,
-		n01, n04, n01, n01, n22, n01, n01, n04, n01,
-		n01, n04, n10, n01, n22, n01, n09, n04, n01,
-		n01, n04, n01, n01, n22, n01, n01, n04, n01,
-		n01, n04, n01, n18, n22, n18, n01, n04, n01,
-		n01, n05, n06, n06, n22, n06, n06, n05, n01,
-		n01, n04, n11, n01, n01, n01, n12, n04, n01,
-		n01, n04, n01, n01, n01, n01, n01, n04, n01,
-		n01, n04, n10, n01, n01, n01, n09, n04, n01,
-		n01, n04, n01, n01, n01, n01, n01, n04, n01,
-		n01, n04, n01, n18, n01, n18, n01, n04, n01,
-		n01, n04, n06, n06, n06, n06, n06, n04, n01,
-		n09, n05, n04, n04, n04, n04, n04, n05, n10,
+		n01, n04, n01, n01, n17, n01, n01, n04, n01,
+		n01, n04, n01, n01, n17, n01, n01, n04, n01,
+		n01, n04, n10, n01, n17, n01, n09, n04, n01,
+		n01, n04, n01, n01, n17, n01, n01, n04, n01,
+		n01, n04, n01, n14, n17, n14, n01, n04, n01,
+		n01, n05, n06, n06, n17, n06, n06, n05, n01,
+		n01, n04, n01, n01, n17, n01, n01, n04, n01,
+		n01, n04, n01, n01, n17, n01, n01, n04, n01,
+		n01, n04, n10, n01, n17, n01, n09, n04, n01,
+		n01, n04, n01, n01, n17, n01, n01, n04, n01,
+		n01, n04, n01, n14, n17, n14, n01, n04, n01,
+		n01, n04, n06, n06, n17, n06, n06, n04, n01,
+		n09, n05, n04, n04, n17, n04, n04, n05, n10,
 		n01, n04, n01, n01, n01, n01, n01, n04, n01,
 		n01, n04, n10, n01, n01, n01, n09, n04, n01,
 
 		n01, n04, n06, n06, n06, n06, n06, n04, n01,
-		n01, n04, n14, n15, n04, n16, n17, n04, n01,
+		n01, n04, n18, n19, n04, n20, n21, n04, n01,
 		n01, n04, n01, n01, n04, n01, n01, n04, n01,
 		n01, n04, n01, n03, n04, n03, n01, n04, n01,
 		n01, n04, n01, n01, n04, n01, n01, n04, n01,
 		n01, n04, n01, n01, n04, n01, n01, n04, n01,
-		n09, n05, n06, n06, n06, n06, n06, n05, n10,
-		n01, n04, n11, n01, n01, n01, n12, n04, n01,
-		n01, n04, n01, n01, n01, n01, n01, n04, n01,
-		n01, n04, n01, n03, n01, n03, n01, n04, n01,
-		n01, n04, n01, n01, n01, n01, n01, n04, n01,
-		n01, n04, n01, n01, n01, n01, n01, n04, n01,
-		n01, n04, n06, n06, n06, n06, n06, n04, n01,
+		n09, n05, n06, n06, n04, n06, n06, n05, n10,
+		n01, n04, n18, n19, n04, n20, n21, n04, n01,
+		n01, n04, n01, n01, n04, n01, n01, n04, n01,
+		n01, n04, n01, n03, n04, n03, n01, n04, n01,
+		n01, n04, n01, n01, n04, n01, n01, n04, n01,
+		n01, n04, n01, n01, n04, n01, n01, n04, n01,
+		n01, n04, n06, n06, n04, n06, n06, n04, n01,
 		n01, n05, n04, n04, n04, n04, n04, n05, n01,
 		n01, n04, n01, n01, n01, n01, n01, n04, n01,
 		n01, n01, n01, n03, n01, n03, n01, n01, n01,
