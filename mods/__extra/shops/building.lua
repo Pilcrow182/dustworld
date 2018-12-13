@@ -88,10 +88,11 @@ minetest.register_chatcommand("spawn_shop", {
 
 local valid_spawn = function(pos)
 	debug_msg("[MOD] shops -- checking if pos "..minetest.pos_to_string(pos).."is valid")
+	if minetest.get_modpath("wasteland") then return false end -- don't spawn shops when playing dustworld
 	local ignore = minetest.find_node_near(pos, 6, {"ignore"})
 	if ignore then return false end
-	for x = pos.x - 6, pos.x do
-		for z = pos.z - 2, pos.z + 4 do
+	for x = pos.x, pos.x + map.size.x - 1 do
+		for z = pos.z, pos.z + map.size.z - 1 do
 			local node = minetest.get_node({x = x, y = pos.y, z = z})
 			if string.find(node.name, "tree") or string.find(node.name, "cactus") then return false end -- don't overwrite trees/cactus
 			for _,name in pairs({"default:water_source", "default:water_flowing", "default:river_water_source", "default:river_water_flowing"}) do
