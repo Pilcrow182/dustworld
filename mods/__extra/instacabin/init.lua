@@ -64,16 +64,12 @@ instacabin.register_cabin = function(name, entrance)
 				local endoffset = size_transform[tostring(rotation)]
 				endpos = {x = pos.x + endoffset.x, y = pos.y + endoffset.y, z = pos.z + endoffset.z}
 
-				local replace = {"chestplus:mese", "default:bookshelf", "default:chest", "default:furnace", "homedecor:kitchen_cabinet", "homedecor:kitchen_cabinet_half", "homedecor:kitchen_cabinet_with_sink", "homedecor:microwave_oven", "homedecor:nightstand_mahogany_two_drawers", "homedecor:nightstand_oak_two_drawers", "homedecor:oven", "homedecor:refrigerator_steel"}
-				for _,name in ipairs(replace) do replace[name] = true end
-
-				-- TODO: Replace this with something less system-intensive?
 				for x = math.min(pos.x, endpos.x), math.max(pos.x, endpos.x) do
 					for y = math.min(endpos.y, pos.y), math.max(endpos.y, pos.y) do
 						for z = math.min(pos.z, endpos.z), math.max(pos.z, endpos.z) do
 							local node = minetest.get_node({x = x, y = y, z = z})
-							if replace[node.name] then
-								minetest.set_node({x = x, y = y, z = z}, node)
+							if minetest.registered_nodes[node.name].on_construct then
+								minetest.registered_nodes[node.name].on_construct({x = x, y = y, z = z})
 							end
 						end
 					end
