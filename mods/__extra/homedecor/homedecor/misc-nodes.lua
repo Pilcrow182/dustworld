@@ -81,46 +81,48 @@ homedecor.register("flower_pot_"..p, {
 })
 end
 
-local flowers_list = {
-	{ S("Rose"),				"rose",				"flowers:rose" },
-	{ S("Tulip"),				"tulip",			"flowers:tulip" },
-	{ S("Yellow Dandelion"),	"dandelion_yellow",	"flowers:dandelion_yellow" },
-	{ S("White Dandelion"), 	"dandelion_white",	"flowers:dandelion_white" },
-	{ S("Blue Geranium"),		"geranium",			"flowers:geranium" },
-	{ S("Viola"),				"viola",			"flowers:viola" },
-	{ S("Cactus"),				"cactus",			"default:cactus" },
-	{ S("Bonsai"),				"bonsai",			"default:sapling" }
-}
+if minetest.get_modpath("flowers") then
+	local flowers_list = {
+		{ S("Rose"),				"rose",				"flowers:rose" },
+		{ S("Tulip"),				"tulip",			"flowers:tulip" },
+		{ S("Yellow Dandelion"),	"dandelion_yellow",	"flowers:dandelion_yellow" },
+		{ S("White Dandelion"), 	"dandelion_white",	"flowers:dandelion_white" },
+		{ S("Blue Geranium"),		"geranium",			"flowers:geranium" },
+		{ S("Viola"),				"viola",			"flowers:viola" },
+		{ S("Cactus"),				"cactus",			"default:cactus" },
+		{ S("Bonsai"),				"bonsai",			"default:sapling" }
+	}
 
-for _, f in ipairs(flowers_list) do
-	local flowerdesc, flower, craftwith = unpack(f)
+	for _, f in ipairs(flowers_list) do
+		local flowerdesc, flower, craftwith = unpack(f)
 
-	homedecor.register("potted_"..flower, {
-		description = S("Potted flower (@1)", flowerdesc),
-		mesh = "homedecor_potted_plant.obj",
-		tiles = {
-			"homedecor_flower_pot_terracotta.png",
-			{ name = "default_dirt.png", color = 0xff303030 },
-			"flowers_"..flower..".png"
-		},
-		walkable = false,
-		groups = {snappy = 3},
-		sounds = default.node_sound_glass_defaults(),
-		selection_box = {
-			type = "fixed",
-			fixed = { -0.2, -0.5, -0.2, 0.2, 0.3, 0.2 }
-		}
-	})
+		homedecor.register("potted_"..flower, {
+			description = S("Potted flower (@1)", flowerdesc),
+			mesh = "homedecor_potted_plant.obj",
+			tiles = {
+				"homedecor_flower_pot_terracotta.png",
+				{ name = "default_dirt.png", color = 0xff303030 },
+				"flowers_"..flower..".png"
+			},
+			walkable = false,
+			groups = {snappy = 3},
+			sounds = default.node_sound_glass_defaults(),
+			selection_box = {
+				type = "fixed",
+				fixed = { -0.2, -0.5, -0.2, 0.2, 0.3, 0.2 }
+			}
+		})
 
-	minetest.register_craft({
-		type = "shapeless",
-		output = "homedecor:potted_"..flower,
-		recipe = { craftwith, "homedecor:flower_pot_small" }
-	})
+		minetest.register_craft({
+			type = "shapeless",
+			output = "homedecor:potted_"..flower,
+			recipe = { craftwith, "homedecor:flower_pot_small" }
+		})
 
-	minetest.register_alias("flowers:flower_"..flower.."_pot", "homedecor:potted_"..flower)
-	minetest.register_alias("flowers:potted_"..flower, "homedecor:potted_"..flower)
-	minetest.register_alias("flowers:flower_pot", "homedecor:flower_pot_small")
+		minetest.register_alias("flowers:flower_"..flower.."_pot", "homedecor:potted_"..flower)
+		minetest.register_alias("flowers:potted_"..flower, "homedecor:potted_"..flower)
+		minetest.register_alias("flowers:flower_pot", "homedecor:flower_pot_small")
+	end
 end
 
 homedecor.register("pole_brass", {

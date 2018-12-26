@@ -115,6 +115,7 @@ function get_looking_node(player) -- Return the node the given player is looking
 end
 
 function describe_node(node) -- Return a string that describes the node and mod
+	if not minetest.registered_nodes[node.name] then return "unknown", "" end
     local mod, nodename = minetest.registered_nodes[node.name].mod_origin, minetest.registered_nodes[node.name].description -- Get basic (not pretty) info
     if nodename == "" then -- If it doesn't have a proper name, just use the technical one
         nodename = node.name
@@ -133,6 +134,7 @@ function capitalize(str) -- Capitalize every word in a string, looks good for no
 end
 
 function handle_tiles(node) -- Return an image of the tile
+	if not node then return "" end
     local tiles = node.tiles
 
     if tiles then -- Make sure every tile is a string
