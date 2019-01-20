@@ -313,6 +313,14 @@ function tube_autoroute(pos)
 	if string.find(nzm.name, "survivalist:crate") ~= nil then pzm=1 end
 	if string.find(nzp.name, "survivalist:crate") ~= nil then pzp=1 end
 
+-- Pilcrow's chompers
+	if string.find(nxm.name, "mechanism:chomper") ~= nil then pxm=1 end
+	if string.find(nxp.name, "mechanism:chomper") ~= nil then pxp=1 end
+	if string.find(nym.name, "mechanism:chomper") ~= nil then pym=1 end
+	if string.find(nyp.name, "mechanism:chomper") ~= nil then pyp=1 end
+	if string.find(nzm.name, "mechanism:chomper") ~= nil then pzm=1 end
+	if string.find(nzp.name, "mechanism:chomper") ~= nil then pzp=1 end
+
 -- Apply the final routing decisions to the existing tube (if any)
 
 	nsurround = pxm..pxp..pym..pyp..pzm..pzp

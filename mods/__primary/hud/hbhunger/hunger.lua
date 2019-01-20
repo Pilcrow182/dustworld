@@ -36,12 +36,13 @@ local known_foods = {
 
 function hbhunger.item_eat(hunger_change, old_on_use)
 	return function(itemstack, user, pointed_thing)
-		if itemstack:peek_item() ~= nil then
-			local h = tonumber(hbhunger.hunger[user:get_player_name()])
+		local username = user:get_player_name()
+		if hbhunger.hunger[username] and itemstack:peek_item() ~= nil then
+			local h = tonumber(hbhunger.hunger[username])
 			h=h+hunger_change
 			if h>21 then h=21 end
-			hbhunger.hunger[user:get_player_name()]=h
-			minetest.sound_play("hbhunger_eat", {to_player=user:get_player_name(), gain = 1.0})
+			hbhunger.hunger[username]=h
+			minetest.sound_play("hbhunger_eat", {to_player=username, gain = 1.0})
 			hbhunger.set_hunger(user)
 			hbhunger.update_hud(user)
 

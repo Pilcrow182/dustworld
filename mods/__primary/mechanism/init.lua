@@ -129,3 +129,6 @@ dofile(minetest.get_modpath("mechanism").."/ejector.lua")
 dofile(minetest.get_modpath("mechanism").."/itemduct.lua")
 dofile(minetest.get_modpath("mechanism").."/legacy.lua")
 dofile(minetest.get_modpath("mechanism").."/panel.lua")
+dofile(minetest.get_modpath("mechanism").."/chomper.lua")
+dofile(minetest.get_modpath("mechanism").."/compat.lua")
+

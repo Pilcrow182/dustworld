@@ -91,6 +91,7 @@ for i=1,4 do
 	minetest.register_alias("survivalist:compressor_"..i, "survivalist:machine_compressor_"..i)
 end
 
+minetest.register_alias("survivalist:sieve_empty", "survivalist:sieve")
 
 if minetest.get_modpath("mesecons") == nil then
 	minetest.register_craftitem(":mesecons:wire_00000000_off",{

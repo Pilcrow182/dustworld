@@ -121,3 +121,4 @@ minetest.register_alias("gloopblocks:wet_cement",     "basic_materials:wet_cemen
 minetest.register_alias("gloopblocks:cement",         "basic_materials:cement_block")
 
 minetest.register_alias("technic:concrete",           "basic_materials:concrete_block")
+

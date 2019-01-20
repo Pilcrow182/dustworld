@@ -78,38 +78,6 @@ minetest.register_entity("flying_saucer:stopper_entity", {
 	end,
 })
 
-local ascending_player = ""
-minetest.register_entity("flying_saucer:ascender_entity", {
-	textures = {"flying_saucer_stopper.png"},
-	collisionbox = {0,0,0,0,0,0},
-	is_visible = true,
-	makes_footstep_sound = false,
-	on_activate = function(self, staticdata)
-		local player = minetest.get_player_by_name(ascending_player)
-		if not player then return end
-		flying_saucer.storage[ascending_player].state = "ascending"
-		player:set_attach(self.object, "", {x=0,y=0,z=0}, {x=0,y=-player:get_look_horizontal()*180/math.pi,z=0})
-		-- TODO: set acceleration upward
-		minetest.after(0.2, function(obj) obj:remove() end, self.object)
-	end,
-})
-
-local descending_player = ""
-minetest.register_entity("flying_saucer:descender_entity", {
-	textures = {"flying_saucer_stopper.png"},
-	collisionbox = {0,0,0,0,0,0},
-	is_visible = true,
-	makes_footstep_sound = false,
-	on_activate = function(self, staticdata)
-		local player = minetest.get_player_by_name(descending_player)
-		if not player then return end
-		flying_saucer.storage[descending_player].state = "descending"
-		player:set_attach(self.object, "", {x=0,y=0,z=0}, {x=0,y=-player:get_look_horizontal()*180/math.pi,z=0})
-		-- TODO: set acceleration downward
-		minetest.after(0.2, function(obj) obj:remove() end, self.object)
-	end,
-})
-
 local timer = 0
 minetest.register_globalstep(function(dtime)
 	local delay = flying_saucer.delay

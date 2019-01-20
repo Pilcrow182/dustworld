@@ -125,3 +125,8 @@ chest_locked=clone_node("default:chest_locked")
 	end
 
 minetest.register_node(":default:chest_locked",chest_locked)
+
+if not minetest.get_modpath("moreores") then
+	minetest.register_alias("moreores:copper_ingot", "default:copper_ingot")
+end
+

@@ -14,8 +14,3 @@ clone_item("default:glass", "hardened_glass:glass", {
 	groups = {cracky=2,oddly_breakable_by_hand=2},
 })
 
-minetest.register_craft({
-	type = "cooking",
-	output = "hardened_glass:glass",
-	recipe = "default:glass",
-})

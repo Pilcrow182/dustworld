@@ -63,23 +63,23 @@ end
 local make_page = function(pagenum, last_tab, tabsize)
 	local ribbon = make_ribbon(pagenum, last_tab, tabsize)
 	if pagenum == 0 then
-		hoverbot["page"..pagenum] = ribbon..					-- page ribbon
-			"label[2.5,1;Hoverbot's Inventory:]"..				-- bot inventory label
-			"list[current_name;main;2,1.5;8,1;]"..				-- bot inventory
-			"label[5.65,3.0;Fuel:]"..					-- fuel label
-			"list[current_name;fuel;5.5,3.5;1,1;]"..			-- fuel slot
-			"button[5,4.3;2,1;dump;Dump]"..					-- fuel dump button
-			"label[1.5,5.5;Your Inventory:]"..				-- player inventory label
-			"list[current_player;main;1,6;10,4;]"				-- player inventory
+		hoverbot["page"..pagenum] = ribbon..							-- page ribbon
+			"label[2.5,1;Hoverbot's Inventory:]"..						-- bot inventory label
+			"list[current_name;main;2,1.5;8,1;]"..						-- bot inventory
+			"label[5.65,3.0;Fuel:]"..									-- fuel label
+			"list[current_name;fuel;5.5,3.5;1,1;]"..					-- fuel slot
+			"button[5,4.3;2,1;dump;Dump]"..								-- fuel dump button
+			"label[1.5,5.5;Your Inventory:]"..							-- player inventory label
+			"list[current_player;main;1,6;10,4;]"						-- player inventory
 	else
-		hoverbot["page"..pagenum] = ribbon..					-- page ribbon
-			"label[0.5,1;Current Code:]"..					-- codebox label
+		hoverbot["page"..pagenum] = ribbon..							-- page ribbon
+			"label[0.5,1;Current Code:]"..								-- codebox label
 			"list[current_name;codebox"..pagenum..";0,1.5;11,4;]"..		-- codebox inventory
-			"label[11.1,2;Trash:]"..					-- trash label
-			"list[current_name;trash;11,2.5;1,1;]"..			-- trash slot
+			"label[11.1,2;Trash:]"..									-- trash label
+			"list[current_name;trash;11,2.5;1,1;]"..					-- trash slot
 			"item_image_button[11,3.5;1,1;hoverbot:cmd_clear;clear;]"..	-- clear button
-			"label[0.5,5.5;Available Commands:]"..				-- commands label
-			"list[current_name;cmd_bank;0,6;12,4;]"				-- commands inventory
+			"label[0.5,5.5;Available Commands:]"..						-- commands label
+			"list[current_name;cmd_bank;0,6;12,4;]"						-- commands inventory
 	end
 end
 

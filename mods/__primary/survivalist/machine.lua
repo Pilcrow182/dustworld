@@ -329,4 +329,6 @@ survivalist.register_machine("compressor", {
 	{"flolands:floatsand", "flolands:floatstone"},
 	{"survivalist:mulch", "default:coal_lump"},
 	{"bed:bed_bottom", "bed:minibed"},
+	{"default:glass", "hardened_glass:glass"},
 })
+
