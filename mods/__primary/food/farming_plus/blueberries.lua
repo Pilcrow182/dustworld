@@ -90,4 +90,12 @@ minetest.register_craftitem("farming_plus:blueberry_item", {
 	on_use = minetest.item_eat(3),
 })
 
+if minetest.get_modpath("dye") ~= nil then
+	minetest.register_craft({
+		output = "dye:blue 4",
+		recipe = {{"farming_plus:blueberry_item"}},
+	})
+end
+
 farming:add_plant("farming_plus:blueberry", {"farming_plus:blueberry_1", "farming_plus:blueberry_2", "farming_plus:blueberry_3"}, 50, 20)
+

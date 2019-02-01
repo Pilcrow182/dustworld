@@ -25,7 +25,7 @@ panes.register_pane = function(def)
 			sunlight_propagates = true,
 			light_source = def.glow or 0,
 			walkable = true,
-			groups = {cracky=2,dig_immediate=3},
+			groups = {cracky = 3, oddly_breakable_by_hand = 3},
 			legacy_wallmounted = false,
 			sounds = default.node_sound_glass_defaults()
 		})

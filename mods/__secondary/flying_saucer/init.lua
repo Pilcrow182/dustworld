@@ -89,7 +89,7 @@ minetest.register_entity("flying_saucer:ascender_entity", {
 		if not player then return end
 		flying_saucer.storage[ascending_player].state = "ascending"
 		player:set_attach(self.object, "", {x=0,y=0,z=0}, {x=0,y=-player:get_look_horizontal()*180/math.pi,z=0})
-		-- TODO: set acceleration upward
+		self.object:setvelocity({x = 0, y = 1, z = 0})
 		minetest.after(0.2, function(obj) obj:remove() end, self.object)
 	end,
 })
@@ -105,7 +105,7 @@ minetest.register_entity("flying_saucer:descender_entity", {
 		if not player then return end
 		flying_saucer.storage[descending_player].state = "descending"
 		player:set_attach(self.object, "", {x=0,y=0,z=0}, {x=0,y=-player:get_look_horizontal()*180/math.pi,z=0})
-		-- TODO: set acceleration downward
+		self.object:setvelocity({x = 0, y = -1, z = 0})
 		minetest.after(0.2, function(obj) obj:remove() end, self.object)
 	end,
 })
@@ -124,11 +124,31 @@ minetest.register_globalstep(function(dtime)
 				local velocity = player:get_player_velocity()
 				local physics = {speed = saucer_speed/4, jump = 0, gravity = 0, sneak = false, sneak_glitch = false}
 
+--[[ TODO: Find out why this doesn't work
+
+				if ctrl.jump and not flying_saucer.storage[name].state == "ascending" and not (ctrl.sneak or ctrl.aux1) then
+					debug_msg("player "..name.."is ascending")
+					ascending_player = name
+					player:set_physics_override(physics)
+					minetest.add_entity(player:get_pos(), "flying_saucer:ascender_entity")
+
+--]]
+
 				if (ctrl.jump or (flying_saucer.storage[name].state == "ascending" and velocity.y > 0 and not flying_saucer.passive_stop)) and not (ctrl.sneak or ctrl.aux1) then
 					flying_saucer.storage[name].state = "ascending"
 					physics.gravity = -(math.min(saucer_speed, math.max(0, saucer_speed-velocity.y))/saucer_speed)*(1-math.min(0.7, math.max(0, delay)))
 					debug_msg("boosting "..name.."'s upward speed by "..physics.gravity)
 					player:set_physics_override(physics)
+
+--[[ TODO: Find out why this doesn't work
+
+				elseif ctrl.sneak and not flying_saucer.storage[name].state == "descending" and not (ctrl.jump or ctrl.aux1) then
+					debug_msg("player "..name.."is descending")
+					descending_player = name
+					player:set_physics_override(physics)
+					minetest.add_entity(player:get_pos(), "flying_saucer:descender_entity")
+
+--]]
 
 				elseif (ctrl.sneak or (flying_saucer.storage[name].state == "descending" and velocity.y < 0 and not flying_saucer.passive_stop)) and not (ctrl.jump or ctrl.aux1) then
 					flying_saucer.storage[name].state = "descending"

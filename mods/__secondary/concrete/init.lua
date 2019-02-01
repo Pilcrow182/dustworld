@@ -146,3 +146,11 @@ minetest.register_craft({
 	output = "concrete:cement",
 	recipe = "concrete:lime",
 })
+
+stairs.register_stair_and_slab("concrete", "concrete:concrete",
+	{cracky=1},
+	{"concrete_concrete.png"},
+	"Concrete Stair",
+	"Concrete Slab"
+)
+

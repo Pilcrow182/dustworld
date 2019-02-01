@@ -14,3 +14,6 @@ minetest.register_craft({
 		{'', 'gloopores:akalin_ingot', ''},
 	}
 })
+
+minetest.register_alias("moreores:silver_ingot", "gloopores:akalin_ingot")
+
