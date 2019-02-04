@@ -1,9 +1,8 @@
 DOORS = true
-WINDOWS = false
 
 fakes = {}
+dofile(minetest.get_modpath("fakes").."/extenders.lua")
 if DOORS then dofile(minetest.get_modpath("fakes").."/doors.lua") end
-if WINDOWS then dofile(minetest.get_modpath("fakes").."/windows.lua") end
 
 local function clone_node(name)
 	node2={}
@@ -18,62 +17,46 @@ fakes.make_fake = function(name)
 	local realblock=clone_node(name)
 		local fakeblock={
 			tiles = realblock.tiles,
+			special_tiles = realblock.special_tiles,
+			description = "Fake "..(realblock.description or "Block").." (cheater!)",
 			light_source = realblock.light_source,
 			sunlight_propagates = realblock.sunlight_propagates,
 			selection_box = realblock.selection_box,
-			description = "Fake Block (cheater!)",
-			drawtype = 'nodebox',
-			node_box = {
-				type = "fixed",
-				fixed = {-0.500000,-0.500000,-0.500000,0.500000,0.500000,0.500000},
-			},
-			paramtype = 'light',
-			paramtype2 = 'facedir',
+			drawtype = realblock.drawtype,
+			mesh = realblock.mesh,
+			node_box = realblock.node_box,
+			alpha = realblock.alpha,
+--			paramtype = realblock.paramtype,
+			paramtype = "light",
+			paramtype2 = realblock.paramtype2,
 			walkable = false,
 			climbable = true,
 			is_ground_content = true,
-			groups = {dig_immediate=2, not_in_creative_inventory=1},
+			groups = {snappy=1, oddly_breakable_by_hand=3, not_in_creative_inventory=1},
 			sounds = default.node_sound_leaves_defaults(),
 			drop="fakes:camoblock",
 		}
-		if realblock.drawtype == 'plantlike' or realblock.drawtype == 'torchlike' or realblock.drawtype == "raillike" then fakeblock.drawtype = realblock.drawtype end
-		if realblock.description then fakeblock.description = "Fake "..realblock.description.." (cheater!)" end
-		if realblock.node_box then fakeblock.node_box = realblock.node_box end
+	if not realblock.drawtype or realblock.drawtype == "normal" then
+			fakeblock.drawtype = 'nodebox'
+			fakeblock.node_box = {
+				type = "fixed",
+				fixed = {-0.500000,-0.500000,-0.500000,0.500000,0.500000,0.500000},
+			}
+	end
 	minetest.register_node(":"..name.."__fake", fakeblock)
 
 	if DOORS then fakes.make_doors(name, realblock.tiles) end
-	if WINDOWS then fakes.make_windows(name, realblock.tiles) end
 end
 
 for name,_ in pairs(minetest.registered_nodes) do
-	if minetest.registered_nodes[name].buildable_to == false and string.find(name, "__fake") == nil then
-		fakes.make_fake(name)
-	end
-end
-
-local fixed_nodes = {
-	"default:water_source",
-	"default:water_flowing",
-	"default:lava_source",
-	"default:lava_flowing",
-	"crash_site:fuel",
-	"crash_site:fuel_flowing",
-	"farming_plus:potatoe_1",
-	"farming_plus:potatoe_2",
-	"mesecons_luacontroller:luacontroller0000",
-	"mechanism:hopper",
-}
-
-for _,name in ipairs(fixed_nodes) do
-	if minetest.registered_nodes[name] then
+	if string.find(name, "__fake") == nil then
 		fakes.make_fake(name)
 	end
 end
 
 minetest.register_craftitem("fakes:camoblock", {
 	description = "Camo Block",
--- 	inventory_image = minetest.inventorycube("fakes_camoblock.png"),
-	inventory_image = "fakes_camoblock_inv.png",
+	inventory_image = minetest.inventorycube("fakes_camoblock.png"),
 	wield_image = "fakes_camoblock.png",
 	wield_scale = {x=1,y=1,z=1+1/16},
 	liquids_pointable = true,
@@ -86,19 +69,22 @@ minetest.register_craftitem("fakes:camoblock", {
 		local above = pointed_thing.above
 		local under = pointed_thing.under
 		if minetest.registered_nodes[minetest.get_node(above).name].buildable_to then
+			if string.find(minetest.get_node(under).name, "__extended") ~= nil then return end
 			if string.find(minetest.get_node(under).name, "__fake") ~= nil then
 				minetest.add_node(above, {name = minetest.get_node(under).name, param2 = minetest.get_node(under).param2})
 				if not minetest.setting_getbool("creative_mode") then
 					itemstack:take_item()
 				end
-			elseif not minetest.registered_nodes[minetest.get_node(under).name].buildable_to then
+			else
 				if not minetest.registered_nodes[minetest.get_node(under).name.."__fake"] then
 					print("WARNING: "..minetest.get_node(under).name.."__fake does not exist!")
 					minetest.chat_send_all("that node is unsupported by the fakes mod")
 					return
 				end
 
-				minetest.add_node(above, {name = minetest.get_node(under).name.."__fake", param2 = minetest.get_node(under).param2})
+				local node = minetest.get_node(under)
+				node.name = node.name.."__fake"
+				minetest.add_node(above, node)
 				if not minetest.setting_getbool("creative_mode") then
 					itemstack:take_item()
 				end

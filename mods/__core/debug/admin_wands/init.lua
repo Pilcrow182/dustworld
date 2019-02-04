@@ -68,3 +68,12 @@ register_wand("rotation", {
 		debug.message('node "'..pointed_node.name..'" at pos '..minetest.pos_to_string(pointed_thing.under)..' has a param2 value of '..pointed_node.param2, 'all')
 	end
 })
+
+register_wand("definition", {
+	on_use = function(itemstack, user, pointed_thing)
+		if not pointed_thing.under then return end
+		debug.message(dump(ItemStack(minetest.get_node(pointed_thing.under)):get_definition()), "all")
+		minetest.log("action", dump(ItemStack(minetest.get_node(pointed_thing.under)):get_definition()))
+	end
+})
+
