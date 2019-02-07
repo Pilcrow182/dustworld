@@ -117,3 +117,4 @@ minetest.register_alias("fakeblocks:default_stone", "default:stone__fake")
 minetest.register_alias("fakeblocks:default_desert_stone", "default:desert_stone__fake")
 minetest.register_alias("fakeblocks:default_wood", "default:wood__fake")
 minetest.register_alias("fakeblocks:default_cobble", "default:cobble__fake")
+
