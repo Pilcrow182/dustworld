@@ -26,35 +26,14 @@ minetest.settings:set("falling_node_speed", shifting.speed)
 shifting.disable_entity = minetest.settings:get_bool("disable_falling_node_animation", false)
 minetest.settings:set_bool("disable_falling_node_animation", shifting.disable_entity)
 
-local falling_nodes = {
-	"default:desert_sand",
-	"default:gravel",
-	"default:sand",
-	"default:silver_sand",
-	"default:snow",
-	"flolands:floatsand",
-	"pyramids:trap_2",
-	"snow:snow_block",
-	"wasteland:dust"
-}
-
-for _,name in pairs(falling_nodes) do
-	local node = minetest.registered_nodes[name]
-	if node then
-		node.groups.falling_node = nil
-		node.groups.shifting = 1
-		minetest.override_item(name, {groups = node.groups})
-	end
-end
-
 minetest.register_entity("shifting:entity", {
 	initial_properties = {
 		visual = "wielditem",
 		visual_size = {x = 0.667, y = 0.667},
 		textures = {},
-		physical = false,
+		physical = true,
 		is_visible = false,
-		collide_with_objects = false,
+		collide_with_objects = true,
 		collisionbox = {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
 	},
 
@@ -91,49 +70,111 @@ minetest.register_entity("shifting:entity", {
 	end
 })
 
-shifting.queue = {}
+shifting.reserve = {}
 shifting.start_fall = function(pos)
-		local node = minetest.get_node(pos)
-		if not ( node and node.name and minetest.get_item_group(node.name, "shifting") > 0 ) then return end
+	local node = minetest.get_node(pos)
+	if not ( node and node.name and minetest.get_item_group(node.name, "falling_node") > 0 ) then return end
 
-		local distance = 1
-		local checkpos = {x = pos.x, y = pos.y - distance, z = pos.z}
-		local checknode = minetest.get_node(checkpos)
-		if not ( checknode and checknode.name and checknode.name == "air" ) then return end
-		while checknode and checknode.name and checknode.name == "air" and not shifting.queue[minetest.pos_to_string(checkpos)] do
-			distance = distance + 1
-			checkpos.y = pos.y - distance
-			checknode = minetest.get_node(checkpos)
-		end
-		distance = distance - 1
-		if distance <= 0 then return end
+	local distance = 1
+	local checkpos = {x = pos.x, y = pos.y - distance, z = pos.z}
+	local checknode = minetest.get_node(checkpos)
+	local checkstr = minetest.pos_to_string(checkpos)
+	while ( shifting.queue[checkstr] or ( checknode and checknode.name and checknode.name == "air" ) ) and not shifting.reserve[checkstr] do
+		distance = distance + 1
+		checkpos.y = pos.y - distance
+		checknode = minetest.get_node(checkpos)
+		checkstr = minetest.pos_to_string(checkpos)
+	end
+	distance = distance - 1
+	if distance <= 0 then return end
 
-		local q = minetest.pos_to_string({x = pos.x, y = pos.y - distance, z = pos.z})
-		local lifespan = distance / shifting.speed
+	local underpos = {x = pos.x, y = pos.y - distance, z = pos.z}
+	local undernode = minetest.get_node(underpos)
 
-		if not shifting.disable_entity then
-			local entity = minetest.add_entity(pos, "shifting:entity")
-			if entity then entity:get_luaentity():set_details(node.name, lifespan) end
-		end
+	local destpos = {x = pos.x, y = pos.y - distance, z = pos.z}
+	local deststr = minetest.pos_to_string(destpos)
+	local lifespan = distance / shifting.speed
 
-		shifting.queue[q] = true
-		minetest.remove_node(pos)
+	if not shifting.disable_entity then
+		local entity = minetest.add_entity(pos, "shifting:entity")
+		if entity then entity:get_luaentity():set_details(node.name, lifespan) end
+	end
 
-		minetest.after(lifespan, function(pos, distance, q)
-			minetest.set_node({x = pos.x, y = pos.y - distance, z = pos.z}, node)
-			shifting.queue[q] = nil
-		end, pos, distance, q)
+	shifting.reserve[deststr] = true
+	minetest.remove_node(pos)
 
+	minetest.after(lifespan, function(pos, distance, deststr)
+		minetest.set_node(destpos, node)
+		shifting.reserve[deststr] = nil
 		minetest.check_for_falling(pos)
+	end, pos, distance, deststr)
 end
 
+shifting.queue = {}
+minetest.check_for_falling = function(pos)
+	for xoff = -1, 1 do
+		for zoff = -1, 1 do
+			for yoff = -1, 1 do
+				local checkpos = {x = pos.x + xoff, y = pos.y + yoff, z = pos.z + zoff}
+				local checknode = minetest.get_node(checkpos)
+				local checkstr = minetest.pos_to_string(checkpos)
+				if not shifting.queue[checkstr] and checknode and checknode.name and minetest.get_item_group(checknode.name, "falling_node") > 0 then
+					shifting.queue[checkstr] = true
+					minetest.after(0, function(pos) minetest.check_for_falling(pos) end, checkpos)
+				end
+			end
+		end
+	end
+end
+
+local timer = 0
+minetest.register_globalstep(function(dtime)
+	timer = timer + dtime
+	if timer >= 1 then
+		timer = 0
+		if next(shifting.queue) == nil then return end
+
+		local pos, minp, maxp = {}, {}, {}
+		for strpos,_ in pairs(shifting.queue) do
+			pos = minetest.string_to_pos(strpos)
+			if not minp.x or pos.x < minp.x then minp.x = pos.x end
+			if not minp.y or pos.y < minp.y then minp.y = pos.y end
+			if not minp.z or pos.z < minp.z then minp.z = pos.z end
+
+			if not maxp.x or pos.x > maxp.x then maxp.x = pos.x end
+			if not maxp.y or pos.y > maxp.y then maxp.y = pos.y end
+			if not maxp.z or pos.z > maxp.z then maxp.z = pos.z end
+		end
+
+		local strpos = ""
+		for y = minp.y, maxp.y do
+			for x = minp.x, maxp.x do
+				for z = minp.z, maxp.z do
+					strpos = minetest.pos_to_string({x = x, y = y, z = z})
+					if shifting.queue[strpos] then
+						shifting.queue[strpos] = nil
+						shifting.start_fall(minetest.string_to_pos(strpos))
+					end
+				end
+			end
+		end
+	end
+end)
+
+minetest.register_node("shifting:air", {
+	drawtype = "airlike",
+	paramtype = "light",
+	sunlight_permeates = true,
+	groups = {not_in_creative_inventory = 1}
+})
+
 minetest.register_abm{
-	label = "shifting",
-	nodenames = {"group:shifting"},
+	label = "deleteme",
+	nodenames = {"shifting:air"},
 	interval = 1,
 	chance = 1,
 	action = function(pos)
-		shifting.start_fall(pos)
+		minetest.remove_node(pos)
 	end,
 }
 
