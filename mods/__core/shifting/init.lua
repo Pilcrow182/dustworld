@@ -103,11 +103,28 @@ shifting.start_fall = function(pos)
 	shifting.reserve[deststr] = true
 	minetest.remove_node(pos)
 
-	minetest.after(lifespan, function(pos, distance, deststr)
-		minetest.set_node(destpos, node)
+	minetest.after(lifespan, function(destpos, deststr, node)
 		shifting.reserve[deststr] = nil
-		minetest.check_for_falling(pos)
-	end, pos, distance, deststr)
+
+		local destnode = minetest.get_node(destpos)
+		if destnode and destnode.name and destnode.name == "air" then
+			minetest.set_node(destpos, node)
+			minetest.check_for_falling(destpos)
+		else
+			local drops = minetest.get_node_drops(node.name)
+			for _, dropped_item in pairs(drops) do
+				minetest.add_item(destpos, dropped_item)
+			end
+		end
+	end, destpos, deststr, node)
+end
+
+local get_queue_count = function()
+	local queue_count = 0
+	for entry,_ in pairs(shifting.queue) do
+		queue_count = queue_count + 1
+	end
+	return queue_count
 end
 
 shifting.queue = {}
@@ -119,8 +136,10 @@ minetest.check_for_falling = function(pos)
 				local checknode = minetest.get_node(checkpos)
 				local checkstr = minetest.pos_to_string(checkpos)
 				if not shifting.queue[checkstr] and checknode and checknode.name and minetest.get_item_group(checknode.name, "falling_node") > 0 then
-					shifting.queue[checkstr] = true
-					minetest.after(0, function(pos) minetest.check_for_falling(pos) end, checkpos)
+					if get_queue_count() < 2000 then
+						shifting.queue[checkstr] = true
+						minetest.after(0, function(pos) minetest.check_for_falling(pos) end, checkpos)
+					end
 				end
 			end
 		end
