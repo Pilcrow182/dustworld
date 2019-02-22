@@ -56,7 +56,7 @@ minetest.register_on_joinplayer(function(player)
 	end
 end)
 
-local shipspawn = false
+-- local shipspawn = false
 local time = 0
 local time2 = 0
 minetest.register_globalstep(function(dtime)
@@ -64,6 +64,7 @@ minetest.register_globalstep(function(dtime)
 	time2 = time2 + dtime
 	local def = {}
 
+--[[
 	-- compatability with Pilcrow's Crash Site mod
 	if shipspawn == false and minetest.get_modpath("crash_site") then
 		local check = io.open(minetest.get_worldpath() .. "/crash_site.txt","r")
@@ -74,6 +75,10 @@ minetest.register_globalstep(function(dtime)
 			io.close(check)
 		end
 	end
+--]]
+
+	-- clear variables
+	local player, playerName, playerInfo = {}, "", {}
 
 	--loop through all connected players
 	for playerName,playerInfo in pairs(players) do
@@ -121,11 +126,15 @@ minetest.register_globalstep(function(dtime)
 		-- reset time for next check
 		time = 0
 
+		-- clear variables
+		player, playerName, playerInfo = {}, "", {}
+
 		-- check players
 		for _,player in ipairs(minetest.get_connected_players()) do
 			if not pp.disable[player:get_player_name()] then
+
 				-- what are my stats?
-				local playerInfo = players[player:get_player_name()]
+				local playerName = player:get_player_name()
 				
 				-- where am I?
 				local pos = player:getpos()
@@ -155,30 +164,30 @@ minetest.register_globalstep(function(dtime)
 				-- check if sprinting and add increase to player physics
 				if pp.sprint == 1 then
 					-- do I have enough stamina to run?
-					if playerInfo["stamina"] > 0 then
+					if players[playerName]["stamina"] > 0 then
 						pp.speed = pp.speed + SPRINT_VALUES["speed"]
 						pp.jump = pp.jump + SPRINT_VALUES["jump"]
 						pp.gravity = pp.gravity + SPRINT_VALUES["gravity"]
 						
 					-- if not, stop sprinting
 					else
-						playerInfo["state"] = 1
+						players[playerName]["state"] = 1
 						pp.sprint = 0
 					end
 					
 					-- reduce my stamina if it is more than 0 and I am sprinting
-					playerInfo["stamina"] = math.max(playerInfo["stamina"] - CONTROL_TIMER, 0)
+					players[playerName]["stamina"] = math.max(players[playerName]["stamina"] - CONTROL_TIMER, 0)
 				else
 					-- increase my stamina if it is less than SPRINT_STAMINA and I am not sprinting
-					playerInfo["stamina"] = math.min(playerInfo["stamina"] + CONTROL_TIMER, SPRINT_STAMINA)
+					players[playerName]["stamina"] = math.min(players[playerName]["stamina"] + CONTROL_TIMER, SPRINT_STAMINA)
 				end
 				
 				--Update my hud to display my stamina
 				if SPRINT_HUDBARS_USED then
-					hb.change_hudbar(player, "sprint", playerInfo["stamina"])
+					hb.change_hudbar(player, "sprint", players[playerName]["stamina"])
 				else
-					local numBars = (playerInfo["stamina"]/SPRINT_STAMINA)*20
-					player:hud_change(playerInfo["hud"], "number", numBars)
+					local numBars = (players[playerName]["stamina"]/SPRINT_STAMINA)*20
+					player:hud_change(players[playerName]["hud"], "number", numBars)
 				end
 				
 				-- standing on ice? if so walk faster
