@@ -147,16 +147,28 @@ minetest.register_globalstep(function(dtime)
 					minetest.add_entity(player:get_pos(), "flying_saucer:stopper_entity")
 				elseif ((velocity.y ~= 0 and (ctrl.aux1 or flying_saucer.passive_stop)) or (velocity.y == 0 and flying_saucer.storage[name].state ~= "idle")) and not (ctrl.jump or ctrl.sneak) then
 					flying_saucer.storage[name].state = "idle"
-					minetest.place_schematic(schempos, bubble, 0, nil, false)
-					remove_bubble(schempos, delay)
+					stopping_player = name
+					minetest.add_entity(player:get_pos(), "flying_saucer:stopper_entity")
 				elseif ctrl.jump and (flying_saucer.storage[name].state ~= "ascending" or velocity.y < flying_saucer.speed*0.75) and not ctrl.sneak then
-					flying_saucer.storage[name].state = "ascending"
-					minetest.place_schematic(schempos, bubble, 0, nil, false)
-					remove_bubble(schempos, delay)
+					if flying_saucer.storage[name].state == "descending" then
+						flying_saucer.storage[name].state = "idle"
+						stopping_player = name
+						minetest.add_entity(player:get_pos(), "flying_saucer:stopper_entity")
+					else
+						flying_saucer.storage[name].state = "ascending"
+						minetest.place_schematic(schempos, bubble, 0, nil, false)
+						remove_bubble(schempos, delay)
+					end
 				elseif ctrl.sneak and (flying_saucer.storage[name].state ~= "descending" or velocity.y > -flying_saucer.speed*0.75) then
-					flying_saucer.storage[name].state = "descending"
-					minetest.place_schematic(schempos, bubble, 0, nil, false)
-					remove_bubble(schempos, delay)
+					if flying_saucer.storage[name].state == "ascending" then
+						flying_saucer.storage[name].state = "idle"
+						stopping_player = name
+						minetest.add_entity(player:get_pos(), "flying_saucer:stopper_entity")
+					else
+						flying_saucer.storage[name].state = "descending"
+						minetest.place_schematic(schempos, bubble, 0, nil, false)
+						remove_bubble(schempos, delay)
+					end
 				end
 			end
 		end
