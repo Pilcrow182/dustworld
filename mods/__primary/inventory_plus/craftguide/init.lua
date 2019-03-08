@@ -434,6 +434,8 @@ mt.register_on_player_receive_fields(function(player, formname, fields)
 				item = item:match("%S*")
 			end
 
+			minetest.log("action", player:get_player_name().." looks up recipe for "..item)
+
 			local is_fuel = get_fueltime(item) > 0
 			local recipes = get_recipes(item)
 			if not recipes and not is_fuel then return end
