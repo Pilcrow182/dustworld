@@ -144,7 +144,7 @@ minetest.register_globalstep(function(dtime)
 				local schempos = {x = math.floor(pos.x-(bubble.size.x-1)/2+0.5), y = math.floor(pos.y-(bubble.size.y-1)/2+0.5), z = math.floor(pos.z-(bubble.size.z-1)/2+0.5)}
 				local state = flying_saucer.storage[name].state or "idle"
 
-				if math.abs(velocity.y) > flying_saucer.speed**0.75 then state = "stopping"
+				if math.abs(velocity.y) > flying_saucer.speed*0.75 then state = "stopping"
 				elseif ctrl.aux1 or (ctrl.sneak and ctrl.jump) then state = "stopping"
 				elseif (velocity.y == 0 or flying_saucer.passive_stop) and not (ctrl.jump or ctrl.sneak) then state = "idle"
 				elseif (velocity.y < 0 and ctrl.jump) or (velocity.y > 0 and ctrl.sneak) then state = "idle"
