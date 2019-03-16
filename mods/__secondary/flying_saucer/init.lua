@@ -26,7 +26,7 @@ minetest.settings:set("flying_saucer_delay", flying_saucer.delay)
 flying_saucer.speed = tonumber(minetest.settings:get("flying_saucer_speed") or 10)
 minetest.settings:set("flying_saucer_speed", flying_saucer.speed)
 
-flying_saucer.bubble_diameter = tonumber(minetest.settings:get("flying_saucer_bubble_diameter") or 9)
+flying_saucer.bubble_diameter = tonumber(minetest.settings:get("flying_saucer_bubble_diameter") or 13)
 minetest.settings:set("flying_saucer_bubble_diameter", flying_saucer.bubble_diameter)
 
 flying_saucer.passive_stop = minetest.settings:get_bool("flying_saucer_passive_stop", false)
@@ -99,10 +99,16 @@ minetest.register_entity("flying_saucer:stopper_entity", {
 	on_activate = function(self, staticdata)
 		local player = minetest.get_player_by_name(stopping_player)
 		if not player then return end
+		if flying_saucer.storage[stopping_player] then flying_saucer.storage[stopping_player].state = "idle" end
 		player:set_attach(self.object, "", {x=0,y=0,z=0}, {x=0,y=-player:get_look_horizontal()*180/math.pi,z=0})
 		minetest.after(flying_saucer.delay, function(obj) obj:remove() end, self.object)
 	end,
 })
+
+local apply_brakes = function(name, pos)
+	stopping_player = name
+	minetest.add_entity(pos, "flying_saucer:stopper_entity")
+end
 
 local bubble = {size = {x = flying_saucer.bubble_diameter, y = flying_saucer.bubble_diameter, z = flying_saucer.bubble_diameter}, data = {}}
 for x = 1, bubble.size.x do
@@ -113,20 +119,28 @@ for x = 1, bubble.size.x do
 	end
 end
 
-local place_bubble = function(schempos, delay)
-	debug_msg("placing bubble at "..minetest.pos_to_string(schempos).." (to be removed after "..delay.." seconds)")
+local bubble_pos = {}
+local place_bubble = function(schempos, playername)
 	minetest.place_schematic(schempos, bubble, 0, nil, false)
-	for xoff = 0, bubble.size.x-1 do
-		for yoff = 0, bubble.size.y-1 do
-			for zoff = 0, bubble.size.z-1 do
-				minetest.after(delay*2, function(schempos, xoff, yoff, zoff)
-					local nodepos = {x = schempos.x + xoff, y = schempos.y + yoff, z = schempos.z + zoff}
-					local node = minetest.get_node(nodepos)
-					if node and node.name and node.name == "flying_saucer:bubble" then minetest.remove_node(nodepos) end
-				end, schempos, xoff, yoff, zoff)
+	bubble_pos[playername] = schempos
+end
+
+local remove_bubble = function(playername)
+	local schempos = bubble_pos[playername]
+	if not schempos then return end
+
+	debug_msg("attempting to remove "..playername.."'s old bubble at "..minetest.pos_to_string(schempos))
+	for xoff = -1, bubble.size.x, 1 do
+		for yoff = -1, bubble.size.y, 1 do
+			for zoff = -1, bubble.size.z, 1 do
+				local nodepos = {x = schempos.x + xoff, y = schempos.y + yoff, z = schempos.z + zoff}
+				local node = minetest.get_node(nodepos)
+				if node and node.name and node.name == "flying_saucer:bubble" then minetest.remove_node(nodepos) end
 			end
 		end
 	end
+
+	bubble_pos[playername] = nil
 end
 
 local timer = 0
@@ -139,32 +153,42 @@ minetest.register_globalstep(function(dtime)
 			local player = minetest.get_player_by_name(name)
 			if player then
 				local pos = player:get_pos()
+				local node = minetest.get_node(pos)
 				local ctrl = player:get_player_control()
 				local velocity = player:get_player_velocity()
 				local schempos = {x = math.floor(pos.x-(bubble.size.x-1)/2+0.5), y = math.floor(pos.y-(bubble.size.y-1)/2+0.5), z = math.floor(pos.z-(bubble.size.z-1)/2+0.5)}
 				local state = flying_saucer.storage[name].state or "idle"
 
-				if math.abs(velocity.y) > flying_saucer.speed*0.75 then state = "stopping"
-				elseif ctrl.aux1 or (ctrl.sneak and ctrl.jump) then state = "stopping"
+				-- get player control inputs and set state
+				if math.abs(velocity.y) > flying_saucer.speed then state = "stopping"
+				elseif (ctrl.aux1 and (ctrl.sneak or ctrl.jump)) or (ctrl.sneak and ctrl.jump) then state = "stopping"
 				elseif (velocity.y == 0 or flying_saucer.passive_stop) and not (ctrl.jump or ctrl.sneak) then state = "idle"
 				elseif (velocity.y < 0 and ctrl.jump) or (velocity.y > 0 and ctrl.sneak) then state = "idle"
+				elseif ctrl.aux1 then state = "idle"
 				elseif ctrl.jump then state = "ascending"
 				elseif ctrl.sneak then state = "descending"
 				end
+				if state == "idle" and not flying_saucer.smooth_stop then state = "stopping" end
+				flying_saucer.storage[name].state = state
 
+				-- echo player's state for debugging purposes
 				debug_msg("player '"..name.."' is "..state..", velocity="..minetest.pos_to_string(velocity)..")...")
 
-				if (state == "stopping" or (state == "idle" and not flying_saucer.smooth_stop)) and velocity.y ~= 0 then
-					stopping_player = name
-					minetest.add_entity(pos, "flying_saucer:stopper_entity")
-				elseif state == "idle" and velocity.y ~= 0 then
-					place_bubble(schempos, delay)
-				elseif state == "ascending" and velocity.y < flying_saucer.speed*0.75 then
-					place_bubble(schempos, delay)
-				elseif state == "descending" and velocity.y > -flying_saucer.speed*0.75 then
-					place_bubble(schempos, delay)
+				-- remove old bubble if player has already left it
+				if bubble_pos[name] and node and node.name and node.name ~= "flying_saucer:bubble" then remove_bubble(name) end
+
+				-- create bubble or apply brakes to perform player's desired function
+				if state == "stopping" and velocity.y ~= 0 then apply_brakes(name, pos)
+				elseif state == "idle" and velocity.y ~= 0 then place_bubble(schempos, name)
+				elseif state == "ascending" and velocity.y < flying_saucer.speed*0.75 then place_bubble(schempos, name)
+				elseif state == "descending" and velocity.y > -flying_saucer.speed*0.75 then place_bubble(schempos, name)
 				end
-				flying_saucer.storage[name].state = state
+
+				-- remove bubble if optimal travel speed for current state has been achieved
+				if state == "idle" and velocity.y == 0 then remove_bubble(name)
+				elseif state == "ascending" and velocity.y >= flying_saucer.speed*0.75 then remove_bubble(name)
+				elseif state == "descending" and velocity.y <= -flying_saucer.speed*0.75 then remove_bubble(name)
+				end
 			end
 		end
 	end
@@ -207,7 +231,20 @@ minetest.register_abm{
 	interval = 5,
 	chance = 1,
 	action = function(pos)
-		minetest.remove_node(pos)
+		local despawn = true
+		for _,obj in ipairs(minetest.get_objects_inside_radius(pos, flying_saucer.bubble_diameter)) do
+			if obj:is_player() then
+				local pilot = flying_saucer.storage[obj:get_player_name()]
+				local velocity = obj:get_player_velocity()
+				if pilot and velocity then
+					if pilot.state == "idle" and velocity.y ~= 0 then despawn = false
+					elseif pilot.state == "ascending" and velocity.y < flying_saucer.speed*0.75 then despawn = false
+					elseif pilot.state == "descending" and velocity.y > -flying_saucer.speed*0.75 then despawn = false
+					end
+				end
+			end
+		end
+		if despawn then minetest.remove_node(pos) end
 	end
 }
 
