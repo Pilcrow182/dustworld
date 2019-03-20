@@ -1,4 +1,4 @@
-local DEBUG, VERBOSE = true, true
+local DEBUG, VERBOSE = true, false
 local debug_msg = function(message)
 	if DEBUG then
 		minetest.log("action", message)
