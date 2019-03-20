@@ -1,4 +1,4 @@
-local DEBUG, VERBOSE = true, false
+local DEBUG, VERBOSE = true, true
 local debug_msg = function(message)
 	if DEBUG then
 		minetest.log("action", message)
@@ -118,6 +118,8 @@ minetest.register_chatcommand("spawn_shop", {
 local valid_spawn = function(pos)
 	debug_msg("[MOD] shops -- checking if pos "..minetest.pos_to_string(pos).." is valid")
 	if minetest.get_modpath("wasteland") then return false end -- don't spawn shops when playing dustworld
+	local under = minetest.get_node({x = pos.x, y = pos.y - 1, z = pos.z})
+	if under and under.name and minetest.get_item_group(under.name, "leaves") > 0 then return false end -- don't spawn on top of leaves
 	local ignore = minetest.find_node_near(pos, 6, {"ignore"})
 	if ignore then return false end
 	local map = shops.build_map("default:stone")
@@ -130,10 +132,11 @@ local valid_spawn = function(pos)
 			end
 		end
 	end
-	debug_msg("[MOD] shops -- SUCCESS! Pos "..minetest.pos_to_string(pos).."is valid!")
+	debug_msg("[MOD] shops -- SUCCESS! Pos "..minetest.pos_to_string(pos).." is valid!")
 	return true
 end
 
+local spawn_list = {}
 minetest.register_on_generated(function(minp, maxp, blockseed)
 	if math.random(1, 100) > 5 then return end -- 5% chance of generating trader hut
 
@@ -169,6 +172,23 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 		
 
 	local pos = {x = x, y = ground_y, z = z}
-	if pos and valid_spawn(pos) then shops.spawn_shop(pos) end
+	if pos and valid_spawn(pos) then table.insert(spawn_list, minetest.pos_to_string(pos)) end
+end)
+
+local timer = 0
+minetest.register_globalstep(function(dtime)
+	timer = timer + dtime
+	if timer >= 1 then
+		timer = 0
+		if #spawn_list == 0 then return end
+		for k,v in pairs(spawn_list) do
+			local pos = minetest.string_to_pos(v)
+			local node = minetest.get_node(pos)
+			if node and node.name ~= "ignore" then
+				shops.spawn_shop(pos)
+				spawn_list[k] = nil
+			end
+		end
+	end
 end)
 
