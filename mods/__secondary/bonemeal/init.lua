@@ -161,6 +161,13 @@ bonemeal.grow = function(pointed_thing)
 			minetest.set_node(plantpos, {name=spawnplants[math.random(1, #spawnplants)]})
 		end
 
+	elseif n.name == "default:sand" then
+		plantpos = {x = pos.x, y = pos.y+1, z = pos.z}
+		if minetest.get_node(plantpos).name == "air" then
+			spawnplants = {"default:papyrus"}
+			minetest.set_node(plantpos, {name=spawnplants[math.random(1, #spawnplants)]})
+		end
+
 	elseif n.name == "default:dirt_with_grass" then
 		plantpos = {x = pos.x, y = pos.y+1, z = pos.z}
 		if minetest.get_node(plantpos).name == "air" then

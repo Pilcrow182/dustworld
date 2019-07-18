@@ -108,6 +108,14 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	output = 'survivalist:broken_akalin_ingot',
+	recipe = {
+		{'survivalist:akalin_fragment', 'survivalist:akalin_fragment'},
+		{'survivalist:akalin_fragment', 'survivalist:akalin_fragment'},
+	}
+})
+
+minetest.register_craft({
 	type = "cooking",
 	output = "default:steel_ingot",
 	recipe = "survivalist:broken_iron_ingot",
@@ -123,6 +131,12 @@ minetest.register_craft({
 	type = "cooking",
 	output = "default:gold_ingot",
 	recipe = "survivalist:broken_gold_ingot",
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = "gloopores:akalin_ingot",
+	recipe = "survivalist:broken_akalin_ingot",
 })
 
 minetest.register_craft({
@@ -307,6 +321,12 @@ minetest.register_craft({
 	recipe = {'default:sand', 'survivalist:mulch_block'}
 })
 
+minetest.register_craft({
+	type = 'shapeless',
+	output = 'default:dirt 2',
+	recipe = {'default:dirt', 'survivalist:mulch_block'}
+})
+
 if minetest.get_modpath("bonemeal") ~= nil then
 	minetest.register_craft({
 		type = 'shapeless',
@@ -334,3 +354,44 @@ if minetest.get_modpath("bonemeal") ~= nil then
 		cooktime = 12
 	})
 end
+
+minetest.register_craft({
+	output = 'survivalist:whetstone',
+	recipe = {
+		{'flint:flintstone', 'default:diamond', 'flint:flintstone'},
+		{'flint:flintstone', 'default:diamond', 'flint:flintstone'},
+		{'flint:flintstone', 'default:diamond', 'flint:flintstone'},
+	}
+})
+
+minetest.register_craft({
+	type = "shapeless",
+	output = "survivalist:shears",
+	replacements = {{"survivalist:whetstone", "survivalist:whetstone"}},
+	recipe = {"survivalist:shears", "survivalist:whetstone"}
+})
+
+minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
+	local uses, whetstone, slot = 50, nil, nil
+	for i = 1, player:get_inventory():get_size("craft") do
+		if old_craft_grid[i]:get_name() == "survivalist:whetstone" then
+			whetstone = old_craft_grid[i]
+			slot = i
+		end
+	end
+
+	if not whetstone then return end
+	whetstone:add_wear(65535 / (uses - 1))
+	craft_inv:set_stack("craft", slot, whetstone)
+end)
+
+minetest.register_craft({
+	output = "default:clay 8",
+	replacements = {{"bucket:bucket_water", "bucket:bucket_empty"}},
+	recipe = {
+		{"wasteland:dust", "wasteland:dust", "wasteland:dust"},
+		{"wasteland:dust", "bucket:bucket_water", "wasteland:dust"},
+		{"wasteland:dust", "wasteland:dust", "wasteland:dust"},
+	}
+})
+

@@ -63,15 +63,52 @@ minetest.register_craftitem("survivalist:broken_gold_ingot",{
 	inventory_image = "survivalist_broken_gold_ingot.png"
 })
 
+minetest.register_craftitem("survivalist:akalin_fragment",{
+	description = "Akalin Fragment",
+	inventory_image = "survivalist_akalin_fragment.png"
+})
+
+minetest.register_craftitem("survivalist:broken_akalin_ingot",{
+	description = "Broken Akalin Ingot",
+	inventory_image = "survivalist_broken_akalin_ingot.png"
+})
+
 minetest.register_craftitem("survivalist:mese_dust",{
 	description = "Mese Dust",
 	inventory_image = "survivalist_mese_dust.png"
 })
 
-minetest.register_craftitem("survivalist:grass_seed",{
-	description = "Grass Seed",
-	inventory_image = "survivalist_grass_seed.png"
+minetest.register_node("survivalist:odd_seed",{
+	description = "Odd Seed",
+	inventory_image = "survivalist_odd_seed.png",
+	wield_image = "survivalist_odd_seed.png",
+	tiles = {"survivalist_seed_planted.png"},
+	drawtype="nodebox",
+	paramtype = "light",
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{-1/16,-8/16,-1/16,1/16,-7/16,1/16},
+		}
+	},
+	groups = {oddly_breakable_by_hand=3},
+	on_place = function(itemstack, placer, pointed_thing)
+		local surface = minetest.get_node(pointed_thing.under)
+		local sname = surface.name
+		if not minetest.registered_nodes[sname] then
+			return itemstack
+		elseif minetest.registered_nodes[sname].on_rightclick and not placer:get_player_control().sneak then
+			return minetest.registered_nodes[sname].on_rightclick(pointed_thing.under, surface, placer, itemstack)
+		end
+		if sname == "survivalist:mulch_block" or sname == "default:clay" or sname == "default:dirt" or sname == "default:dirt_with_grass" then
+			minetest.item_place(itemstack, placer, pointed_thing)
+		end
+		return itemstack
+	end,
 })
+
+minetest.register_alias("survivalist:grass_seed", "survivalist:odd_seed")
+minetest.register_alias("survivalist:seed", "survivalist:odd_seed")
 
 minetest.register_craftitem("survivalist:rock",{
 	description = "Small Rock",
@@ -120,6 +157,11 @@ minetest.register_tool("survivalist:shears", {
 minetest.register_tool("survivalist:crook", {
 	description = "Crook",
 	inventory_image = "survivalist_crook.png",
+})
+
+minetest.register_tool("survivalist:whetstone", {
+	description = "Whetstone",
+	inventory_image = "survivalist_whetstone.png"
 })
 
 survivalist.clone_item("default:leaves", "default:leaves", {
@@ -460,6 +502,13 @@ minetest.register_craftitem("survivalist:mulch", {
 	end,
 })
 
+minetest.register_node("survivalist:desert_gravel",{
+	description = "Desert Gravel",
+	tiles = {"survivalist_desert_gravel.png"},
+	groups = {crumbly = 2, falling_node = 1},
+	sounds = default.node_sound_gravel_defaults(),
+})
+
 minetest.register_node("survivalist:mulch_block",{
 	description = "Mulch Block",
 	tiles = {"survivalist_mulch_block.png"},
@@ -487,3 +536,11 @@ default.register_leafdecay({
 	leaves = leaves,
 	radius = 3,
 })
+
+survivalist.register_hammer("group:stone",          {times={[1]=1.2, [2]=1.2, [3]=1.2}, uses= 10, maxlevel=1})
+survivalist.register_hammer("default:steel_ingot",  {times={[1]=0.9, [2]=0.9, [3]=0.9}, uses= 30, maxlevel=1})
+survivalist.register_hammer("default:bronze_ingot", {times={[1]=0.6, [2]=0.6, [3]=0.6}, uses= 60, maxlevel=1})
+survivalist.register_hammer("default:mese_crystal", {times={[1]=0.4, [2]=0.4, [3]=0.4}, uses=100, maxlevel=1})
+survivalist.register_hammer("default:diamond",      {times={[1]=0.3, [2]=0.3, [3]=0.3}, uses=150, maxlevel=1})
+survivalist.register_hammer("flint:flintstone",     {times={[1]=0.6, [2]=0.6, [3]=0.6}, uses= 10, maxlevel=1})
+

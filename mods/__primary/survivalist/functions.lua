@@ -56,3 +56,61 @@ function survivalist.clone_item(name, newname, newdef)
 	for k,v in pairs(newdef) do fulldef[k]=v end
 	minetest.register_item(":"..newname, fulldef)
 end
+
+function survivalist.tool_override(tool, input, output, droplist)
+	-- get the input node's original definition
+	local old_def = minetest.registered_nodes[input]
+
+	-- exit safely if the input or output doesn't exist
+	if not (old_def and minetest.registered_items[output]) then return false end
+
+	-- get the input node's drops as a table
+	local old_drop = (type(old_def.drop) == "table" and old_def.drop) or {items = {{items = {old_def.drop or input}}}}
+
+	-- define the input node's new tool drops
+	local new_def = {drop = {max_items = 1, items = {{items = {output}, tools = {tool}}}}}
+
+	-- add the old drops to the new list
+	for _,entry in pairs(droplist or old_drop.items) do new_def.drop.items[#new_def.drop.items+1] = entry end
+
+	-- override the node with the new list
+	minetest.override_item(input, new_def)
+end
+
+function survivalist.register_hammer(material, caps)
+	local hammer_io = {
+		["default:stone"] = "default:gravel",
+		["default:cobble"] = "default:gravel",
+		["default:gravel"] = "default:sand",
+		["default:sand"] = "wasteland:dust",
+		["default:desert_stone"] = "survivalist:desert_gravel",
+		["default:desert_cobble"] = "survivalist:desert_gravel",
+		["survivalist:desert_gravel"] = "default:desert_sand",
+		["default:desert_sand"] = "wasteland:dust",
+		["default:papyrus"] = "survivalist:mulch"
+	}
+
+	local shortname = string.gsub(string.gsub(material, "_.*", ""), ".*:", "")
+	local nicename = string.gsub(shortname, "^%l", string.upper)
+
+	minetest.register_tool("survivalist:hammer_"..shortname, {
+		description = nicename.." Hammer",
+		inventory_image = "survivalist_hammer_"..shortname..".png",
+		tool_capabilities = {groupcaps={crumbly = caps, cracky = caps, snappy = caps}}
+	})
+
+	for input,output in pairs(hammer_io) do
+		survivalist.tool_override("survivalist:hammer_"..shortname, input, output)
+		survivalist.tool_override("hammer:hammer_"..shortname, input, output)		-- TODO: remove this; it's temporary, legacy code
+	end
+
+	minetest.register_craft({
+		output = "survivalist:hammer_"..shortname,
+		recipe = {
+			{      ""     ,    material  ,       ""     },
+			{      ""     , "group:stick",    material  },
+			{"group:stick",       ""     ,       ""     },
+		}
+	})
+end
+

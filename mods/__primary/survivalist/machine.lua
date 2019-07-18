@@ -113,7 +113,7 @@ function survivalist.register_machine(machine_type, itemtable)
 				survivalist.swap_machine(pos, machine_type)
 				return itemstack
 			end,
-			groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=3},
+			groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2},
 			drop = "survivalist:machine_"..machine_type.."_1"
 		})
 	end
@@ -188,7 +188,7 @@ function survivalist.register_machine(machine_type, itemtable)
 			return automachine_allow_metadata_inventory_move(pos, from_list, from_index, to_list, to_index, count, player)
 		end,
 		is_ground_content = false,
-		groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=3},
+		groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2},
 		drop = "survivalist:machine_auto"..machine_type
 	})
 
@@ -219,7 +219,7 @@ function survivalist.register_machine(machine_type, itemtable)
 		allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
 			return automachine_allow_metadata_inventory_move(pos, from_list, from_index, to_list, to_index, count, player)
 		end,
-		groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=3},
+		groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2},
 		drop = "survivalist:machine_auto"..machine_type
 	})
 
@@ -310,7 +310,8 @@ end
 survivalist.register_machine("grinder", {
 	{"default:gravel", "default:sand"},
 	{"default:desert_stone", "default:desert_sand"}, -- NOTE: This is recognized first and used instead of "group:stone" below
-	{"default:desert_cobble", "default:desert_sand"},
+	{"default:desert_cobble", "survivalist:desert_gravel"},
+	{"survivalist:desert_gravel", "default:desert_sand"},
 	{"flolands:floatstone", "flolands:floatsand"},
 	{"default:cactus", "survivalist:mulch"},
 	{"group:stone", "default:gravel"},
@@ -325,7 +326,8 @@ survivalist.register_machine("compressor", {
 	{"default:gravel", "default:cobble"},
 	{"default:sand", "default:gravel"},
 	{"wasteland:dust", "default:sand"},
-	{"default:desert_sand", "default:desert_cobble"},
+	{"survivalist:desert_gravel", "default:desert_cobble"},
+	{"default:desert_sand", "survivalist:desert_gravel"},
 	{"flolands:floatsand", "flolands:floatstone"},
 	{"survivalist:mulch", "default:coal_lump"},
 	{"bed:bed_bottom", "bed:minibed"},

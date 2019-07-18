@@ -107,7 +107,15 @@ end
 local water_input = {
 	"default:apple", "default:sapling", "default:junglegrass", "poisonivy:sproutling",
 	"default:leaves", "survivalist:apple", "survivalist:acorn", "survivalist:oak_sapling",
-	"survivalist:apple_leaves", "survivalist:apple_core" , "survivalist:apple_sapling"
+	"survivalist:apple_leaves", "survivalist:apple_core" , "survivalist:apple_sapling",
+
+	"default:acacia_bush_leaves", "default:acacia_leaves", "default:aspen_leaves",
+	"default:bush_leaves", "default:jungleleaves", "default:pine_bush_needles",
+	"default:pine_needles", "farming_plus:banana_leaves", "farming_plus:cocoa_leaves",
+	"flolife:leaves", "trees:leaves_birch", "trees:leaves_conifer",
+	"trees:leaves_green", "trees:leaves_green_viney", "trees:leaves_mangrove",
+	"trees:leaves_palm", "trees:leaves_red", "trees:leaves_red_viney",
+	"trees:leaves_yellow", "trees:leaves_yellow_viney"
 }
 for _,name in ipairs(water_input) do
 	survivalist.register_meltable(name, "bucket:bucket_water", "bucket:bucket_empty", "water")
@@ -119,3 +127,4 @@ local fuel_input = {
 for _,name in ipairs(fuel_input) do
 	survivalist.register_meltable(name, "crash_site:fuel_bucket", "bucket:bucket_empty", "fuel")
 end
+

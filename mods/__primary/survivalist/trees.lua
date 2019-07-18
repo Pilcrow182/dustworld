@@ -62,6 +62,38 @@ minetest.register_abm({
 })
 
 minetest.register_abm({
+	nodenames = {"survivalist:odd_seed"},
+	interval = 20,
+	chance = 3,
+	action = function(pos)
+		local exclude = {
+			"default:pine_bush_sapling",
+			"default:acacia_bush_sapling",
+			"default:sapling",
+			"ferns:sapling_tree_fern",
+			"default:acacia_sapling",
+			"default:emergent_jungle_sapling",
+			"default:aspen_sapling",
+			"default:bush_sapling",
+			"ferns:sapling_giant_tree_fern",
+			"default:pine_sapling",
+			"default:junglesapling",
+			"trees:jungletree_sapling"
+		}
+		for k,v in pairs(exclude) do exclude[v] = true end
+
+		local saplings = {}
+		for name,_ in pairs(minetest.registered_nodes) do
+			if minetest.get_item_group(name, "sapling") > 0 and not exclude[name] then
+				table.insert(saplings, name)
+			end
+		end
+
+		minetest.set_node(pos, {name = saplings[math.random(1, #saplings)]})
+	end
+})
+
+minetest.register_abm({
 	nodenames = {"survivalist:oak_sapling"},
 	interval = 60,
 --	interval = 20,

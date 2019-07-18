@@ -18,7 +18,7 @@ minetest.register_node("survivalist:machine_autosieve",{
 		return true
 	end,
 	is_ground_content = false,
-	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=3},
+	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2},
 	drop = "survivalist:machine_autosieve"
 })
 
@@ -52,7 +52,7 @@ minetest.register_node("survivalist:machine_autosieve_on",{
 		if not ( inv:is_empty("fuel") and inv:is_empty("dst") and inv:is_empty("src") ) then return false end
 		return true
 	end,
-	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=3},
+	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2},
 	drop = "survivalist:machine_autosieve"
 })
 

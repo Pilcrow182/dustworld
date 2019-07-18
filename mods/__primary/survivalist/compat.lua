@@ -158,4 +158,30 @@ end
 
 if minetest.get_modpath("bonemeal") == nil then minetest.register_alias("bonemeal:bonemeal", "survivalist:mulch") end
 if minetest.get_modpath("flint") == nil then minetest.register_alias("flint:flintstone", "survivalist:rock") end
-if minetest.get_modpath("wasteland") == nil then minetest.register_alias("wasteland:dust", "default:sand") end
+
+if minetest.get_modpath("wasteland") == nil then
+	minetest.register_node(":wasteland:dust", {
+		description = "Dust",
+		tiles = {"survivalist_subst_dust.png"},
+		is_ground_content = true,
+		groups = {crumbly=3, falling_node=1, sand=1},
+		sounds = default.node_sound_sand_defaults(),
+	})
+end
+
+if minetest.get_modpath("gloopores") == nil then
+	minetest.register_craftitem(":gloopores:akalin_ingot", {
+		description = 'Akalin Ingot',
+		inventory_image = 'survivalist_subst_akalin.png',
+	})
+end
+
+-- LEGACY
+
+minetest.register_alias("whetstone:whetstone", "survivalist:whetstone")
+minetest.register_alias("hammer:hammer", "survivalist:hammer_stone")
+
+for _,material in pairs({"stone", "steel", "bronze", "mese", "diamond"}) do
+	minetest.register_alias("hammer:hammer_"..material, "survivalist:hammer_"..material)
+end
+

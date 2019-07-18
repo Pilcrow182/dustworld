@@ -2,3 +2,5 @@ default
 farming
 farming_plus?
 bucket?
+flint?
+

@@ -156,7 +156,7 @@ minetest.register_node("snow:sapling_evergreen", {
 	wield_image = "snow_sapling_evergreen.png",
 	paramtype = "light",
 	walkable = false,
-	groups = {snappy=2,dig_immediate=3,flammable=2,saplng=1},
+	groups = {snappy=2,dig_immediate=3,flammable=2,sapling=1},
 	sounds = default.node_sound_defaults(),
 })
 

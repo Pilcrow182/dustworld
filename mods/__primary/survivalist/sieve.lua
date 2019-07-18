@@ -50,15 +50,21 @@ minetest.register_node("survivalist:sieve",{
 			return itemstack
 		end
 	end,
-	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=3},
+	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2},
 })
 
 function survivalist.give_sifted(itemstack, player, droprates, siftee)
-	local j, output = nil, nil
-	for i=1,#droprates do
-		if math.random(1,2) == 2 then j=1+#droprates-i else j=i end
-		if math.random(1,droprates[j].rarity) == math.ceil(droprates[j].rarity/2) then output = droprates[j].items[1] break end
+	local list = {}
+	for _,item in ipairs(droprates) do
+		local index = math.random(1, #list+1)
+		table.insert(list, index, item)
 	end
+
+	local output = nil
+	for i=1,#list do
+		if math.random(1,list[i].rarity) == math.ceil(list[i].rarity/2) then output = list[i].items[1] break end
+	end
+
 	if not output and FEEDBACK == true and math.random(1,2) == 2 then output = siftee end
 	if output then survivalist.hacky_give_item(player, output, 1, itemstack) end
 	return itemstack
@@ -98,7 +104,7 @@ function survivalist.register_siftable(longname, def)
 				if CLUMPS == true and math.random(1,4) < 3 then return end
 				minetest.set_node(pos, {name="survivalist:sieve_"..nicename.."_"..i+1})
 			end,
-			groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=3},
+			groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2},
 		})
 	end
 
@@ -119,7 +125,7 @@ function survivalist.register_siftable(longname, def)
 			survivalist.give_sifted(itemstack, clicker, droprates, longname) -- minetest.node_dig(pos, node, clicker)
 			minetest.set_node(pos, {name="survivalist:sieve"})
 		end,
-		groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=3},
+		groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2},
 		drop = {
 			max_items = 1,
 			items = droprates
@@ -129,14 +135,14 @@ end
 
 survivalist.register_siftable("default:dirt", {
 	droprates = {
+		{'survivalist:rock', 3},
+		{'default:mese_crystal_fragment', 4},
 		{'survivalist:acorn', 5},
-		{'default:mese_crystal_fragment', 5},
 		{'animalmaterials:bone', 6},
 		{'survivalist:apple_core', 7},
-		{'survivalist:rock', 9},
-		{'survivalist:grass_seed', 10},
-		{'survivalist:copper_fragment', 15},
-		{'survivalist:iron_fragment', 20}
+		{'survivalist:odd_seed', 10},
+		{'survivalist:broken_iron_ingot', 15},
+		{'survivalist:broken_copper_ingot', 20}
 	}
 })
 
@@ -163,6 +169,19 @@ survivalist.register_siftable("default:gravel", {
 		{'animalmaterials:bone', 14},
 		{'survivalist:broken_iron_ingot', 24},
 		{'survivalist:broken_copper_ingot', 28}
+	}
+})
+
+survivalist.register_siftable("survivalist:desert_gravel", {
+	droprates = {
+		{'default:mese_crystal_fragment', 3},
+		{'default:clay_lump', 5},
+		{'flint:flintstone', 7},
+		{'animalmaterials:bone', 10},
+		{'survivalist:broken_akalin_ingot', 15},
+		{'survivalist:broken_iron_ingot', 20},
+		{'survivalist:broken_copper_ingot', 20},
+		{'survivalist:broken_gold_ingot', 30}
 	}
 })
 

@@ -206,38 +206,38 @@ minetest.register_abm({
 		local invtable = ejector.get_table(inv, {"main"})
 		local outtable = ejector.get_table(inv, {"red", "cyan", "green", "magenta", "blue", "yellow"})
 
-		local newout = {}
-		for item,_ in pairs(invtable) do
-			if not outtable[item] then newout[item] = true end
-		end
-
-		if minetest.serialize(newout) ~= "return {}" then
-			for item,_ in pairs(newout) do
-				local invlist = inv:get_list("main")
-				local slots_with_item = ejector.get_slots_by_name(inv, item, {"main"})
-				if #slots_with_item > 0 and not outtable[item] then
-					local count, wear = invlist[slots_with_item[1]]:get_count(), invlist[slots_with_item[1]]:get_wear()
-					for d = 0, 5 do
-						local dir, color = getdir[d][1], getdir[d][2]
-						if inv:room_for_item(color, {name=item, count=1, wear=wear}) then
-							local dst = {x = pos.x + dir.x, y = pos.y + dir.y, z = pos.z + dir.z}
-							local dstinv, dstlabel, dstlist, is_hopper, dstms, dstmeta, dstitem, dstamount = mechanism.check_storage(dst, {"main", "src"})
-
-							local ms_avail = false
-							if dstms ~= 0 and ( dstitem == "" or dstitem == item ) then ms_avail = true end
-
-							if is_hopper == 0 and ( ms_avail or ( dstlabel and dstinv:room_for_item(dstlabel, {name=item, count=1, wear=wear}) ) ) then
-								inv:add_item(color, {name=item, count=1, wear=wear})
-								inv:set_stack("main", slots_with_item[1], {name=item, count=count-1})
-								invtable = ejector.get_table(inv, {"main"})
-								outtable = ejector.get_table(inv, {"red", "cyan", "green", "magenta", "blue", "yellow"})
-								break
-							end
-						end
-					end
-				end
-			end
-		end
+--REM--		local newout = {}
+--REM--		for item,_ in pairs(invtable) do
+--REM--			if not outtable[item] then newout[item] = true end
+--REM--		end
+--REM--
+--REM--		if minetest.serialize(newout) ~= "return {}" then
+--REM--			for item,_ in pairs(newout) do
+--REM--				local invlist = inv:get_list("main")
+--REM--				local slots_with_item = ejector.get_slots_by_name(inv, item, {"main"})
+--REM--				if #slots_with_item > 0 and not outtable[item] then
+--REM--					local count, wear = invlist[slots_with_item[1]]:get_count(), invlist[slots_with_item[1]]:get_wear()
+--REM--					for d = 0, 5 do
+--REM--						local dir, color = getdir[d][1], getdir[d][2]
+--REM--						if inv:room_for_item(color, {name=item, count=1, wear=wear}) then
+--REM--							local dst = {x = pos.x + dir.x, y = pos.y + dir.y, z = pos.z + dir.z}
+--REM--							local dstinv, dstlabel, dstlist, is_hopper, dstms, dstmeta, dstitem, dstamount = mechanism.check_storage(dst, {"main", "src"})
+--REM--
+--REM--							local ms_avail = false
+--REM--							if dstms ~= 0 and ( dstitem == "" or dstitem == item ) then ms_avail = true end
+--REM--
+--REM--							if is_hopper == 0 and ( ms_avail or ( dstlabel and dstinv:room_for_item(dstlabel, {name=item, count=1, wear=wear}) ) ) then
+--REM--								inv:add_item(color, {name=item, count=1, wear=wear})
+--REM--								inv:set_stack("main", slots_with_item[1], {name=item, count=count-1})
+--REM--								invtable = ejector.get_table(inv, {"main"})
+--REM--								outtable = ejector.get_table(inv, {"red", "cyan", "green", "magenta", "blue", "yellow"})
+--REM--								break
+--REM--							end
+--REM--						end
+--REM--					end
+--REM--				end
+--REM--			end
+--REM--		end
 
 		for name, count in pairs(outtable) do
 			local end_loop = false
