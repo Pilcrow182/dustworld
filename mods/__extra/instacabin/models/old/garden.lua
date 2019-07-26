@@ -4,11 +4,10 @@ local n03 = { name = "default:fence_wood", param2 = 3 }
 local n04 = { name = "air" }
 local n05 = { name = "default:fence_wood" }
 local n06 = { name = "farming:soil_wet" }
-local n07 = { name = "farming_plus:blueberry_1" }
+local n07 = { name = "farming_plus:potatoe_1" }
 local n08 = { name = "default:dirt_with_grass" }
 local n09 = { name = "default:papyrus" }
 local n10 = { name = "default:water_source" }
-local n11 = { name = "flowers:waterlily" }
 
 instacabin.schems.garden = {
 	size = {x = 7, y = 6, z = 6},
@@ -43,7 +42,7 @@ instacabin.schems.garden = {
 
 		n01, n08, n08, n01, n01, n01, n01,
 		n02, n10, n10, n10, n10, n10, n02,
-		n03, n11, n11, n11, n11, n11, n03,
+		n03, n04, n04, n04, n04, n04, n03,
 		n04, n04, n04, n04, n04, n04, n04,
 		n04, n04, n04, n04, n04, n04, n04,
 		n04, n04, n04, n04, n04, n04, n04,

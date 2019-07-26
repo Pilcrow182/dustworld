@@ -484,7 +484,7 @@ minetest.register_craftitem("survivalist:mulch", {
 	stack_max = 99,
 	on_use = function(itemstack, user, pointed_thing)
 		if pointed_thing.type == "node" and minetest.get_node(pointed_thing.under).name ~= "air" then
-			if math.random(0,3) == 2 then
+			if math.random(0,1) == 1 then
 				local growing = minetest.get_node(pointed_thing.under).name
 				if growing == "survivalist:oak_sapling" then
 					survivalist.grow_tree(pointed_thing.under, "default:tree", "survivalist:oak_leaves", "survivalist:oak_leaves")

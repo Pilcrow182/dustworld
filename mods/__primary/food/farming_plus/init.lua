@@ -20,7 +20,7 @@ minetest.register_alias("farming:seed_potatoe", "farming_plus:potatoe_seed")
 for lvl = 1, 6, 1 do
 	minetest.register_entity(":farming:potatoe_lvl"..lvl, {
 		on_activate = function(self, staticdata)
-			minetest.env:set_node(self.object:getpos(), {name="farming_plus:potatoe_1"})
+			minetest.set_node(self.object:getpos(), {name="farming_plus:potatoe_1"})
 		end
 	})
 end

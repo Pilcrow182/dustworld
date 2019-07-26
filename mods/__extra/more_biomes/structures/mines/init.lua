@@ -38,15 +38,15 @@ local chest_stuff = {
 
 local function fill_chest(pos)
 	minetest.after(8, function()
-		local n = minetest.env:get_node(pos)
+		local n = minetest.get_node(pos)
 		if n ~= nil then
 			if n.name == ids.dummy then
 				if DEBUG then
 					minetest.chat_send_all("DEBUG: Generating chest at "..minetest.pos_to_string(pos))
 					print ("DEBUG: Generating chest at "..minetest.pos_to_string(pos))
 				end
-				minetest.env:set_node(pos, {name="default:chest"})
-				local meta = minetest.env:get_meta(pos)
+				minetest.set_node(pos, {name="default:chest"})
+				local meta = minetest.get_meta(pos)
 				meta:set_string("formspec", "size[10,9]list[current_name;main;1,0;8,4;]list[current_player;main;0,5;10,4;]")
 				meta:set_string("infotext", "Chest")
 				local inv = meta:get_inventory()
@@ -126,22 +126,22 @@ local function make_mine(mpos)
 				z5 = pos.z+1
 			end
 			minetest.after(2, function()
-				minetest.env:set_node({x=x1, y=pos.y-1, z=z1}, {name=pillar})
-				minetest.env:set_node({x=x2, y=pos.y-1, z=z2}, {name=ids.air})
-				minetest.env:set_node({x=x3, y=pos.y-1, z=z3}, {name=pillar})
+				minetest.set_node({x=x1, y=pos.y-1, z=z1}, {name=pillar})
+				minetest.set_node({x=x2, y=pos.y-1, z=z2}, {name=ids.air})
+				minetest.set_node({x=x3, y=pos.y-1, z=z3}, {name=pillar})
 
-				minetest.env:set_node({x=x1, y=pos.y, z=z1}, {name=pillar})
-				minetest.env:set_node({x=x2, y=pos.y, z=z2}, {name=ids.air})
-				minetest.env:set_node({x=x3, y=pos.y, z=z3}, {name=pillar})
+				minetest.set_node({x=x1, y=pos.y, z=z1}, {name=pillar})
+				minetest.set_node({x=x2, y=pos.y, z=z2}, {name=ids.air})
+				minetest.set_node({x=x3, y=pos.y, z=z3}, {name=pillar})
 
-				minetest.env:set_node({x=x1, y=pos.y+1, z=z1}, {name=pillar_top})
-				minetest.env:set_node({x=x2, y=pos.y+1, z=z2}, {name=pillar_topmid})
-				minetest.env:set_node({x=x3, y=pos.y+1, z=z3}, {name=pillar_top})
+				minetest.set_node({x=x1, y=pos.y+1, z=z1}, {name=pillar_top})
+				minetest.set_node({x=x2, y=pos.y+1, z=z2}, {name=pillar_topmid})
+				minetest.set_node({x=x3, y=pos.y+1, z=z3}, {name=pillar_top})
 
 				if math.random(0,60) == 13 then
 					local p = {x=x5, y=pos.y-1, z=z5}
-					if minetest.env:get_node(p).name ~= ids.fence then
-						minetest.env:set_node(p, {name=ids.dummy})
+					if minetest.get_node(p).name ~= ids.fence then
+						minetest.set_node(p, {name=ids.dummy})
 						fill_chest(p)
 					end
 				end
@@ -151,13 +151,9 @@ local function make_mine(mpos)
 end
 
 minetest.register_on_generated(function(minp, maxp, seed)
-
-	if minp.y > MINE_DEEP_MIN or minp.y < MINE_DEEP_MAX then
-		return
-	end
-
+	if minetest.get_modpath("wasteland") or minetest.get_modpath("skyland") then return end
+	if minp.y > MINE_DEEP_MIN or minp.y < MINE_DEEP_MAX then return end
 	if math.random(0,100) > 85 then return end
-	local mpos = {x=math.random(minp.x,maxp.x), y=minp.y+math.random(-2,2), z=math.random(minp.z,maxp.z)}
-
-	make_mine(mpos)
+	make_mine({x=math.random(minp.x,maxp.x), y=minp.y+math.random(-2,2), z=math.random(minp.z,maxp.z)})
 end)
+

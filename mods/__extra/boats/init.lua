@@ -4,7 +4,7 @@
 --
 
 local function is_water(pos)
-	local nn = minetest.env:get_node(pos).name
+	local nn = minetest.get_node(pos).name
 	return minetest.get_item_group(nn, "water") ~= 0
 end
 
@@ -105,7 +105,7 @@ function boat:on_step(dtime)
 	local p = self.object:getpos()
 	p.y = p.y-0.5
 	if not is_water(p) then
-		if minetest.registered_nodes[minetest.env:get_node(p).name].walkable then
+		if minetest.registered_nodes[minetest.get_node(p).name].walkable then
 			self.v = 0
 		end
 		self.object:setacceleration({x=0, y=-10, z=0})
@@ -147,10 +147,10 @@ minetest.register_craftitem("boats:boat", {
 	liquids_pointable = true,
 	
 	on_place = function(itemstack, placer, pointed_thing)
-		if not minetest.registered_nodes[minetest.env:get_node(pointed_thing.under).name] then
+		if not minetest.registered_nodes[minetest.get_node(pointed_thing.under).name] then
 			return itemstack
-		elseif minetest.registered_nodes[minetest.env:get_node(pointed_thing.under).name].on_rightclick and not placer:get_player_control().sneak then
-			return minetest.registered_nodes[minetest.env:get_node(pointed_thing.under).name].on_rightclick(pointed_thing.under, minetest.env:get_node(pointed_thing.under), placer, itemstack)
+		elseif minetest.registered_nodes[minetest.get_node(pointed_thing.under).name].on_rightclick and not placer:get_player_control().sneak then
+			return minetest.registered_nodes[minetest.get_node(pointed_thing.under).name].on_rightclick(pointed_thing.under, minetest.get_node(pointed_thing.under), placer, itemstack)
 		end
 		if pointed_thing.type ~= "node" then
 			return
@@ -159,7 +159,7 @@ minetest.register_craftitem("boats:boat", {
 			return
 		end
 		pointed_thing.under.y = pointed_thing.under.y+0.5
-		minetest.env:add_entity(pointed_thing.under, "boats:boat")
+		minetest.add_entity(pointed_thing.under, "boats:boat")
 		itemstack:take_item()
 		return itemstack
 	end,

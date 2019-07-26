@@ -7,14 +7,14 @@ function farming:add_plant(full_grown, names, interval, chance)
 		chance = chance,
 		action = function(pos, node)
 			pos.y = pos.y-1
-			if minetest.env:get_node(pos).name ~= "farming:soil_wet" then
+			if minetest.get_node(pos).name ~= "farming:soil_wet" then
 				return
 			end
 			pos.y = pos.y+1
-			if not minetest.env:get_node_light(pos) then
+			if not minetest.get_node_light(pos) then
 				return
 			end
-			if minetest.env:get_node_light(pos) < 8 then
+			if minetest.get_node_light(pos) < 8 then
 				return
 			end
 			local step = nil
@@ -31,14 +31,14 @@ function farming:add_plant(full_grown, names, interval, chance)
 			if new_node.name == nil then
 				new_node.name = full_grown
 			end
-			minetest.env:set_node(pos, new_node)
+			minetest.set_node(pos, new_node)
 		end
 }	)
 end
 
 function farming:generate_tree(pos, trunk, leaves, underground, replacements)
 	pos.y = pos.y-1
-	local nodename = minetest.env:get_node(pos).name
+	local nodename = minetest.get_node(pos).name
 	local ret = true
 	for _,name in ipairs(underground) do
 		if nodename == name then
@@ -47,17 +47,17 @@ function farming:generate_tree(pos, trunk, leaves, underground, replacements)
 		end
 	end
 	pos.y = pos.y+1
-	if not minetest.env:get_node_light(pos) then
+	if not minetest.get_node_light(pos) then
 		return
 	end
-	if ret or minetest.env:get_node_light(pos) < 8 then
+	if ret or minetest.get_node_light(pos) < 8 then
 		return
 	end
 	
 	node = {name = ""}
-	for dy=1,4 do
+	for dy=0,4 do
 		pos.y = pos.y+dy
-		if minetest.env:get_node(pos).name ~= "air" then
+		if minetest.get_node(pos).name ~= "air" then
 			return
 		end
 		pos.y = pos.y-dy
@@ -65,7 +65,7 @@ function farming:generate_tree(pos, trunk, leaves, underground, replacements)
 	node.name = trunk
 	for dy=0,4 do
 		pos.y = pos.y+dy
-		minetest.env:set_node(pos, node)
+		minetest.set_node(pos, node)
 		pos.y = pos.y-dy
 	end
 	
@@ -83,39 +83,39 @@ function farming:generate_tree(pos, trunk, leaves, underground, replacements)
 				pos.z = pos.z+dz
 				
 				if dx == 0 and dz == 0 and dy==3 then
-					if minetest.env:get_node(pos).name == "air" and math.random(1, 5) <= 4 then
-						minetest.env:set_node(pos, node)
+					if minetest.get_node(pos).name == "air" and math.random(1, 5) <= 4 then
+						minetest.set_node(pos, node)
 						for name,rarity in pairs(replacements) do
 							if math.random(1, rarity) == 1 then
-								minetest.env:set_node(pos, {name=name})
+								minetest.set_node(pos, {name=name})
 							end
 						end
 					end
 				elseif dx == 0 and dz == 0 and dy==4 then
-					if minetest.env:get_node(pos).name == "air" and math.random(1, 5) <= 4 then
-						minetest.env:set_node(pos, node)
+					if minetest.get_node(pos).name == "air" and math.random(1, 5) <= 4 then
+						minetest.set_node(pos, node)
 						for name,rarity in pairs(replacements) do
 							if math.random(1, rarity) == 1 then
-								minetest.env:set_node(pos, {name=name})
+								minetest.set_node(pos, {name=name})
 							end
 						end
 					end
 				elseif math.abs(dx) ~= 2 and math.abs(dz) ~= 2 then
-					if minetest.env:get_node(pos).name == "air" then
-						minetest.env:set_node(pos, node)
+					if minetest.get_node(pos).name == "air" then
+						minetest.set_node(pos, node)
 						for name,rarity in pairs(replacements) do
 							if math.random(1, rarity) == 1 then
-								minetest.env:set_node(pos, {name=name})
+								minetest.set_node(pos, {name=name})
 							end
 						end
 					end
 				else
 					if math.abs(dx) ~= 2 or math.abs(dz) ~= 2 then
-						if minetest.env:get_node(pos).name == "air" and math.random(1, 5) <= 4 then
-							minetest.env:set_node(pos, node)
+						if minetest.get_node(pos).name == "air" and math.random(1, 5) <= 4 then
+							minetest.set_node(pos, node)
 							for name,rarity in pairs(replacements) do
 								if math.random(1, rarity) == 1 then
-								minetest.env:set_node(pos, {name=name})
+								minetest.set_node(pos, {name=name})
 								end
 							end
 						end
@@ -151,7 +151,7 @@ minetest.register_alias("farming:seed_wheat", "farming:wheat_seed")
 for lvl = 1, 6, 1 do
 	minetest.register_entity(":farming:wheat_lvl"..lvl, {
 		on_activate = function(self, staticdata)
-			minetest.env:set_node(self.object:getpos(), {name="farming:wheat_1"})
+			minetest.set_node(self.object:getpos(), {name="farming:wheat_1"})
 		end
 	})
 end
@@ -164,7 +164,7 @@ minetest.register_alias("farming:seed_rhy", "farming:wheat_seed")
 for lvl = 1, 6, 1 do
 	minetest.register_entity(":farming:rhy_lvl"..lvl, {
 		on_activate = function(self, staticdata)
-			minetest.env:set_node(self.object:getpos(), {name="farming:wheat_1"})
+			minetest.set_node(self.object:getpos(), {name="farming:wheat_1"})
 		end
 	})
 end
@@ -177,7 +177,7 @@ minetest.register_alias("farming:seed_corn", "farming:wheat_seed")
 for lvl = 1, 6, 1 do
 	minetest.register_entity(":farming:corn_lvl"..lvl, {
 		on_activate = function(self, staticdata)
-			minetest.env:set_node(self.object:getpos(), {name="farming:wheat_1"})
+			minetest.set_node(self.object:getpos(), {name="farming:wheat_1"})
 		end
 	})
 end

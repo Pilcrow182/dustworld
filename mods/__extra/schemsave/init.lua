@@ -19,7 +19,7 @@ end
 
 --determines the axis in which a player is facing, returning an axis ("x", "y", or "z") and the sign (1 or -1)
 schemsave.player_axis = function(name)
-	local dir = minetest.env:get_player_by_name(name):get_look_dir()
+	local dir = minetest.get_player_by_name(name):get_look_dir()
 	local x, y, z = math.abs(dir.x), math.abs(dir.y), math.abs(dir.z)
 	if x > y then
 		if x > z then
@@ -47,7 +47,7 @@ minetest.register_chatcommand("/spos1", {
 	description = "Set Schematic region position 1 to the player's location",
 	--privs = {schemsave=true},
 	func = function(name, param)
-		local pos = minetest.env:get_player_by_name(name):getpos()
+		local pos = minetest.get_player_by_name(name):getpos()
 		pos.x, pos.y, pos.z = math.floor(pos.x + 0.5), math.floor(pos.y + 0.5), math.floor(pos.z + 0.5)
 		schemsave.spos1[name] = pos
 		schemsave.mark_spos1(name)
@@ -60,7 +60,7 @@ minetest.register_chatcommand("/spos2", {
 	description = "Set Schematic region position 2 to the player's location",
 	--privs = {schemsave=true},
 	func = function(name, param)
-		local pos = minetest.env:get_player_by_name(name):getpos()
+		local pos = minetest.get_player_by_name(name):getpos()
 		pos.x, pos.y, pos.z = math.floor(pos.x + 0.5), math.floor(pos.y + 0.5), math.floor(pos.z + 0.5)
 		schemsave.spos2[name] = pos
 		schemsave.mark_spos2(name)

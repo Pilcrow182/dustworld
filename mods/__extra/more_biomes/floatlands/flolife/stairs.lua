@@ -124,7 +124,7 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 			local slabnode = nil
 			local p0 = pointed_thing.under
 			local p1 = pointed_thing.above
-			local n0 = minetest.env:get_node(p0)
+			local n0 = minetest.get_node(p0)
 			if n0.name == "flolife:slab_" .. subname and
 					p0.y+1 == p1.y then
 				slabpos = p0
@@ -132,7 +132,7 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 			end
 			if slabpos then
 				-- Remove the slab at slabpos
-				minetest.env:remove_node(slabpos)
+				minetest.remove_node(slabpos)
 				-- Make a fake stack of a single item and try to place it
 				local fakestack = ItemStack(recipeitem)
 				pointed_thing.above = slabpos
@@ -142,7 +142,7 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 					itemstack:take_item(1)
 				-- Else put old node back
 				else
-					minetest.env:set_node(slabpos, slabnode)
+					minetest.set_node(slabpos, slabnode)
 				end
 				return itemstack
 			end
@@ -152,7 +152,7 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 				-- Turn into full block if pointing at a existing slab
 				if n0.name == "flolife:slab_" .. subname.."upside_down" then
 					-- Remove the slab at the position of the slab
-					minetest.env:remove_node(p0)
+					minetest.remove_node(p0)
 					-- Make a fake stack of a single item and try to place it
 					local fakestack = ItemStack(recipeitem)
 					pointed_thing.above = p0
@@ -162,7 +162,7 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 						itemstack:take_item(1)
 					-- Else put old node back
 					else
-						minetest.env:set_node(p0, n0)
+						minetest.set_node(p0, n0)
 					end
 					return itemstack
 				end

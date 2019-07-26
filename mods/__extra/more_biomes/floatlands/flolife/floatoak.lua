@@ -165,7 +165,7 @@ minetest.register_abm({
 	interval = 1,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
-		for _,object in ipairs(minetest.env:get_objects_inside_radius(pos, 15.1/16)) do
+		for _,object in ipairs(minetest.get_objects_inside_radius(pos, 15.1/16)) do
 			if object:get_hp() > 0 then
 				object:set_hp(object:get_hp()-1)
 			end
@@ -187,7 +187,7 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 		return
 	end
 	local tmp = {x=(maxp.x-minp.x)/2+minp.x, y=(maxp.y-minp.y)/2+minp.y, z=(maxp.z-minp.z)/2+minp.z}
-	local pos = minetest.env:find_node_near(tmp, maxp.x-minp.x, {"flolands:floatsand"})
+	local pos = minetest.find_node_near(tmp, maxp.x-minp.x, {"flolands:floatsand"})
 	if pos ~= nil then
 		farming:generate_tree({x=pos.x, y=pos.y+1, z=pos.z}, "flolife:tree", "flolife:leaves", {"flolands:floatsand"}, {["flolife:fruit"]=20})
 	end

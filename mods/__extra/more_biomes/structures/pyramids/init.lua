@@ -95,7 +95,7 @@ local function make(pos)
 	pyramids.make_room(pos)
 	minetest.after(2, pyramids.make_traps, pos)
 	add_spawner({x=pos.x+11,y=pos.y+2, z=pos.z+17})
--- 	minetest.env:set_node({x=pos.x+11,y=pos.y+2, z=pos.z+17}, {name="ruins:spawner_golem"})
+-- 	minetest.set_node({x=pos.x+11,y=pos.y+2, z=pos.z+17}, {name="ruins:spawner_golem"})
 	make_entrance({x=pos.x,y=pos.y, z=pos.z})
 end
 
@@ -127,7 +127,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 	math.randomseed(seed)
 	local cnt = 0
 
-	local perlin1 = minetest.env:get_perlin(perl1.SEED1, perl1.OCTA1, perl1.PERS1, perl1.SCAL1)
+	local perlin1 = minetest.get_perlin(perl1.SEED1, perl1.OCTA1, perl1.PERS1, perl1.SCAL1)
 	local noise1 = perlin1:get2d({x=minp.x,y=minp.y})--,z=minp.z})
 
 	if noise1 > 0.25 or noise1 < -0.26 then

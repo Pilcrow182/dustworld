@@ -13,7 +13,7 @@ minetest.register_chatcommand("credit", {
 			minetest.chat_send_player(name, "Usage: /credit <player> <number>", false)
 			return
 		end
-		local reciever = minetest.env:get_player_by_name(player)
+		local reciever = minetest.get_player_by_name(player)
 		if reciever then
 			mesebay.give_credit(reciever, number)
 			if not player == name then
@@ -41,7 +41,7 @@ minetest.register_chatcommand("creditme", {
 			minetest.chat_send_player(name, "Usage: /creditme <number>", false)
 			return
 		end
-		local reciever = minetest.env:get_player_by_name(name)
+		local reciever = minetest.get_player_by_name(name)
 		mesebay.give_credit(reciever, number)
 		minetest.chat_send_player(name, "Recieved "..number.." mesebay credits", false)
 		minetest.log('action','[MeseBay] Gave player "'..name..'" '..number..' additional credits')

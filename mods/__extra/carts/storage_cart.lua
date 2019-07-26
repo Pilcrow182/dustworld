@@ -307,7 +307,7 @@ function storage_cart:on_step(dtime)
 	if dir.y == 0 then
 		if math.abs(self.velocity.x) < 0.1 and  math.abs(self.velocity.z) < 0.1 then
 			-- Start the storage_cart if powered from mesecons
-			local a = tonumber(minetest.env:get_meta(pos):get_string("cart_acceleration"))
+			local a = tonumber(minetest.get_meta(pos):get_string("cart_acceleration"))
 			if a and a ~= 0 then
 				if self.pre_stop_dir and cart_func.v3:equal(self:get_rail_direction(self.object:getpos(), self.pre_stop_dir), self.pre_stop_dir) then
 					self.velocity = {
@@ -400,7 +400,7 @@ function storage_cart:on_step(dtime)
 	dir = cart_func:velocity_to_dir(self.velocity)
 	
 	-- Accelerate or decelerate the storage_cart according to the pitch and acceleration of the rail node
-	local a = tonumber(minetest.env:get_meta(pos):get_string("cart_acceleration"))
+	local a = tonumber(minetest.get_meta(pos):get_string("cart_acceleration"))
 	if not a then
 		a = 0
 	end
@@ -507,19 +507,19 @@ minetest.register_craftitem("carts:storage_cart", {
 	wield_image = "storage_cart_side.png",
 	
 	on_place = function(itemstack, placer, pointed_thing)
-		if not minetest.registered_nodes[minetest.env:get_node(pointed_thing.under).name] then
+		if not minetest.registered_nodes[minetest.get_node(pointed_thing.under).name] then
 			return itemstack
-		elseif minetest.registered_nodes[minetest.env:get_node(pointed_thing.under).name].on_rightclick and not placer:get_player_control().sneak then
-			return minetest.registered_nodes[minetest.env:get_node(pointed_thing.under).name].on_rightclick(pointed_thing.under, minetest.env:get_node(pointed_thing.under), placer, itemstack)
+		elseif minetest.registered_nodes[minetest.get_node(pointed_thing.under).name].on_rightclick and not placer:get_player_control().sneak then
+			return minetest.registered_nodes[minetest.get_node(pointed_thing.under).name].on_rightclick(pointed_thing.under, minetest.get_node(pointed_thing.under), placer, itemstack)
 		end
 		if cart_func:is_rail(pointed_thing.under) then
-			minetest.env:add_entity(pointed_thing.under, "carts:storage_cart")
+			minetest.add_entity(pointed_thing.under, "carts:storage_cart")
 			if not minetest.setting_getbool("creative_mode") then
 				itemstack:take_item()
 			end
 			return itemstack
 		elseif cart_func:is_rail(pointed_thing.above) then
-			minetest.env:add_entity(pointed_thing.above, "carts:storage_cart")
+			minetest.add_entity(pointed_thing.above, "carts:storage_cart")
 			if not minetest.setting_getbool("creative_mode") then
 				itemstack:take_item()
 			end

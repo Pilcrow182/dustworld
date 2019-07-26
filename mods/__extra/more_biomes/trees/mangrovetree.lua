@@ -1,17 +1,17 @@
 --function
 local function add_leaves(pos, leave)
 	local p = {x=pos.x, y=pos.y+1, z=pos.z}
-	local n = minetest.env:get_node(p)
+	local n = minetest.get_node(p)
 	if (n.name=="air") then
-	  minetest.env:add_node({x=pos.x, y=pos.y, z=pos.z}, {name="trees:tree_mangrove"})
-	  minetest.env:add_node(p, {name="trees:leaves_mangrove"})
+	  minetest.add_node({x=pos.x, y=pos.y, z=pos.z}, {name="trees:tree_mangrove"})
+	  minetest.add_node(p, {name="trees:leaves_mangrove"})
 	end
 	for x = 1, -1, -1 do
 		for z = 1, -1, -1 do
 			local p = {x=pos.x+x, y=pos.y, z=pos.z+z}
-			local n = minetest.env:get_node(p)
+			local n = minetest.get_node(p)
 			if (n.name=="air") then
-				minetest.env:add_node(p, {name=leave})
+				minetest.add_node(p, {name=leave})
 			end
 		end
 	end
@@ -38,12 +38,12 @@ abstract_trees.grow_mangrovetree = function(pos)
         add_leaves({x=pos.x+dir.x, y=top.y-i, z=pos.z+dir.z},leaves_node)
       end
     end
-    minetest.env:add_node({x=top.x, y=top.y-i, z=top.z}, {name=trunk_node})
+    minetest.add_node({x=top.x, y=top.y-i, z=top.z}, {name=trunk_node})
   end
-  minetest.env:add_node({x=pos.x-1, y=pos.y, z=pos.z}, {name=trunk_node})
-  minetest.env:add_node({x=pos.x+1, y=pos.y, z=pos.z}, {name=trunk_node})
-  minetest.env:add_node({x=pos.x, y=pos.y, z=pos.z+1}, {name=trunk_node})
-  minetest.env:add_node({x=pos.x, y=pos.y, z=pos.z-1}, {name=trunk_node})
+  minetest.add_node({x=pos.x-1, y=pos.y, z=pos.z}, {name=trunk_node})
+  minetest.add_node({x=pos.x+1, y=pos.y, z=pos.z}, {name=trunk_node})
+  minetest.add_node({x=pos.x, y=pos.y, z=pos.z+1}, {name=trunk_node})
+  minetest.add_node({x=pos.x, y=pos.y, z=pos.z-1}, {name=trunk_node})
 end
 
 --abm
@@ -52,7 +52,7 @@ minetest.register_abm({
   interval = 60,
   chance = 20,
   action = function(pos, node, _, _)
-    minetest.env:get_node({x = pos.x, y = pos.y + 1, z = pos.z})
+    minetest.get_node({x = pos.x, y = pos.y + 1, z = pos.z})
     if above.name == "air" or above.name == "default:water_source" then
       abstract_trees.grow_mangrovetree({x = pos.x, y = pos.y, z = pos.z})
       end

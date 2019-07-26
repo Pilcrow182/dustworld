@@ -18,11 +18,10 @@ local n17 = { name = "default:cactus" }
 local n18 = { name = "farming_plus:strawberry_1" }
 local n19 = { name = "homedecor:fence_picket", param2 = 3 }
 local n20 = { name = "default:water_source" }
-local n21 = { name = "farming_plus:blueberry_1" }
-local n22 = { name = "farming:wheat_1" }
+local n21 = { name = "farming_plus:potatoe_1" }
+local n22 = { name = "farming:cotton_1" }
 local n23 = { name = "default:papyrus" }
 local n24 = { name = "homedecor:fence_picket", param2 = 2 }
-local n25 = { name = "flowers:waterlily" }
 
 instacabin.schems.greenhouse = {
 	size = {x = 17, y = 8, z = 17},
@@ -74,7 +73,7 @@ instacabin.schems.greenhouse = {
 
 		n01, n04, n04, n12, n12, n12, n12, n12, n12, n12, n12, n12, n12, n12, n04, n04, n01,
 		n02, n04, n04, n14, n20, n15, n15, n15, n15, n15, n15, n15, n20, n14, n04, n04, n02,
-		n02, n06, n16, n17, n25, n18, n21, n21, n21, n21, n21, n18, n25, n17, n19, n06, n02,
+		n02, n06, n16, n17, n02, n18, n21, n21, n21, n21, n21, n18, n02, n17, n19, n06, n02,
 		n02, n06, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n06, n02,
 		n02, n06, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n06, n02,
 		n02, n06, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n06, n02,
@@ -83,7 +82,7 @@ instacabin.schems.greenhouse = {
 
 		n01, n04, n04, n12, n12, n12, n12, n12, n12, n12, n12, n12, n12, n12, n04, n04, n01,
 		n02, n04, n04, n14, n20, n15, n15, n15, n15, n15, n15, n15, n20, n14, n04, n04, n02,
-		n02, n06, n16, n17, n25, n18, n21, n21, n21, n21, n21, n18, n25, n17, n19, n06, n02,
+		n02, n06, n16, n17, n02, n18, n21, n21, n21, n21, n21, n18, n02, n17, n19, n06, n02,
 		n02, n06, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n06, n02,
 		n02, n06, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n06, n02,
 		n02, n06, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n06, n02,
@@ -92,7 +91,7 @@ instacabin.schems.greenhouse = {
 
 		n01, n04, n04, n12, n12, n12, n12, n12, n12, n12, n12, n12, n12, n12, n04, n04, n01,
 		n02, n04, n04, n14, n20, n15, n15, n15, n15, n15, n15, n15, n20, n14, n04, n04, n02,
-		n02, n04, n16, n17, n25, n22, n21, n21, n21, n21, n21, n22, n25, n17, n19, n04, n02,
+		n02, n04, n16, n17, n02, n22, n21, n21, n21, n21, n21, n22, n02, n17, n19, n04, n02,
 		n02, n04, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n04, n02,
 		n02, n04, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n04, n02,
 		n02, n04, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n04, n02,
@@ -101,7 +100,7 @@ instacabin.schems.greenhouse = {
 
 		n01, n04, n04, n12, n12, n12, n12, n12, n12, n12, n12, n12, n12, n12, n04, n04, n01,
 		n02, n04, n04, n14, n20, n15, n15, n15, n15, n15, n15, n15, n20, n14, n04, n04, n02,
-		n02, n04, n16, n17, n25, n22, n21, n21, n21, n21, n21, n22, n25, n17, n19, n04, n02,
+		n02, n04, n16, n17, n02, n22, n21, n21, n21, n21, n21, n22, n02, n17, n19, n04, n02,
 		n02, n04, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n04, n02,
 		n02, n04, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n04, n02,
 		n02, n04, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n04, n02,
@@ -110,7 +109,7 @@ instacabin.schems.greenhouse = {
 
 		n01, n04, n04, n12, n12, n12, n12, n12, n12, n12, n12, n12, n12, n12, n04, n04, n01,
 		n02, n04, n04, n14, n20, n15, n15, n15, n15, n15, n15, n15, n20, n14, n04, n04, n02,
-		n02, n04, n16, n17, n25, n22, n21, n21, n21, n21, n21, n22, n25, n17, n19, n04, n02,
+		n02, n04, n16, n17, n02, n22, n21, n21, n21, n21, n21, n22, n02, n17, n19, n04, n02,
 		n02, n04, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n04, n02,
 		n02, n04, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n04, n02,
 		n02, n04, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n04, n02,
@@ -119,7 +118,7 @@ instacabin.schems.greenhouse = {
 
 		n01, n04, n04, n12, n12, n12, n12, n12, n12, n12, n12, n12, n12, n12, n04, n04, n01,
 		n02, n04, n04, n14, n20, n15, n15, n15, n15, n15, n15, n15, n20, n14, n04, n04, n02,
-		n02, n06, n16, n17, n25, n22, n21, n21, n21, n21, n21, n22, n25, n17, n19, n06, n02,
+		n02, n06, n16, n17, n02, n22, n21, n21, n21, n21, n21, n22, n02, n17, n19, n06, n02,
 		n02, n06, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n06, n02,
 		n02, n06, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n06, n02,
 		n02, n06, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n06, n02,
@@ -128,7 +127,7 @@ instacabin.schems.greenhouse = {
 
 		n01, n04, n04, n12, n12, n12, n12, n12, n12, n12, n12, n12, n13, n12, n04, n04, n01,
 		n02, n04, n04, n14, n20, n13, n13, n13, n13, n13, n13, n13, n20, n14, n04, n04, n02,
-		n02, n06, n16, n17, n25, n23, n23, n23, n23, n23, n23, n23, n25, n17, n19, n06, n02,
+		n02, n06, n16, n17, n02, n23, n23, n23, n23, n23, n23, n23, n02, n17, n19, n06, n02,
 		n02, n06, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n06, n02,
 		n02, n06, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n06, n02,
 		n02, n06, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n06, n02,
@@ -137,7 +136,7 @@ instacabin.schems.greenhouse = {
 
 		n01, n04, n04, n12, n13, n12, n12, n13, n13, n12, n12, n13, n12, n12, n04, n04, n01,
 		n02, n04, n04, n14, n20, n20, n20, n20, n20, n20, n20, n20, n20, n14, n04, n04, n02,
-		n02, n06, n16, n17, n25, n25, n25, n25, n25, n25, n25, n25, n25, n17, n19, n06, n02,
+		n02, n06, n16, n17, n02, n02, n02, n02, n02, n02, n02, n02, n02, n17, n19, n06, n02,
 		n02, n06, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n06, n02,
 		n02, n06, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n06, n02,
 		n02, n06, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n02, n06, n02,

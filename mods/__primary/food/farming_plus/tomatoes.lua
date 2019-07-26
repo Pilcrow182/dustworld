@@ -2,13 +2,13 @@ minetest.register_craftitem("farming_plus:tomato_seed", {
 	description = "Tomato Seeds",
 	inventory_image = "farming_tomato_seed.png",
 	on_place = function(itemstack, placer, pointed_thing)
-		if minetest.registered_nodes[minetest.env:get_node(pointed_thing.under).name].on_rightclick then
-			return minetest.registered_nodes[minetest.env:get_node(pointed_thing.under).name].on_rightclick(pointed_thing.under, minetest.env:get_node(pointed_thing.under), placer, itemstack)
+		if minetest.registered_nodes[minetest.get_node(pointed_thing.under).name].on_rightclick then
+			return minetest.registered_nodes[minetest.get_node(pointed_thing.under).name].on_rightclick(pointed_thing.under, minetest.get_node(pointed_thing.under), placer, itemstack)
 		end
-		local above = minetest.env:get_node(pointed_thing.above)
+		local above = minetest.get_node(pointed_thing.above)
 		if above.name == "air" then
 			above.name = "farming_plus:tomato_1"
-			minetest.env:set_node(pointed_thing.above, above)
+			minetest.set_node(pointed_thing.above, above)
 			itemstack:take_item(1)
 			return itemstack
 		end

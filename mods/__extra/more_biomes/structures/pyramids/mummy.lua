@@ -29,7 +29,7 @@ minetest.register_craftitem("pyramids:spawn_egg", {
 	stack_max = 99,
 	on_place = function(itemstack, placer, pointed_thing)
 		if pointed_thing.type == "node" then
-			minetest.env:add_entity(pointed_thing.above,"pyramids:mummy")
+			minetest.add_entity(pointed_thing.above,"pyramids:mummy")
 			if not minetest.setting_getbool("creative_mode") then itemstack:take_item() end
 			return itemstack
 		end
@@ -39,7 +39,7 @@ minetest.register_craftitem("pyramids:spawn_egg", {
 
 function pyramids.spawn_mummy (pos, number)
 	for i=0,number do
-		minetest.env:add_entity(pos,"mobs:mummy")
+		minetest.add_entity(pos,"mobs:mummy")
 	end
 end
 
@@ -53,10 +53,10 @@ minetest.register_node("pyramids:spawner_mummy", {
 	drop = "",
 	on_construct = function(pos)
 		pos.y = pos.y - 0.28
-		minetest.env:add_entity(pos,"pyramids:mummy_spawner")
+		minetest.add_entity(pos,"pyramids:mummy_spawner")
 	end,
 	on_destruct = function(pos)
-		for  _,obj in ipairs(minetest.env:get_objects_inside_radius(pos, 1)) do
+		for  _,obj in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
 			if not obj:is_player() then 
 				if obj ~= nil and obj:get_luaentity().m_name == "dummy" then
 					obj:remove()	
@@ -73,7 +73,7 @@ if not minetest.setting_getbool("only_peaceful_mobs") then
 		action = function(pos, node, active_object_count, active_object_count_wider)
 			local player_near = false
 			local mobs = 0
-			for  _,obj in ipairs(minetest.env:get_objects_inside_radius(pos, spawner_range)) do
+			for  _,obj in ipairs(minetest.get_objects_inside_radius(pos, spawner_range)) do
 				if obj:is_player() then
 					player_near = true 
 				elseif obj:get_luaentity().mob_name == "mummy" then
@@ -82,8 +82,8 @@ if not minetest.setting_getbool("only_peaceful_mobs") then
 			end
 			if player_near and mobs < spawner_max_mobs then
 				pos.x, pos.y, pos.z = pos.x + math.random(-4,4), pos.y - 1, pos.z - math.random(2,11)
-				if minetest.env:get_node(pos).name == "air" and minetest.registered_nodes[minetest.env:get_node({x = pos.x, y = pos.y - 1, z = pos.z}).name].walkable then
-					minetest.env:add_entity(pos, "mobs:mummy")
+				if minetest.get_node(pos).name == "air" and minetest.registered_nodes[minetest.get_node({x = pos.x, y = pos.y - 1, z = pos.z}).name].walkable then
+					minetest.add_entity(pos, "mobs:mummy")
 -- 					minetest.chat_send_all("spawning mummy at "..minetest.pos_to_string(pos))
 				end
 			end

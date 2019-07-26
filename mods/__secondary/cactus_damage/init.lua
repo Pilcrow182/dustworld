@@ -27,7 +27,7 @@ minetest.register_abm({
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		--pos.y =pos.y-0.4
-		for _,object in ipairs(minetest.env:get_objects_inside_radius(pos, 15.1/16)) do--1.3
+		for _,object in ipairs(minetest.get_objects_inside_radius(pos, 15.1/16)) do--1.3
 			if object:get_hp() > 0 then
 				object:set_hp(object:get_hp()-1)
 			elseif not object:is_player() and object:get_hp() == 0 and object:get_luaentity().name ~= "__builtin:item" then

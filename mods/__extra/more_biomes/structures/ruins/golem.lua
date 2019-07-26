@@ -24,7 +24,7 @@ minetest.register_entity("ruins:golem_spawner", spawner_DEF)
 
 function ruins.spawn_golem (pos, number)
 	for i=0,number do
-		minetest.env:add_entity(pos,"mobs:stone_monster")
+		minetest.add_entity(pos,"mobs:stone_monster")
 	end
 end
 
@@ -38,10 +38,10 @@ minetest.register_node("ruins:spawner_golem", {
 	drop = "",
 	on_construct = function(pos)
 		pos.y = pos.y - 0.28
-		minetest.env:add_entity(pos,"ruins:golem_spawner")
+		minetest.add_entity(pos,"ruins:golem_spawner")
 	end,
 	on_destruct = function(pos)
-		for  _,obj in ipairs(minetest.env:get_objects_inside_radius(pos, 1)) do
+		for  _,obj in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
 			if not obj:is_player() then 
 				if obj ~= nil and obj:get_luaentity().m_name == "dummy" then
 					obj:remove()	
@@ -58,7 +58,7 @@ if not minetest.setting_getbool("only_peaceful_mobs") then
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		local player_near = false
 		local mobs = 0
-		for  _,obj in ipairs(minetest.env:get_objects_inside_radius(pos, spawner_range)) do
+		for  _,obj in ipairs(minetest.get_objects_inside_radius(pos, spawner_range)) do
 			if obj:is_player() then
 				player_near = true 
 			else
@@ -68,8 +68,8 @@ if not minetest.setting_getbool("only_peaceful_mobs") then
 		if player_near then
 			if mobs < spawner_max_mobs then
 				pos.x = pos.x+1
-				local p = minetest.env:find_node_near(pos, 5, {"air"})	
-				minetest.env:add_entity(p,"mobs:stone_monster")
+				local p = minetest.find_node_near(pos, 5, {"air"})	
+				minetest.add_entity(p,"mobs:stone_monster")
 			end
 		end
 	end

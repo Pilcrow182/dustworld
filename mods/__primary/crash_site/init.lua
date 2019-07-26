@@ -5,6 +5,8 @@ dofile(minetest.get_modpath("crash_site").."/abms.lua")
 dofile(minetest.get_modpath("crash_site").."/legacy.lua")
 
 crash_site.spawn = function(player, tries)
+	if minetest.get_modpath("skyland") then return end
+
 	-- calculate the number of times this function has run itself while waiting for land to generate
 	local tries = tries or 0
 	tries = tries + 1

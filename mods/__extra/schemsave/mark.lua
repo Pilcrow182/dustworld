@@ -9,7 +9,7 @@ schemsave.mark_spos1 = function(name)
 		schemsave.marker1[name] = nil
 	end
 	if pos ~= nil then --add marker
-		schemsave.marker1[name] = minetest.env:add_entity(pos, "schemsave:spos1")
+		schemsave.marker1[name] = minetest.add_entity(pos, "schemsave:spos1")
 		schemsave.marker1[name]:get_luaentity().active = true
 	end
 end
@@ -22,7 +22,7 @@ schemsave.mark_spos2 = function(name)
 		schemsave.marker2[name] = nil
 	end
 	if pos ~= nil then --add marker
-		schemsave.marker2[name] = minetest.env:add_entity(pos, "schemsave:spos2")
+		schemsave.marker2[name] = minetest.add_entity(pos, "schemsave:spos2")
 		schemsave.marker2[name]:get_luaentity().active = true
 	end
 end

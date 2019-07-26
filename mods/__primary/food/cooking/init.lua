@@ -168,14 +168,14 @@ minetest.register_craft({
 -- pie
 
 minetest.register_craftitem("cooking:pie_raw", {
-	description = "Raw berry pie",
+	description = "Raw pie",
 	inventory_image = "cooking_pie_raw.png",
 	groups = {food=2},
 	on_use = minetest.item_eat(5),
 })
 
 minetest.register_craftitem("cooking:pie_cooked", {
-	description = "Cooked berry pie",
+	description = "Cooked pie",
 	inventory_image = "cooking_pie_cooked.png",
 	groups = {food=2},
 	on_use = minetest.item_eat(15),
@@ -212,13 +212,17 @@ minetest.register_node("cooking:pie_basket", {
     groups = {choppy=2,dig_immediate=3,flammable=1,food=2},
 })
 
-minetest.register_craft({
-	output = 'cooking:pie_raw 1',
-	recipe = {
-		{ 'cooking:sugar', 'default:junglegrass', 'cooking:sugar' },
-		{ 'group:berry', 'group:berry', 'group:berry' },
-	},
-})
+for _,fruit in ipairs({"group:berry", "default:apple", "farming:pumpkin", "farming_plus:banana", "farming_plus:orange_item", "farming_plus:rhubarb_item"}) do
+	for _,fiber in ipairs({"group:grass", "default:junglegrass", "farming:weed", "farming:wheat_harvested"}) do
+		minetest.register_craft({
+			output = 'cooking:pie_raw 1',
+			recipe = {
+				{ 'cooking:sugar', fiber, 'cooking:sugar' },
+				{ fruit, fruit, fruit },
+			},
+		})
+	end
+end
 
 minetest.register_craft({
 	output = 'cooking:pie_basket 1',

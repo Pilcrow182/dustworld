@@ -1,17 +1,17 @@
 function abstract_trees.add_vine(pos)
-  while minetest.env:get_node(pos).name == "air" do
-    minetest.env:add_node(pos, {name="trees:vine"})
+  while minetest.get_node(pos).name == "air" do
+    minetest.add_node(pos, {name="trees:vine"})
     pos.y = pos.y-1
   end
 end
 
 function abstract_trees.remove_vine(pos)
-  local above = minetest.env:get_node({x=pos.x, y=pos.y+1, z=pos.z})
+  local above = minetest.get_node({x=pos.x, y=pos.y+1, z=pos.z})
   if string.find(above.name, "vine") ~= nil or above.name == "ignore" then
     return false
   else
-    while minetest.env:get_node(pos).name == "trees:vine" do
-      minetest.env:add_node(pos, {name="air"})
+    while minetest.get_node(pos).name == "trees:vine" do
+      minetest.add_node(pos, {name="air"})
       pos.y = pos.y-1
     end
   return true
@@ -21,7 +21,7 @@ end
 local function add_tree_branch(pos)
   local leaves = {"green","yellow","red"}
   local leave = "trees:leaves_"..leaves[math.random(1,3)]
-  minetest.env:add_node(pos, {name="default:jungletree"})
+  minetest.add_node(pos, {name="default:jungletree"})
   --height
 
   local height = 2 + math.random(3)
@@ -32,13 +32,13 @@ local function add_tree_branch(pos)
       for z = y, -y, -1  do
         if math.abs(x)+math.abs(z) <= 4 then
           local p = {x=pos.x+x, y=pos.y+height-1-y, z=pos.z+z}
-          local n = minetest.env:get_node(p)
+          local n = minetest.get_node(p)
           if (n.name=="air") then
             if math.random(0,10) == 5 then
-              minetest.env:add_node(p, {name=leave.."_viney"})
+              minetest.add_node(p, {name=leave.."_viney"})
               abstract_trees.add_vine({x=p.x, y=p.y-1, z=p.z})
             else
-              minetest.env:add_node(p, {name=leave})
+              minetest.add_node(p, {name=leave})
             end
           end
         end
@@ -52,7 +52,7 @@ abstract_trees.grow_jungletree = function(pos)
   if size < 10 then
     for i = size, -2, -1 do
       local p = {x=pos.x, y=pos.y+i, z=pos.z}
-      minetest.env:add_node(p, {name="default:jungletree"})
+      minetest.add_node(p, {name="default:jungletree"})
       if i == size then
         add_tree_branch({x=pos.x, y=pos.y+size+math.random(0, 1), z=pos.z})
         add_tree_branch({x=pos.x+1, y=pos.y+i-math.random(2), z=pos.z})
@@ -61,10 +61,10 @@ abstract_trees.grow_jungletree = function(pos)
         add_tree_branch({x=pos.x, y=pos.y+i-math.random(2), z=pos.z-1})
       end
       if i < 0 then
-        minetest.env:add_node({x=pos.x+1, y=pos.y+i-math.random(2), z=pos.z}, {name="default:jungletree"})
-        minetest.env:add_node({x=pos.x, y=pos.y+i-math.random(2), z=pos.z+1}, {name="default:jungletree"})
-        minetest.env:add_node({x=pos.x-1, y=pos.y+i-math.random(2), z=pos.z}, {name="default:jungletree"})
-        minetest.env:add_node({x=pos.x, y=pos.y+i-math.random(2), z=pos.z-1}, {name="default:jungletree"})
+        minetest.add_node({x=pos.x+1, y=pos.y+i-math.random(2), z=pos.z}, {name="default:jungletree"})
+        minetest.add_node({x=pos.x, y=pos.y+i-math.random(2), z=pos.z+1}, {name="default:jungletree"})
+        minetest.add_node({x=pos.x-1, y=pos.y+i-math.random(2), z=pos.z}, {name="default:jungletree"})
+        minetest.add_node({x=pos.x, y=pos.y+i-math.random(2), z=pos.z-1}, {name="default:jungletree"})
       end
       if (math.sin(i/size*i) < 0.2 and i > 3 and math.random(0,2) < 1.5) then
         branch_pos = {x=pos.x+math.random(0,1), y=pos.y+i, z=pos.z-math.random(0,1)}
@@ -74,15 +74,15 @@ abstract_trees.grow_jungletree = function(pos)
   else
     for i = size, -5, -1 do
       if i < 0 then
-        minetest.env:add_node({x=pos.x+1, y=pos.y+i, z=pos.z}, {name="default:jungletree"})
-        minetest.env:add_node({x=pos.x+1, y=pos.y+i, z=pos.z-1}, {name="default:jungletree"})
-        minetest.env:add_node({x=pos.x, y=pos.y+i, z=pos.z-1}, {name="default:jungletree"})
-        minetest.env:add_node({x=pos.x, y=pos.y+i, z=pos.z}, {name="default:jungletree"})
+        minetest.add_node({x=pos.x+1, y=pos.y+i, z=pos.z}, {name="default:jungletree"})
+        minetest.add_node({x=pos.x+1, y=pos.y+i, z=pos.z-1}, {name="default:jungletree"})
+        minetest.add_node({x=pos.x, y=pos.y+i, z=pos.z-1}, {name="default:jungletree"})
+        minetest.add_node({x=pos.x, y=pos.y+i, z=pos.z}, {name="default:jungletree"})
 
-        minetest.env:add_node({x=pos.x+2, y=pos.y+i, z=pos.z-1}, {name="default:jungletree"})
-        minetest.env:add_node({x=pos.x, y=pos.y+i, z=pos.z-2}, {name="default:jungletree"})
-        minetest.env:add_node({x=pos.x-1, y=pos.y+i, z=pos.z}, {name="default:jungletree"})
-        minetest.env:add_node({x=pos.x+1, y=pos.y+i, z=pos.z+1}, {name="default:jungletree"})
+        minetest.add_node({x=pos.x+2, y=pos.y+i, z=pos.z-1}, {name="default:jungletree"})
+        minetest.add_node({x=pos.x, y=pos.y+i, z=pos.z-2}, {name="default:jungletree"})
+        minetest.add_node({x=pos.x-1, y=pos.y+i, z=pos.z}, {name="default:jungletree"})
+        minetest.add_node({x=pos.x+1, y=pos.y+i, z=pos.z+1}, {name="default:jungletree"})
       else
         if (math.sin(i/size*i) < 0.2 and i > 3 and math.random(0,2) < 1.5) then
           branch_pos = {x=pos.x-1+math.random(0,2), y=pos.y+i, z=pos.z-1-math.random(0,2)}
@@ -108,10 +108,10 @@ abstract_trees.grow_jungletree = function(pos)
           add_tree_branch({x=pos.x, y=pos.y+i, z=pos.z-1})
           add_tree_branch({x=pos.x, y=pos.y+i, z=pos.z})
         else
-          minetest.env:add_node({x=pos.x+1, y=pos.y+i, z=pos.z}, {name="default:jungletree"})
-          minetest.env:add_node({x=pos.x+1, y=pos.y+i, z=pos.z-1}, {name="default:jungletree"})
-          minetest.env:add_node({x=pos.x, y=pos.y+i, z=pos.z-1}, {name="default:jungletree"})
-          minetest.env:add_node({x=pos.x, y=pos.y+i, z=pos.z}, {name="default:jungletree"})
+          minetest.add_node({x=pos.x+1, y=pos.y+i, z=pos.z}, {name="default:jungletree"})
+          minetest.add_node({x=pos.x+1, y=pos.y+i, z=pos.z-1}, {name="default:jungletree"})
+          minetest.add_node({x=pos.x, y=pos.y+i, z=pos.z-1}, {name="default:jungletree"})
+          minetest.add_node({x=pos.x, y=pos.y+i, z=pos.z}, {name="default:jungletree"})
         end
       end
     end
@@ -360,10 +360,10 @@ minetest.register_abm({
 		local leaves = {"trees:leaves_green", "trees:leaves_yellow", "trees:leaves_red"}
 		local leave = leaves[math.random(1,3)]
 		if math.random(0,10) == 5 then
-			minetest.env:add_node(pos, {name=leave.."_viney"})
+			minetest.add_node(pos, {name=leave.."_viney"})
 			abstract_trees.add_vine({x=pos.x, y=pos.y-1, z=pos.z})
 		else
-			minetest.env:add_node(pos, {name=leave})
+			minetest.add_node(pos, {name=leave})
 		end
 	end
 })

@@ -13,7 +13,7 @@ mesebay.make_formspec = function (pos)
 		cre_label = "--"
 	end
 
-	local meta = minetest.env:get_meta(pos)
+	local meta = minetest.get_meta(pos)
 	local formspec = "size[14,10]"
 		formspec = formspec .. "background[-0.19,-0.2;14.38,10.55;mesebay_bg.png]"
 
