@@ -59,7 +59,7 @@ minetest.register_node("survivalist:machine_autosieve_on",{
 local get_output = function(input)
 	if not survivalist.sieve_lookup[input] then return false end
 	local droprates = survivalist.sieve_lookup[input]
-	local j, output = nil, ""
+	local j, output = nil, "none"
 	for i=1,#droprates do
 		if math.random(1,2) == 2 then j=1+#droprates-i else j=i end
 		if math.random(1,droprates[j].rarity) == math.ceil(droprates[j].rarity/2) then output = droprates[j].items[1] break end
@@ -74,10 +74,8 @@ local take_fuel = function(inv, meta)
 		inv:set_stack("fuel", 1, {name = fuel:get_name(), count = fuel:get_count() - 1})
 		meta:set_string("ttime", burntime)
 		meta:set_string("rtime", burntime)
-		return true
-	else
-		return false
 	end
+	return burntime
 end
 
 local take_src = function(inv, meta)
@@ -86,7 +84,7 @@ local take_src = function(inv, meta)
 	if output and src:get_count() > 0 and inv:room_for_item("dst", {name=output, count=1}) then
 		inv:set_stack("src", 1, {name = src:get_name(), count = src:get_count() - 1})
 		meta:set_string("output", output)
-		return true
+		return output
 	else
 		return false
 	end
@@ -101,59 +99,69 @@ local check_input = function(name)
 end
 
 minetest.register_abm({
-	nodenames = {"survivalist:machine_autosieve","survivalist:machine_autosieve_on"},
+	nodenames = {"survivalist:machine_autosieve"},
 	interval = 1.0,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
 
-		local ttime = meta:get_int("ttime") or 0
+		local valid_input = check_input(inv:get_stack("src", 1):get_name())
+
+		if valid_input and take_fuel(inv, meta) > 0 and take_src(inv, meta) then
+			minetest.swap_node(pos,{name="survivalist:machine_autosieve_on"})
+		end
+	end
+})
+
+minetest.register_abm({
+	nodenames = {"survivalist:machine_autosieve_on"},
+	interval = 1.0,
+	chance = 1,
+	action = function(pos, node, active_object_count, active_object_count_wider)
+		local meta = minetest.get_meta(pos)
+		local inv = meta:get_inventory()
+
 		local rtime = meta:get_int("rtime") or 0
 		local step = meta:get_int("step") or 0
 		local output = meta:get_string("output")
 
 		local valid_input = check_input(inv:get_stack("src", 1):get_name())
 
-		if ( output ~= "" or valid_input ) and ( rtime > 0 or take_fuel(inv, meta) ) then
-			ttime = meta:get_int("ttime")
-			rtime = meta:get_int("rtime")
+		rtime = math.max(rtime-1, 0)
 
-			if string.find(minetest.get_node(pos).name, "_on") then
-				if step >= 3 then
-					if inv:room_for_item("dst", {name=output, count=1}) then
-						inv:add_item("dst", output)
-						meta:set_string("output", "")
-						meta:set_string("step", 0)
-					end
-				else
-					if output == "" then take_src(inv, meta) end
-					step = step + 1
-					meta:set_string("step", step)
-				end
-
-				if rtime > 0 then rtime = rtime - 1 end
-				meta:set_string("rtime", rtime)
-				meta:set_string("formspec", survivalist.get_machine_active_formspec(pos, math.floor(((ttime-rtime)/ttime)*100), 9))
-			else
-				minetest.swap_node(pos,{name="survivalist:machine_autosieve_on"})
-
-				if output == "" then
-					take_src(inv, meta)
-					meta:set_string("step", 0)
-				end
-				meta:set_string("formspec", survivalist.get_machine_active_formspec(pos, math.floor(((ttime-rtime)/ttime)*100), 9))
-			end
-		elseif string.find(minetest.get_node(pos).name, "_on") then
-			if rtime > 0 then
-				rtime = rtime - 1
-				meta:set_string("rtime", rtime)
-				meta:set_string("formspec", survivalist.get_machine_active_formspec(pos, math.floor(((ttime-rtime)/ttime)*100), 9))
-			else
-				meta:set_string("ttime", 0)
-				meta:set_string("rtime", 0)
-				minetest.swap_node(pos,{name="survivalist:machine_autosieve"})
-			end
+		if output == "" then
+			step = 0
+		else
+			step = step + 1
 		end
+
+		if step > 3 then
+			step = 0
+			if output ~= "none" and inv:room_for_item("dst", {name=output, count=1}) then
+				inv:add_item("dst", output)
+			end
+			output = ""
+		end
+
+		if rtime == 0 and output ~= "" then
+			rtime = take_fuel(inv, meta)
+		end
+
+		if step == 0 and valid_input and rtime > 0 then
+			output = take_src(inv, meta)
+		end
+
+		if rtime == 0 then
+			minetest.swap_node(pos,{name="survivalist:machine_autosieve"})
+		end
+
+		meta:set_string("rtime", rtime)
+		meta:set_string("step", step)
+		meta:set_string("output", output)
+
+		local ttime = meta:get_int("ttime") or 1
+		meta:set_string("formspec", survivalist.get_machine_active_formspec(pos, math.floor(((ttime-rtime)/ttime)*100), 9))
 	end
 })
+

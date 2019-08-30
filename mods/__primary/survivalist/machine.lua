@@ -139,37 +139,6 @@ function survivalist.register_machine(machine_type, itemtable)
 		end
 		return true
 	end
-	local automachine_allow_metadata_inventory_put = function(pos, listname, index, stack, player)
-		local meta = minetest.get_meta(pos)
-		local inv = meta:get_inventory()
-		if listname == "fuel" then
-			if minetest.get_craft_result({method="fuel",width=1,items={stack}}).time ~= 0 then
-				return stack:get_count()
-			else
-				return 0
-			end
-		elseif listname == "src" then
-			return stack:get_count()
-		elseif listname == "dst" then
-			return 0
-		end
-	end
-	local automachine_allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
-		local meta = minetest.get_meta(pos)
-		local inv = meta:get_inventory()
-		local stack = inv:get_stack(from_list, from_index)
-		if to_list == "fuel" then
-			if minetest.get_craft_result({method="fuel",width=1,items={stack}}).time ~= 0 then
-				return count
-			else
-				return 0
-			end
-		elseif to_list == "src" then
-			return count
-		elseif to_list == "dst" then
-			return 0
-		end
-	end
 
 	minetest.register_node("survivalist:machine_auto"..machine_type,{
 		description = "auto"..machine_type,
@@ -180,12 +149,6 @@ function survivalist.register_machine(machine_type, itemtable)
 		end,
 		can_dig = function(pos,player)
 			return automachine_can_dig(pos,player)
-		end,
-		allow_metadata_inventory_put = function(pos, listname, index, stack, player)
-			return automachine_allow_metadata_inventory_put(pos, listname, index, stack, player)
-		end,
-		allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
-			return automachine_allow_metadata_inventory_move(pos, from_list, from_index, to_list, to_index, count, player)
 		end,
 		is_ground_content = false,
 		groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2},
@@ -212,12 +175,6 @@ function survivalist.register_machine(machine_type, itemtable)
 		end,
 		can_dig = function(pos,player)
 			return automachine_can_dig(pos,player)
-		end,
-		allow_metadata_inventory_put = function(pos, listname, index, stack, player)
-			return automachine_allow_metadata_inventory_put(pos, listname, index, stack, player)
-		end,
-		allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
-			return automachine_allow_metadata_inventory_move(pos, from_list, from_index, to_list, to_index, count, player)
 		end,
 		groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2},
 		drop = "survivalist:machine_auto"..machine_type
