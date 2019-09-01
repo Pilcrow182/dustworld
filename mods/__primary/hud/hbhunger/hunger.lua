@@ -25,6 +25,7 @@ local known_foods = {
 	["cooking:pie_basket"] = 20,
 	["cooking:banana_bread"] = 20,
 	["cooking:cactus_cooked"] = 10,
+	["cooking:caramel"] = 5,
 	["flolife:gel"] = 10,
 	["apple_tree:iron_apple"] = 10,
 	["ferns:ferntuber_roasted"] = 10,

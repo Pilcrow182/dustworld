@@ -525,6 +525,20 @@ minetest.register_abm({
 	end
 })
 
+minetest.register_node("survivalist:bundle_of_sticks", {
+	description = "Bundle of Sticks",
+	tiles = {"survivalist_bundle_of_sticks_top.png", "survivalist_bundle_of_sticks_top.png", "survivalist_bundle_of_sticks.png"},
+	groups = {choppy=2,oddly_breakable_by_hand=2,flammable=3,wood=1},
+	sounds = default.node_sound_wood_defaults(),
+})
+
+minetest.register_node("survivalist:woven_papyrus", {
+	description = "Woven Papyrus",
+	tiles = {"survivalist_woven_papyrus.png"},
+	groups = {choppy=2,oddly_breakable_by_hand=2,flammable=3,wood=1},
+	sounds = default.node_sound_wood_defaults(),
+})
+
 local leaves = {"default:apple", "survivalist:apple", "survivalist:oak_leaves", "survivalist:apple_leaves"}
 
 if minetest.get_modpath("farming_plus") ~= nil then

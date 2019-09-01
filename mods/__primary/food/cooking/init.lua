@@ -327,3 +327,20 @@ minetest.register_craft({
 	recipe = "cooking:worm_flour",
 	cooktime = 15
 })
+
+-- caramel
+
+minetest.register_craftitem("cooking:caramel", {
+	description = "Caramel",
+	inventory_image = "cooking_caramel.png",
+	groups = {food=2},
+	on_use = minetest.item_eat(4)
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = "cooking:caramel",
+	recipe = "cooking:sugar",
+	cooktime = 2
+})
+

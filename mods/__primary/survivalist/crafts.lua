@@ -1,7 +1,7 @@
 minetest.register_craft({
-	output = 'default:sand 3',
+	output = 'default:stick 2',
 	recipe = {
-		{'stairs:stair_sandstone'},
+		{'default:dry_shrub'},
 	}
 })
 
@@ -325,6 +325,38 @@ minetest.register_craft({
 	type = 'shapeless',
 	output = 'default:dirt 2',
 	recipe = {'default:dirt', 'survivalist:mulch_block'}
+})
+
+minetest.register_craft({
+	output = 'survivalist:bundle_of_sticks',
+	recipe = {
+		{'default:stick', 'default:stick', 'default:stick'},
+		{'default:stick', 'default:stick', 'default:stick'},
+		{'default:stick', 'default:stick', 'default:stick'},
+	}
+})
+
+minetest.register_craft({
+	output = 'default:stick 9',
+	recipe = {
+		{'survivalist:bundle_of_sticks'},
+	}
+})
+
+minetest.register_craft({
+	output = 'survivalist:woven_papyrus',
+	recipe = {
+		{'default:papyrus', 'default:papyrus', 'default:papyrus'},
+		{'default:papyrus', 'default:papyrus', 'default:papyrus'},
+		{'default:papyrus', 'default:papyrus', 'default:papyrus'},
+	}
+})
+
+minetest.register_craft({
+	output = 'default:papyrus 9',
+	recipe = {
+		{'survivalist:woven_papyrus'},
+	}
 })
 
 if minetest.get_modpath("bonemeal") ~= nil then

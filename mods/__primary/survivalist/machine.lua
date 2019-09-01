@@ -266,7 +266,7 @@ end
 
 survivalist.register_machine("grinder", {
 	{"default:gravel", "default:sand"},
-	{"default:desert_stone", "default:desert_sand"}, -- NOTE: This is recognized first and used instead of "group:stone" below
+	{"default:desert_stone", "survivalist:desert_gravel"}, -- NOTE: This is recognized first and used instead of "group:stone" below
 	{"default:desert_cobble", "survivalist:desert_gravel"},
 	{"survivalist:desert_gravel", "default:desert_sand"},
 	{"flolands:floatstone", "flolands:floatsand"},

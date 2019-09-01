@@ -50,6 +50,24 @@ minetest.register_node("flolands:floatstone", {
 	sounds = default.node_sound_stone_defaults(),
 })
 
+minetest.register_node("flolands:floatstonebrick", {
+	description = "Floatstone Brick",
+	paramtype2 = "facedir",
+	place_param2 = 0,
+	tiles = {"flolands_floatstone_brick.png"},
+	is_ground_content = false,
+	groups = {cracky = 2, stone = 1},
+	sounds = default.node_sound_stone_defaults(),
+})
+
+minetest.register_node("flolands:floatstone_block", {
+	description = "Floatstone Block",
+	tiles = {"flolands_floatstone_block.png"},
+	is_ground_content = false,
+	groups = {cracky = 2, stone = 1},
+	sounds = default.node_sound_stone_defaults(),
+})
+
 minetest.register_node("flolands:talinite_ore", {
 	description = "Talinite Ore",
 	tiles = {"flolands_floatstone.png^gloopores_mineral_talinite.png"},
@@ -71,6 +89,24 @@ minetest.register_node("flolands:floatsandstone", {
 	description = "Turquoise Sandstone",
 	tiles = {"flolands_floatsandstone.png"},
 	groups = {crumbly=2, cracky=2},
+	sounds = default.node_sound_stone_defaults(),
+})
+
+minetest.register_node("flolands:floatsandstonebrick", {
+	description = "Turquoise Sandstone Brick",
+	paramtype2 = "facedir",
+	place_param2 = 0,
+	tiles = {"flolands_floatsandstone_brick.png"},
+	is_ground_content = false,
+	groups = {cracky = 2},
+	sounds = default.node_sound_stone_defaults(),
+})
+
+minetest.register_node("flolands:floatsandstone_block", {
+	description = "Turquoise Sandstone Block",
+	tiles = {"flolands_floatsandstone_block.png"},
+	is_ground_content = false,
+	groups = {cracky = 2},
 	sounds = default.node_sound_stone_defaults(),
 })
 
@@ -102,10 +138,44 @@ minetest.register_craftitem("flolands:floatcrystal", {
 -- Crafting.
 
 minetest.register_craft({
+	output = 'flolands:floatstonebrick 4',
+	recipe = {
+		{'flolands:floatstone', 'flolands:floatstone'},
+		{'flolands:floatstone', 'flolands:floatstone'},
+	}
+})
+
+minetest.register_craft({
+	output = 'flolands:floatstone_block 9',
+	recipe = {
+		{'flolands:floatstone', 'flolands:floatstone', 'flolands:floatstone'},
+		{'flolands:floatstone', 'flolands:floatstone', 'flolands:floatstone'},
+		{'flolands:floatstone', 'flolands:floatstone', 'flolands:floatstone'},
+	}
+})
+
+minetest.register_craft({
 	output = "flolands:floatsandstone",
 	recipe = {
 		{"flolands:floatsand", "flolands:floatsand"},
 		{"flolands:floatsand", "flolands:floatsand"},
+	}
+})
+
+minetest.register_craft({
+	output = "flolands:floatsandstonebrick 4",
+	recipe = {
+		{"flolands:floatsandstone", "flolands:floatsandstone"},
+		{"flolands:floatsandstone", "flolands:floatsandstone"},
+	}
+})
+
+minetest.register_craft({
+	output = "flolands:floatsandstone_block 9",
+	recipe = {
+		{"flolands:floatsandstone", "flolands:floatsandstone", "flolands:floatsandstone"},
+		{"flolands:floatsandstone", "flolands:floatsandstone", "flolands:floatsandstone"},
+		{"flolands:floatsandstone", "flolands:floatsandstone", "flolands:floatsandstone"},
 	}
 })
 
