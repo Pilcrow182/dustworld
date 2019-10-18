@@ -305,7 +305,7 @@ hoverbot.rightclick = function(botpos, clickedpos, afterpos)
 		return false
 	end
 
-	local pointed_thing = {type = "node", under = clickedpos, above = botpos}
+	local pointed_thing = {type = "node", under = afterpos, above = clickedpos}
 	local wielded = clicker:get_wielded_item()
 	local wieldname = wielded:get_name()
 	local wieldcount = wielded:get_count()

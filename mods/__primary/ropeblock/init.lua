@@ -41,6 +41,8 @@ minetest.register_node("ropeblock:source", {
   paramtype = "light",
   tiles = {"ropeblock_source_top.png", "ropeblock_source_top.png", "ropeblock_source.png"},
   groups = {choppy=2,oddly_breakable_by_hand=1, flammable=2},
+  walkable = false,
+  climbable = true,
   after_place_node = function(pos)
     ropeblock:add_rope({x=pos.x, y=pos.y-1, z=pos.z})
   end
