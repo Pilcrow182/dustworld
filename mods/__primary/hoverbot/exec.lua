@@ -294,8 +294,6 @@ end
 hoverbot.rightclick = function(botpos, clickedpos, afterpos)
 	hoverbot.rotate_self(botpos, clickedpos)
 
-	debug_log("attempting to rightclick node at pos "..minetest.pos_to_string(clickedpos))
-
 	local meta = minetest.get_meta(botpos)
 	local clicker = hoverbot.mimic_player(botpos)
 	local clickednode = minetest.get_node(clickedpos)
@@ -305,7 +303,7 @@ hoverbot.rightclick = function(botpos, clickedpos, afterpos)
 		return false
 	end
 
-	local pointed_thing = {type = "node", under = afterpos, above = clickedpos}
+	local pointed_thing = {type = "node", under = botpos, above = clickedpos}
 	local wielded = clicker:get_wielded_item()
 	local wieldname = wielded:get_name()
 	local wieldcount = wielded:get_count()
@@ -313,10 +311,14 @@ hoverbot.rightclick = function(botpos, clickedpos, afterpos)
 
 	hoverbot.compat["before_rightclick"](clickedpos, clickednode, clicker, wielded, pointed_thing)
 	if minetest.registered_nodes[clickednode.name].on_rightclick then
+		debug_log("attempting to activate node "..clickednode.name.." at pos "..minetest.pos_to_string(clickedpos))
 		new_itemstack = minetest.registered_nodes[clickednode.name].on_rightclick(clickedpos, clickednode, clicker, wielded, pointed_thing)
+	elseif wieldname == "" then
+		hoverbot.exec_loop(botpos)
+		return false
 	else
-		new_itemstack = minetest.registered_items[wieldname].on_place(wielded, clicker, pointed_thing)
-		hoverbot.place(botpos, clickedpos, afterpos)
+		debug_log("attempting to place item "..wieldname.." from inventory slot "..meta:get_string("inv_slot"))
+		new_itemstack = minetest.registered_items[wieldname].on_place(wielded, clicker, pointed_thing) -- hoverbot.place(botpos, clickedpos, afterpos)
 	end
 	hoverbot.compat["after_rightclick"](clickedpos, clickednode, clicker, wielded, pointed_thing)
 
