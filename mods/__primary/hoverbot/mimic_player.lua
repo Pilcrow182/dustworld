@@ -35,7 +35,7 @@ hoverbot.mimic_player = function(pos)
 		get_player_name = function() return "hoverbot" end,
 		get_pos = function() return pos end,
 		getpos = function() return pos end,
-		get_properties = function() return {eye_height = pos.y} end,
+		get_properties = function() return {eye_height = 0} end,
 		get_wielded_item = function() return minetest.get_meta(pos):get_inventory():get_stack("main", tonumber(minetest.get_meta(pos):get_string("inv_slot"))) end,
 		get_wield_index = function() return tonumber(minetest.get_meta(pos):get_string("inv_slot")) end,
 		get_wield_list = function() return end,
