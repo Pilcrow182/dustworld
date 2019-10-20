@@ -169,6 +169,10 @@ function hb.change_hudbar(player, identifier, new_value, new_max_value)
 	local hudtable = hb.get_hudtable(identifier)
 	local value_changed, max_changed = false, false
 
+	if not (hudtable.hudstate and hudtable.hudstate[name]) then
+		return
+	end
+
 	if new_value ~= nil then
 		if new_value ~= hudtable.hudstate[name].value then
 			hudtable.hudstate[name].value = new_value

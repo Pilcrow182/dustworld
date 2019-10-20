@@ -205,7 +205,7 @@ hoverbot.dig = function(botpos, digpos)
 	if def.after_dig_node then
 		-- Copy pos and node because callback can modify them
 		local pos_copy = {x=digpos.x, y=digpos.y, z=digpos.z}
-		local node_copy = {name=node.name, param1=node.param1, param2=node.param2}
+		local node_copy = {name=dignode.name, param1=dignode.param1, param2=dignode.param2}
 		def.after_dig_node(pos_copy, node_copy, oldmetadata, digger)
 	end
 

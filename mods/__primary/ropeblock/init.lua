@@ -43,6 +43,7 @@ minetest.register_node("ropeblock:source", {
   groups = {choppy=2,oddly_breakable_by_hand=1, flammable=2},
   walkable = false,
   climbable = true,
+  drawtype = "allfaces",
   after_place_node = function(pos)
     ropeblock:add_rope({x=pos.x, y=pos.y-1, z=pos.z})
   end

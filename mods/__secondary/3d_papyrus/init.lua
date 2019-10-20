@@ -1,5 +1,4 @@
-minetest.register_node(":default:papyrus",
-	{description = "Papyrus",
+minetest.override_item("default:papyrus", {
 	drawtype = "nodebox",
 	tiles ={
 		"3d_papyrus.png",
@@ -9,11 +8,6 @@ minetest.register_node(":default:papyrus",
 		"3d_papyrus_s2.png",
 		"3d_papyrus_s2.png",
 		},
-	inventory_image = "default_papyrus.png",
-	wield_image ="default_papyrus.png",
-	paramtype = "light",
-	is_ground_content = true,
-	walkable = false,
 	node_box = {
 		type = "fixed",
 		fixed = {
@@ -38,6 +32,5 @@ minetest.register_node(":default:papyrus",
 			},
 		},
 	selection_box = {type="regular"},
-	groups = {snappy = 3,flammable = 2},
-	sounds = default.node_sound_leaves_defaults(),
 })
+
