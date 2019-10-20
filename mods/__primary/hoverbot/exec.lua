@@ -33,6 +33,8 @@ hoverbot.item_pickup = function(pos, inv)
 				inv:add_item("main", ItemStack(object:get_luaentity().itemstring))
 				object:get_luaentity().itemstring = ""
 				object:remove()
+			else
+				object:setpos({x = pos.x, y = pos.y - 0.3, z = pos.z})
 			end
 		end
 	end
