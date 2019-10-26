@@ -188,19 +188,24 @@ hoverbot.dig = function(botpos, digpos)
 	local meta = minetest.get_meta(digpos)
 	local oldmetadata = meta:to_table()
 
-	--handle node drops
-	local drops = minetest.get_node_drops(dignode.name, "default:pick_mese")
-	for _, dropped_item in ipairs(drops) do
+	minetest.remove_node(digpos)
 
-		--add item to hoverbot's inventory
-		if botinv:room_for_item("main", dropped_item) then
-			botinv:add_item("main", dropped_item)
-		else
-			minetest.add_item(botpos, dropped_item)
+	if def.on_dig then	-- handle on_dig callback, if present
+		def.on_dig({x=digpos.x, y=digpos.y, z=digpos.z}, {name=dignode.name, param1=dignode.param1, param2=dignode.param2}, digger)
+
+	else				-- handle node drops if no on_dig
+		local drops = minetest.get_node_drops(dignode.name, "default:pick_mese")
+		for _, dropped_item in ipairs(drops) do
+
+			--add item to hoverbot's inventory
+			if botinv:room_for_item("main", dropped_item) then
+				botinv:add_item("main", dropped_item)
+			else
+				minetest.add_item(botpos, dropped_item)
+			end
 		end
 	end
 
-	minetest.remove_node(digpos)
 	nodeupdate(digpos)
 
 	--handle post-digging callback
