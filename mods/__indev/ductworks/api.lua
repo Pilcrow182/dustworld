@@ -75,6 +75,7 @@ local create_duct = function(basename, connects, dstdir)
 	dgroups["disabled"] = 1
 
 	minetest.register_node("ductworks:"..basename.."_"..id, {
+		description = basename:gsub("^%l", string.upper),
 		tiles = get_tiles(basename, dstdir),
 		drawtype = "nodebox",
 		paramtype = "light",

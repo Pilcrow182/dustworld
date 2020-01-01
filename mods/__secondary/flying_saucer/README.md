@@ -1,6 +1,6 @@
 # Flying Saucer
 
-version 0.9, © 2018 by Pilcrow182
+version 0.9, Â© 2018 by Pilcrow182
 
 -------------------------------------------------------------------------------
 
@@ -34,9 +34,9 @@ None (though the [crafting recipe](https://raw.githubusercontent.com/Pilcrow182/
 
 ### Known bugs:
 
-Holding shift cuts the player's horizontal movement to 1/3 speed. This is a side-effect of using the player entity's controls, since shift is normally used for 'sneaking' (which is *supposed* to slow the player's movement). If anyone can figure out how to disable this feature during saucer mode, I'd be happy to hear it.
+* Holding shift cuts the player's horizontal movement to 1/3 speed. This is a side-effect of using the player entity's controls, since shift is normally used for 'sneaking' (which is *supposed* to slow the player's movement). If anyone can figure out how to disable this feature during saucer mode, I'd be happy to hear it.
 
-Unlike horizontal movement (which is managed client-side), the vertical movement is dependent on server cycles. This means if there is anything causing excessive lag, it may negatively affect the user's ability to move up/down (or to *stop* moving, regardless of the `flying_saucer_passive_stop` setting).
+* Unlike horizontal movement (which is managed client-side), the vertical movement is dependent on server cycles. This means if there is anything causing excessive lag, it may negatively affect the user's ability to move up/down (or to *stop* moving, regardless of the `flying_saucer_passive_stop` setting).
 
 Please report any other issues at the [Flying Saucer GitHub page](https://github.com/Pilcrow182/flying_saucer) or the [Release thread on the Minetest forums](https://forum.minetest.net/viewtopic.php?f=9&t=21330).
 

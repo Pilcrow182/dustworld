@@ -111,9 +111,9 @@ end)
 minetest.register_craft({
 	output = 'ductworks:pipe_wrench',
 	recipe = {
-		{'default:steel_ingot', 'default:steel_ingot'},
-		{'default:steel_ingot', 'default:steel_ingot'},
-		{'', 'default:steel_ingot'},
+		{'default:copper_ingot', 'default:copper_ingot'},
+		{'default:copper_ingot', 'default:copper_ingot'},
+		{'', 'default:copper_ingot'},
 	}
 })
 

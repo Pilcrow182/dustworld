@@ -11,7 +11,7 @@ local shapes = {
 minetest.register_node("ductworks:hopper", {
 	description = "Hopper",
 	drawtype = "nodebox",
-	tiles = {"ductworks_base.png"},
+	tiles = {"ductworks_base.png^ductworks_hopper.png"},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	sunlight_propagates = true,
