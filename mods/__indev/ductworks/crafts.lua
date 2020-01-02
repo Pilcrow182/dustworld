@@ -25,6 +25,15 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craft({
+	output = 'ductworks:pipe_wrench',
+	recipe = {
+		{'default:copper_ingot', 'default:copper_ingot'},
+		{'default:copper_ingot', 'default:copper_ingot'},
+		{'', 'default:copper_ingot'},
+	}
+})
+
 for i, duct in ipairs(ductworks.duct_types) do
 	minetest.register_craft({
 		output = "ductworks:"..ductworks.duct_types[((i + 1 > #ductworks.duct_types) and 1) or (i + 1)],

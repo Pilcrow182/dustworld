@@ -136,11 +136,13 @@ ductworks.valid_dst = function(pos, duct_type)
 	if duct_type == "itemduct" then
 		if inv:get_list("main") then return {"inventory", "main"} end
 		if inv:get_list("src") then return {"inventory", "src"} end
+		if inv:get_list("tmp") then return {"inventory", "tmp"} end
 		if minetest.get_item_group(node.name, "metastorage") > 0 then return {"meta", ""} end
 		if minetest.registered_nodes[node.name].walkable == false then return {"air", ""} end
 		return false
 	elseif duct_type == "fuelduct" then
 		if inv:get_list("fuel") then return {"inventory", "fuel"} end
+		if inv:get_list("tmp") then return {"inventory", "tmp"} end
 		return false
 	elseif duct_type == "liquiduct" and minetest.get_item_group(node.name, "liquid_storage") > 0 then
 		return true
@@ -171,7 +173,7 @@ ductworks.rescan = function(pos, promiscuous)
 
 	for _,dir in ipairs(dirs) do
 		local v = minetest.string_to_pos(vector_dirs[dir])
-		local p = {x = pos.x + v.x, y = pos.y + v.y, z = pos.z + v.z}
+		local p = vector.add(pos, v)
 		local pname = minetest.get_node(p).name
 
 		minetest.log("action", "vector_dirs[minetest.get_meta(p):get_string('output')] = "..tostring(vector_dirs[minetest.get_meta(p):get_string("output")]))
@@ -205,7 +207,7 @@ ductworks.find_dst = function(pos, basename)
 		for _,dir in pairs(dirs) do
 			if groups["duct_connect_"..dir] == 2 then
 				local offset = minetest.string_to_pos(vector_dirs[dir])
-				p = {x = p.x + offset.x, y = p.y + offset.y, z = p.z + offset.z}
+				p = vector.add(p, offset)
 				break
 			end
 		end
@@ -349,7 +351,7 @@ ductworks.register_duct = function(basename)
 							newgroups["duct_connect_"..dirname] = 1
 						elseif oldgroups["duct_connect_"..dirname] == 2 then
 							local v = minetest.string_to_pos(vector_dirs[dirname])
-							oldout = {x = pointed_thing.under.x + v.x, y = pointed_thing.under.y + v.y, z = pointed_thing.under.z + v.z}
+							oldout = vector.add(pointed_thing.under, v)
 						end
 					end
 					newgroups["duct_connect_"..oppos[pointed]] = 2
@@ -359,7 +361,7 @@ ductworks.register_duct = function(basename)
 				-- look for available connections in all affected ducts, including the stub (do not auto-connect to storage nodes)
 				ductworks.rescan(pointed_thing.under)
 				ductworks.rescan(pointed_thing.above)
-				ductworks.rescan({x = pointed_thing.above.x - dir.x, y = pointed_thing.above.y - dir.y, z = pointed_thing.above.z - dir.z})
+				ductworks.rescan(vector.subtract(pointed_thing.above, dir))
 				if oldout then ductworks.rescan(oldout) end
 			else
 				-- place the duct stub, to be updated later
@@ -391,7 +393,7 @@ ductworks.register_duct = function(basename)
 	minetest.register_on_dignode(function(pos, oldnode, digger)
 		for _,dir in ipairs(dirs) do
 			local v = minetest.string_to_pos(vector_dirs[dir])
-			local p = {x = pos.x + v.x, y = pos.y + v.y, z = pos.z + v.z}
+			local p = vector.add(pos, v)
 			if minetest.get_item_group(minetest.get_node(p).name, "duct_connect_"..oppos[dir]) == 1 then ductworks.rescan(p) end
 		end
 	end)
@@ -407,7 +409,7 @@ ductworks.register_duct = function(basename)
 			local inputs, output = {}, {}
 			for _,dir in ipairs(dirs) do
 				local v = minetest.string_to_pos(vector_dirs[dir])
-				local p = {x = pos.x + v.x, y = pos.y + v.y, z = pos.z + v.z}
+				local p = vector.add(pos, v)
 				if groups["duct_connect_"..dir] == 1 and ductworks.valid_src(p, nil, basename) then
 					table.insert(inputs, p)
 				elseif groups["duct_connect_"..dir] == 2 then

@@ -108,12 +108,3 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	end
 end)
 
-minetest.register_craft({
-	output = 'ductworks:pipe_wrench',
-	recipe = {
-		{'default:copper_ingot', 'default:copper_ingot'},
-		{'default:copper_ingot', 'default:copper_ingot'},
-		{'', 'default:copper_ingot'},
-	}
-})
-

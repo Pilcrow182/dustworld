@@ -1,10 +1,11 @@
 local make_inventory = function(pos, pagenum, player)
 	local meta = minetest.get_meta(pos)
+	meta:get_inventory():set_size("tmp", 4*3)
 	pagenum = pagenum or 0
 	meta:set_string("pagenum", pagenum)
 
 	local page = "size[14,11]".."label[0.4,0.1;Inventory]".."button[2,0;2,1;page1;Configuration]"..
-		"list[current_name;src;5,2;4,3;]".."list[current_player;main;2,6.25;10,4;]"
+		"list[current_name;tmp;5,2;4,3;]".."list[current_player;main;2,6.25;10,4;]"
 
 	if pagenum == 1 then
 		page = "size[14,11]".."button[0,0;2,1;page0;Inventory]".."label[2.15,0.1;Configuration]"
@@ -32,7 +33,7 @@ local make_inventory = function(pos, pagenum, player)
 
 		local itemslot, item = 0, ""
 		for x = 0, 3 do for y = 0, 2 do
-			item = meta:get_inventory():get_stack("src", (x + 4*y + 1)):get_name()
+			item = meta:get_inventory():get_stack("tmp", (x + 4*y + 1)):get_name()
 			page = page.."item_image_button["..(5 + x)..","..(2 + y)..";1,1;"..item..";"..item..";]"
 		end end
 
@@ -47,9 +48,7 @@ local make_inventory = function(pos, pagenum, player)
 			end end
 		end
 	end
-
 	meta:set_string("formspec", page)
-	meta:get_inventory():set_size("src", 4*3)
 end
 
 local process_inputs = function(pos, formname, fields, sender)
@@ -143,7 +142,7 @@ minetest.register_node("ductworks:ejector", {
 	groups = {cracky=2,oddly_breakable_by_hand=1},
 	on_construct = function(pos) return make_inventory(pos, 1) end,
 	on_receive_fields = function(pos, formname, fields, sender) return process_inputs(pos, formname, fields, sender) end,
-	can_dig = function(pos, player) return minetest.get_meta(pos):get_inventory():is_empty("src") end
+	can_dig = function(pos, player) return minetest.get_meta(pos):get_inventory():is_empty("tmp") end
 })
 
 minetest.register_craftitem("ductworks:wildcard", {

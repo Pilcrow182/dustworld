@@ -4,8 +4,8 @@ local shapes = {
 	{-8/16,  3/16, -8/16,  5/16,  8/16, -5/16}, --top-east
 	{-8/16,  3/16, -5/16, -5/16,  8/16,  8/16}, --top-west
 	{-5/16, -3/16, -5/16,  5/16,  3/16,  5/16}, --middle
-	{-2/16, -2/16,  5/16,  2/16,  2/16,  8/16}, --spout-side
 	{-2/16, -8/16, -2/16,  2/16, -3/16,  2/16}, --spout-down
+	{-2/16, -2/16,  5/16,  2/16,  2/16,  8/16}, --spout-side
 }
 
 minetest.register_node("ductworks:hopper", {
@@ -13,7 +13,6 @@ minetest.register_node("ductworks:hopper", {
 	drawtype = "nodebox",
 	tiles = {"ductworks_base.png^ductworks_hopper.png"},
 	paramtype = "light",
-	paramtype2 = "facedir",
 	sunlight_propagates = true,
 	is_ground_content = false,
 	node_box = {
@@ -27,23 +26,25 @@ minetest.register_node("ductworks:hopper", {
 	groups = {hopper=1,cracky=2,oddly_breakable_by_hand=1},
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
-		meta:set_string("output", minetest.pos_to_string(minetest.facedir_to_dir(minetest.get_node(pos).param2)))
 		meta:set_string("formspec", "size[10,7] list[current_name;src;2.5,1;5,1;] list[current_player;main;0,3;10,4;]")
 		meta:get_inventory():set_size("src", 5*1)
 	end,
 	after_place_node = function(pos, placer, itemstack, pointed_thing)
-		if pointed_thing.above.y ~= pointed_thing.under.y then
-			minetest.swap_node(pos, {name = "ductworks:hopper_down"})
-			minetest.get_meta(pos):set_string("output", "(0,-1,0)")
+		local pointed_dir = vector.subtract(pointed_thing.under, pointed_thing.above)
+		if pointed_dir.y == 0 then
+			minetest.swap_node(pos, {name = "ductworks:hopper_side", param2 = minetest.dir_to_facedir(pointed_dir)})
 		end
+
+		minetest.get_meta(pos):set_string("output", minetest.pos_to_string(pointed_dir))
 	end
 })
 
-minetest.register_node("ductworks:hopper_down", {
-	description = "Hopper (facing downwards)",
+minetest.register_node("ductworks:hopper_side", {
+	description = "Hopper",
 	drawtype = "nodebox",
-	tiles = {"ductworks_base.png"},
+	tiles = {"ductworks_base.png^ductworks_hopper.png"},
 	paramtype = "light",
+	paramtype2 = "facedir",
 	sunlight_propagates = true,
 	is_ground_content = false,
 	node_box = {
@@ -59,7 +60,7 @@ minetest.register_node("ductworks:hopper_down", {
 })
 
 minetest.register_abm({
-	nodenames = {"ductworks:hopper", "ductworks:hopper_down"},
+	nodenames = {"ductworks:hopper", "ductworks:hopper_side"},
 	interval = 1,
 	chance = 1,
 	action = function(pos)
@@ -78,7 +79,7 @@ minetest.register_abm({
 
 		local node = minetest.get_node(pos)
 
-		local dst = ((node.name == "ductworks:hopper_down") and {x = 0, y = -1, z = 0}) or minetest.facedir_to_dir(node.param2)
+		local dst = ((node.name == "ductworks:hopper") and {x = 0, y = -1, z = 0}) or minetest.facedir_to_dir(node.param2)
 		local dstpos = {x = pos.x + dst.x, y = pos.y + dst.y, z = pos.z + dst.z}
 
 		if minetest.registered_nodes[minetest.get_node(dstpos).name].groups["itemduct"] then
