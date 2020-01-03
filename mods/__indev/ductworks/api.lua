@@ -109,6 +109,8 @@ ductworks.valid_src = function(pos, dstdir, duct_type)
 		local inv = minetest.get_meta(pos):get_inventory()
 		if duct_type == "hopper" then
 			return {"inventory", "src"}
+		elseif duct_type == "ejector" then
+			return {"inventory", "tmp"}
 		elseif duct_type == "itemduct" then
 			if inv:get_list("dst") then return {"inventory", "dst"} end
 			if inv:get_list("main") then return {"inventory", "main"} end
@@ -261,8 +263,16 @@ local metastorage = function(action, pos, stack)
 	end
 end
 
-ductworks.transfer = function(srcpos, dstpos, basename)
-	local src, dst = ductworks.valid_src(srcpos, nil, basename), ductworks.valid_dst(dstpos, basename)
+ductworks.room_for_item = function(unit, dstpos, dst)
+	local out = false
+	out = minetest.get_meta(dstpos):get_inventory():room_for_item(dst[2], unit) or out
+	out = metastorage("room for item", dstpos, unit) or out
+	out = (dst[1] == "air") or out
+	return out
+end
+
+ductworks.transfer = function(srcpos, dstpos, basename, itemstack)
+	local src, dst = ductworks.valid_src(srcpos, nil, (itemstack and "ejector") or basename), ductworks.valid_dst(dstpos, basename)
 
 	local srcinv = minetest.get_meta(srcpos):get_inventory()
 	local dstinv = minetest.get_meta(dstpos):get_inventory()
@@ -272,20 +282,20 @@ ductworks.transfer = function(srcpos, dstpos, basename)
 	skip = skip or (src[1] == "meta" and metastorage("is empty", srcpos))
 
 	if not skip then
-		local stacklist = srcinv:get_list(src[2]) or {metastorage("to stack", srcpos)}
+		local stacklist = (itemstack and {itemstack}) or srcinv:get_list(src[2]) or {metastorage("to stack", srcpos)}
 		for _,stack in ipairs(stacklist) do
 			if not stack:is_empty() then
-				local single = {}
-				for k,v in pairs(stack:to_table()) do single[k] = v end
-				single["count"] = 1
-				for count = 1,stack:get_count() do
-					if dstinv:room_for_item(dst[2], single) or metastorage("room for item", dstpos, single) or dst[1] == "air" then
-						if dst[1] == "inventory" then dstinv:add_item(dst[2], single) end
-						if dst[1] == "meta" then metastorage("add item", dstpos, single) end
-						if dst[1] == "air" then minetest.add_item(dstpos, single) end
+				local unit = {}
+				for k,v in pairs(stack:to_table()) do unit[k] = v end
+				unit["count"] = (itemstack and itemstack:get_count()) or 1
+				for count = 1, stack:get_count(), unit["count"] do
+					if ductworks.room_for_item(unit, dstpos, dst) then
+						if dst[1] == "inventory" then dstinv:add_item(dst[2], unit) end
+						if dst[1] == "meta" then metastorage("add item", dstpos, unit) end
+						if dst[1] == "air" then minetest.add_item(dstpos, unit) end
 
-						if src[1] == "inventory" then srcinv:remove_item(src[2], single) end
-						if src[1] == "meta" then metastorage("remove item", srcpos, single) end
+						if src[1] == "inventory" then srcinv:remove_item(src[2], unit) end
+						if src[1] == "meta" then metastorage("remove item", srcpos, unit) end
 
 						minetest.get_node_timer(dstpos):start(1.0)
 					end

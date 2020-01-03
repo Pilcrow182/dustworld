@@ -36,6 +36,8 @@ minetest.register_node("ductworks:hopper", {
 		end
 
 		minetest.get_meta(pos):set_string("output", minetest.pos_to_string(pointed_dir))
+
+		ductworks.rescan(pointed_thing.under)
 	end
 })
 
@@ -80,7 +82,7 @@ minetest.register_abm({
 		local node = minetest.get_node(pos)
 
 		local dst = ((node.name == "ductworks:hopper") and {x = 0, y = -1, z = 0}) or minetest.facedir_to_dir(node.param2)
-		local dstpos = {x = pos.x + dst.x, y = pos.y + dst.y, z = pos.z + dst.z}
+		local dstpos = vector.add(pos, dst)
 
 		if minetest.registered_nodes[minetest.get_node(dstpos).name].groups["itemduct"] then
 			dstpos = ductworks.find_dst(dstpos, "itemduct")
