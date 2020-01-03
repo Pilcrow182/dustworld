@@ -208,8 +208,12 @@ minetest.register_abm({
 							basename = (basename == "Fuel" and "fuelduct") or "itemduct"
 							local unit = ItemStack({name = item, count = counts[dirname]})
 							local dstpos = ductworks.find_dst(vector.add(pos, minetest.facedir_to_dir(facedir)), basename)
-							local dst = ductworks.valid_dst(dstpos, basename)
-							send = send and ductworks.room_for_item(unit, dstpos, dst)
+							if dstpos then
+								local dst = ductworks.valid_dst(dstpos, basename)
+								send = send and ductworks.room_for_item(unit, dstpos, dst)
+							else
+								send = false
+							end
 						end
 					end
 
