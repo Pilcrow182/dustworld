@@ -146,8 +146,9 @@ local run_ejector = function(pos)
 	for item, count in pairs(stock) do
 		local needed = ((needs[item] and needs[item].total) or 0) --TODO: incorporate needs["ductworks:wildcard"] somehow
 
-		while needed > 0 and count >= needed do
-			local send = true
+		local send = true
+		while send and needed > 0 and count >= needed do
+			send = true
 			for facedir, dirname in pairs(facedir_to_dirname) do
 				if needs[item][dirname] then
 					local basename = meta:get_string(dirname..":type")
