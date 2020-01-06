@@ -72,7 +72,6 @@ minetest.register_abm({
 			if not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" then
 				local stack = ItemStack(object:get_luaentity().itemstring)
 				if inv:room_for_item("src", stack) then
-					minetest.log("action", "adding itemstring '"..object:get_luaentity().itemstring.."' to hopper's inventory")
 					inv:add_item("src", stack)
 					object:remove()
 				end

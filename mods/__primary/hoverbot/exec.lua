@@ -355,7 +355,7 @@ hoverbot.pushpull = function(srcpos, dstpos, withdraw)
 	local srcinv = srcmeta:get_inventory()
 	local dstinv = minetest.get_meta(dstpos):get_inventory()
 	local srclabel, srclist = trylabels({"main", "dst"}, srcinv)
-	local dstlabel, dstlist = trylabels({"main", "src"}, dstinv)
+	local dstlabel, dstlist = trylabels({"main", "src", "tmp"}, dstinv)
 	if (not srclist) or (not dstlist) then return false end
 	local srcsize = srcinv:get_size(srclabel)
 
@@ -376,8 +376,9 @@ hoverbot.pushpull = function(srcpos, dstpos, withdraw)
 		if name ~= nil and name ~= "" then
 			local c = count + 1
 			repeat c = c - 1 until dstinv:room_for_item(dstlabel, {name=name, count=c, wear=wear})
-			dstinv:add_item(dstlabel, {name=name, count=c, wear=wear})
 			srcinv:set_stack(srclabel, j, {name=name, count=count-c, wear=wear})
+			dstinv:add_item(dstlabel, {name=name, count=c, wear=wear})
+			minetest.get_node_timer(dstpos):start(1.0)
 			break
 		end
 	end

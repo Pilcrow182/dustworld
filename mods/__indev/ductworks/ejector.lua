@@ -107,6 +107,75 @@ local process_inputs = function(pos, formname, fields, sender)
 	return make_inventory(pos, 2, sender)
 end
 
+local facedir_to_dirname = {["0"] = "north", ["1"] = "east", ["2"] = "south", ["3"] = "west", ["4"] = "down", ["6"] = "up"}
+
+local get_needed = function(meta)
+	local needed = {}
+	for facedir, dirname in pairs(facedir_to_dirname) do
+		for index = 1, 8 do
+			local item = meta:get_string(dirname..":item"..index)
+			local count = meta:get_string(dirname..":count"..index)
+			if item ~= "" and count ~= "" then
+				needed[item] = needed[item] or {}
+				needed[item].total = (needed[item].total or 0) + tonumber(count)
+				needed[item][dirname] = (needed[item][dirname] or 0) + tonumber(count)
+			end
+		end
+	end
+	return needed
+end
+
+local get_stock = function(meta)
+	local stock = {}
+	for _,stack in pairs(meta:get_inventory():get_list("tmp")) do
+		local item = stack:get_name()
+		local count = stack:get_count()
+		if item ~= "" and count ~= 0 then
+			stock[item] = (stock[item] or 0) + count
+		end
+	end
+	return stock
+end
+
+local run_ejector = function(pos)
+	local meta = minetest.get_meta(pos)
+	local inv = meta:get_inventory()
+	local needs = get_needed(meta)
+	local stock = get_stock(meta)
+
+	for item, count in pairs(stock) do
+		local needed = ((needs[item] and needs[item].total) or 0) --TODO: incorporate needs["ductworks:wildcard"] somehow
+
+		while needed > 0 and count >= needed do
+			local send = true
+			for facedir, dirname in pairs(facedir_to_dirname) do
+				if needs[item][dirname] then
+					local basename = meta:get_string(dirname..":type")
+					basename = (basename == "Fuel" and "fuelduct") or "itemduct"
+					local dstpos = ductworks.find_dst(vector.add(pos, minetest.facedir_to_dir(facedir)), basename)
+					if dstpos and ductworks.valid_dst(dstpos, basename) then
+						send = send and ductworks.room_for_item(ItemStack({name = item, count = needs[item][dirname]}), dstpos, ductworks.valid_dst(dstpos, basename))
+					else
+						send = false
+					end
+				end
+			end
+
+			if send then
+				for facedir, dirname in pairs(facedir_to_dirname) do
+					if needs[item][dirname] then
+						local basename = meta:get_string(dirname..":type")
+						basename = (basename == "Fuel" and "fuelduct") or "itemduct"
+						local dstpos = ductworks.find_dst(vector.add(pos, minetest.facedir_to_dir(facedir)), basename)
+						ductworks.transfer(pos, dstpos, basename, ItemStack({name = item, count = needs[item][dirname]}))
+						count = count - needs[item][dirname]
+					end
+				end
+			end
+		end
+	end
+end
+
 minetest.register_node("ductworks:ejector", {
 	description = "Ejector",
 	drawtype = "nodebox",
@@ -140,6 +209,8 @@ minetest.register_node("ductworks:ejector", {
 		},
 	},
 	groups = {cracky=2,oddly_breakable_by_hand=1},
+	on_timer = function(pos, elapsed) return run_ejector(pos) end,
+	on_metadata_inventory_put = function(pos) return minetest.get_node_timer(pos):start(0) end,
 	on_construct = function(pos) return make_inventory(pos, 1) end,
 	on_receive_fields = function(pos, formname, fields, sender) return process_inputs(pos, formname, fields, sender) end,
 	can_dig = function(pos, player) return minetest.get_meta(pos):get_inventory():is_empty("tmp") end
@@ -155,83 +226,5 @@ minetest.register_craftitem("ductworks:overflow", {
 	description = "Overflow",
 	inventory_image = minetest.inventorycube("ductworks_overflow.png"),
 	groups = {not_in_creative_inventory = 1}
-})
-
-local facedir_to_dirname = {["0"] = "north", ["1"] = "east", ["2"] = "south", ["3"] = "west", ["4"] = "down", ["6"] = "up"}
-
-local get_needed = function(meta)
-	local needed = {}
-	for facedir, dirname in pairs(facedir_to_dirname) do
-		for index = 1, 8 do
-			local item = meta:get_string(dirname..":item"..index)
-			local count = meta:get_string(dirname..":count"..index)
-			if item ~= "" and count ~= "" then
-				needed[item] = needed[item] or {}
-				needed[item].total = (needed[item].total or 0) + tonumber(count)
-				needed[item][dirname] = (needed[item][dirname] or 0) + tonumber(count)
-			end
-		end
-	end
-	return needed
-end
-
-local get_count = function(name, inv)
-	local count = 0
-	for _,stack in ipairs(inv:get_list("tmp")) do
-		if stack:get_name() == name then
-			count = count + stack:get_count()
-		end
-	end
-	return count
-end
-
-minetest.register_abm({
-	nodenames = {"ductworks:ejector"},
-	interval = 1,
-	chance = 1,
-	action = function(pos)
-		local meta = minetest.get_meta(pos)
-		local inv = meta:get_inventory()
-		local needed = get_needed(meta)
-
-		local PRINTED = false
-		for item, counts in pairs(needed) do
-			local totalstack = ItemStack({name = item, count = counts.total})
-			if inv:contains_item("tmp", totalstack) then
-				local mult = math.floor(get_count(item, inv)/counts.total)
-
-				for i = 1, mult do
-					local send = true
-					for facedir, dirname in pairs(facedir_to_dirname) do
-						if counts[dirname] then
-							local basename = meta:get_string(dirname..":type")
-							basename = (basename == "Fuel" and "fuelduct") or "itemduct"
-							local unit = ItemStack({name = item, count = counts[dirname]})
-							local dstpos = ductworks.find_dst(vector.add(pos, minetest.facedir_to_dir(facedir)), basename)
-							if dstpos then
-								local dst = ductworks.valid_dst(dstpos, basename)
-								send = send and ductworks.room_for_item(unit, dstpos, dst)
-							else
-								send = false
-							end
-						end
-					end
-
-					if send then
-						for facedir, dirname in pairs(facedir_to_dirname) do
-							if counts[dirname] then
-								local basename = meta:get_string(dirname..":type")
-								basename = (basename == "Fuel" and "fuelduct") or "itemduct"
-								local unit = ItemStack({name = item, count = counts[dirname]})
-								local dstpos = ductworks.find_dst(vector.add(pos, minetest.facedir_to_dir(facedir)), basename)
-								local dst = ductworks.valid_dst(dstpos, basename)
-								ductworks.transfer(pos, dstpos, basename, unit)
-							end
-						end
-					end
-				end
-			end
-		end
-	end
 })
 

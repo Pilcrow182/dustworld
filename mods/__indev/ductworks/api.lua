@@ -178,15 +178,13 @@ ductworks.rescan = function(pos, promiscuous)
 		local p = vector.add(pos, v)
 		local pname = minetest.get_node(p).name
 
-		minetest.log("action", "vector_dirs[minetest.get_meta(p):get_string('output')] = "..tostring(vector_dirs[minetest.get_meta(p):get_string("output")]))
-
 		if oldgroups["duct_connect_"..dir] == 2 then
 			newgroups["duct_connect_"..dir] = 2
 		elseif minetest.get_item_group(pname, basename) > 0 and minetest.get_item_group(pname, "duct_connect_"..oppos[dir]) == 2 then
 			newgroups["duct_connect_"..dir] = 1
 		elseif minetest.get_item_group(pname, "hopper") > 0 and vector_dirs[minetest.get_meta(p):get_string("output")] == oppos[dir] then
 			newgroups["duct_connect_"..dir] = 1
-		elseif pname == "ductworks:ejector" then
+		elseif ( promiscuous or ( oldgroups["duct_connect_"..dir] == 1 ) ) and pname == "ductworks:ejector" then
 			newgroups["duct_connect_"..dir] = 1
 		elseif ( promiscuous or ( oldgroups["duct_connect_"..dir] == 1 ) ) and ductworks.valid_src(p, oppos[dir], basename) then
 			newgroups["duct_connect_"..dir] = 1
@@ -290,14 +288,15 @@ ductworks.transfer = function(srcpos, dstpos, basename, itemstack)
 				unit["count"] = (itemstack and itemstack:get_count()) or 1
 				for count = 1, stack:get_count(), unit["count"] do
 					if ductworks.room_for_item(unit, dstpos, dst) then
+						if src[1] == "inventory" then srcinv:remove_item(src[2], unit) end
+						if src[1] == "meta" then metastorage("remove item", srcpos, unit) end
+
 						if dst[1] == "inventory" then dstinv:add_item(dst[2], unit) end
 						if dst[1] == "meta" then metastorage("add item", dstpos, unit) end
 						if dst[1] == "air" then minetest.add_item(dstpos, unit) end
 
-						if src[1] == "inventory" then srcinv:remove_item(src[2], unit) end
-						if src[1] == "meta" then metastorage("remove item", srcpos, unit) end
-
-						minetest.get_node_timer(dstpos):start(1.0)
+						local delay = (minetest.get_node(dstpos).name == "ductworks:ejector" and 0.0) or 1.0
+						minetest.get_node_timer(dstpos):start(delay)
 					end
 				end
 			end
