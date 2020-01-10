@@ -128,10 +128,11 @@ end
 local get_stock = function(meta)
 	local stock = {}
 	for _,stack in pairs(meta:get_inventory():get_list("tmp")) do
-		local item = stack:get_name()
-		local count = stack:get_count()
-		if item ~= "" and count ~= 0 then
-			stock[item] = (stock[item] or 0) + count
+		local item = stack:to_table()
+		if item and item.name ~= "" and item.count ~= 0 and stack:get_metadata() == "" then
+			local oldstock = stock[item.name.." "..item.wear] or {count = 0}
+			item.count = item.count + oldstock.count
+			stock[item.name.." "..item.wear] = item
 		end
 	end
 	return stock
@@ -143,33 +144,89 @@ local run_ejector = function(pos)
 	local needs = get_needed(meta)
 	local stock = get_stock(meta)
 
-	for item, count in pairs(stock) do
-		local needed = ((needs[item] and needs[item].total) or 0) --TODO: incorporate needs["ductworks:wildcard"] somehow
+	for _,item in pairs(stock) do
+		needs[item.name] = needs[item.name] or needs["ductworks:wildcard"]
+		local needed = ((needs[item.name] and needs[item.name].total) or 0)
 
-		local send = true
-		while send and needed > 0 and count >= needed do
-			send = true
+		local send, overflow = true, false
+		while send and needed > 0 and item.count >= needed do
 			for facedir, dirname in pairs(facedir_to_dirname) do
-				if needs[item][dirname] then
+				if needs[item.name][dirname] then
+					local temp = {}
+					for k,v in pairs(item) do temp[k] = (k == "count" and needs[item.name][dirname]) or v end
 					local basename = meta:get_string(dirname..":type")
 					basename = (basename == "Fuel" and "fuelduct") or "itemduct"
 					local dstpos = ductworks.find_dst(vector.add(pos, minetest.facedir_to_dir(facedir)), basename)
-					if dstpos and ductworks.valid_dst(dstpos, basename) then
-						send = send and ductworks.room_for_item(ItemStack({name = item, count = needs[item][dirname]}), dstpos, ductworks.valid_dst(dstpos, basename))
+					if ItemStack(item):get_definition().type == "tool" and needs[item.name][dirname] ~= 1 then
+						send, overflow = false, false --Minetest doesn't seem to support TOOLs with count > 1 even though other unstackable items do work
+					elseif dstpos and ductworks.valid_dst(dstpos, basename) then
+						if not ductworks.room_for_item(ItemStack(temp), dstpos, ductworks.valid_dst(dstpos, basename)) then
+							send, overflow = false, true
+						end
 					else
-						send = false
+						send, overflow = false, true
 					end
 				end
 			end
 
 			if send then
 				for facedir, dirname in pairs(facedir_to_dirname) do
-					if needs[item][dirname] then
+					if needs[item.name][dirname] then
+						local temp = {}
+						for k,v in pairs(item) do temp[k] = (k == "count" and needs[item.name][dirname]) or v end
 						local basename = meta:get_string(dirname..":type")
 						basename = (basename == "Fuel" and "fuelduct") or "itemduct"
 						local dstpos = ductworks.find_dst(vector.add(pos, minetest.facedir_to_dir(facedir)), basename)
-						ductworks.transfer(pos, dstpos, basename, ItemStack({name = item, count = needs[item][dirname]}))
-						count = count - needs[item][dirname]
+						ductworks.transfer(pos, dstpos, basename, ItemStack(temp))
+						item.count = item.count - temp.count
+					end
+				end
+			end
+		end
+
+		if overflow then
+			needs[item.name] = needs["ductworks:overflow"]
+			local needed = ((needs[item.name] and needs[item.name].total) or 0)
+
+			while overflow and needed > 0 and item.count >= needed do
+				for facedir, dirname in pairs(facedir_to_dirname) do
+					if needs[item.name][dirname] then
+						local temp = {}
+						for k,v in pairs(item) do temp[k] = (k == "count" and needs[item.name][dirname]) or v end
+						local basename = meta:get_string(dirname..":type")
+						basename = (basename == "Fuel" and "fuelduct") or "itemduct"
+						local dstpos = ductworks.find_dst(vector.add(pos, minetest.facedir_to_dir(facedir)), basename)
+						local remove = false
+						if ItemStack(item):get_definition().type == "tool" and needs[item.name][dirname] ~= 1 then
+							remove = true --Minetest doesn't seem to support TOOLs with count > 1 even though other unstackable items do work
+						elseif dstpos and ductworks.valid_dst(dstpos, basename) then
+							if not ductworks.room_for_item(ItemStack(temp), dstpos, ductworks.valid_dst(dstpos, basename)) then
+								remove = true
+							end
+						else
+							remove = true
+						end
+
+						if remove then
+								needed = needed - needs[item.name][dirname]
+								needs[item.name][dirname] = nil
+						end
+					end
+				end
+
+				overflow = (needs[item.name].total > 0)
+
+				if overflow then
+					for facedir, dirname in pairs(facedir_to_dirname) do
+						if needs[item.name][dirname] then
+							local temp = {}
+							for k,v in pairs(item) do temp[k] = (k == "count" and needs[item.name][dirname]) or v end
+							local basename = meta:get_string(dirname..":type")
+							basename = (basename == "Fuel" and "fuelduct") or "itemduct"
+							local dstpos = ductworks.find_dst(vector.add(pos, minetest.facedir_to_dir(facedir)), basename)
+							ductworks.transfer(pos, dstpos, basename, ItemStack(temp))
+							item.count = item.count - temp.count
+						end
 					end
 				end
 			end
@@ -227,5 +284,16 @@ minetest.register_craftitem("ductworks:overflow", {
 	description = "Overflow",
 	inventory_image = minetest.inventorycube("ductworks_overflow.png"),
 	groups = {not_in_creative_inventory = 1}
+})
+
+minetest.register_abm({
+	nodenames = {"ductworks:ejector"},
+	interval = 1,
+	chance = 1,
+	action = function(pos)
+		if not minetest.get_meta(pos):get_inventory():is_empty("tmp") then
+			minetest.get_node_timer(pos):start(0)
+		end
+	end
 })
 

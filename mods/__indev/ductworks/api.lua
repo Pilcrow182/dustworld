@@ -88,6 +88,7 @@ local create_duct = function(basename, connects, dstdir)
 	})
 
 	minetest.register_node("ductworks:"..basename.."_"..id.."_disabled", {
+		description = basename:gsub("^%l", string.upper).." (disabled)",
 		tiles = get_tiles(basename, dstdir, true),
 		drawtype = "nodebox",
 		paramtype = "light",
@@ -419,7 +420,8 @@ ductworks.register_duct = function(basename)
 			for _,dir in ipairs(dirs) do
 				local v = minetest.string_to_pos(vector_dirs[dir])
 				local p = vector.add(pos, v)
-				if groups["duct_connect_"..dir] == 1 and ductworks.valid_src(p, nil, basename) then
+				local is_duct = (minetest.get_item_group(minetest.get_node(p).name, basename) > 0)
+				if groups["duct_connect_"..dir] == 1 and not is_duct and ductworks.valid_src(p, nil, basename) then
 					table.insert(inputs, p)
 				elseif groups["duct_connect_"..dir] == 2 then
 					output = p
