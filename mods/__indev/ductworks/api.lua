@@ -270,6 +270,13 @@ ductworks.room_for_item = function(unit, dstpos, dst)
 	return out
 end
 
+local max_factor = function(total, limit)
+	if total <= limit then return total end
+	for i = math.min(total/2, limit), 1, -1 do
+		if total % i == 0 then return i end
+	end
+end
+
 ductworks.transfer = function(srcpos, dstpos, basename, itemstack)
 	local src, dst = ductworks.valid_src(srcpos, nil, (itemstack and "ejector") or basename), ductworks.valid_dst(dstpos, basename)
 
@@ -286,9 +293,9 @@ ductworks.transfer = function(srcpos, dstpos, basename, itemstack)
 		if not stack:is_empty() then
 			local unit = stack:to_table()
 			if ductworks.room_for_item(unit, dstpos, dst) then
-				unit.count = 1
+				unit.count = max_factor(stack:get_count(), stack:get_definition().stack_max)
 
-				for i = 1, stack:get_count() do
+				for i = 1, stack:get_count(), unit.count do
 					if src[1] == "inventory" then srcinv:remove_item(src[2], unit) end
 					if src[1] == "meta" then metastorage("remove item", srcpos, unit) end
 
