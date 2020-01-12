@@ -166,6 +166,7 @@ mining_laser.dig_next_area = function(pos)
 	local exec = (tonumber(meta:get_string("exec")) or 0) + 1
 	local dig_table = minetest.deserialize(meta:get_string("dig_table")) or {}
 	local old_end = minetest.deserialize(meta:get_string("beam_end")) or pos
+	if old_end.x ~= pos.x or old_end.z ~= pos.z then old_end = pos end
 	local beam_end = {x=old_end.x, y=old_end.y-1, z=old_end.z}
 	meta:set_string("exec", exec)
 
