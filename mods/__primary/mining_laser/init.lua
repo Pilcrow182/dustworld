@@ -9,11 +9,12 @@ mining_laser.dig = function(machinepos, digpos)
 		get_inventory = function() return minetest.get_meta(machinepos):get_inventory() end,
 	}
 
-	--check node to make sure it is solid
 	local node = minetest.get_node(digpos)
-	if node and node.name == "air" or node.name == "ignore" or minetest.registered_nodes[node.name].liquidtype ~= "none" then --node is not solid
-		return false
-	end
+	if not node then return false end
+
+	--check node to make sure it is solid
+	for _,checkname in pairs({"air", "ignore", "mining_laser:beam"}) do if node.name == checkname then return false end end
+	if minetest.registered_nodes[node.name].liquidtype ~= "none" then return false end
 
 	--check node to make sure it is diggable
 	local def = ItemStack({name=node.name}):get_definition()
