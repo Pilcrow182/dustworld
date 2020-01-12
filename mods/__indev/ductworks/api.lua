@@ -279,27 +279,26 @@ ductworks.transfer = function(srcpos, dstpos, basename, itemstack)
 	local skip = not (src and dst)
 	skip = skip or (src[1] == "inventory" and srcinv:is_empty(src[2]))
 	skip = skip or (src[1] == "meta" and metastorage("is empty", srcpos))
+	if skip then return end
 
-	if not skip then
-		local stacklist = (itemstack and {itemstack}) or srcinv:get_list(src[2]) or {metastorage("to stack", srcpos)}
-		for _,stack in ipairs(stacklist) do
-			if not stack:is_empty() then
-				local unit = {}
-				for k,v in pairs(stack:to_table()) do unit[k] = v end
-				unit["count"] = (itemstack and itemstack:get_count()) or 1
-				for count = 1, stack:get_count(), unit["count"] do
-					if ductworks.room_for_item(unit, dstpos, dst) then
-						if src[1] == "inventory" then srcinv:remove_item(src[2], unit) end
-						if src[1] == "meta" then metastorage("remove item", srcpos, unit) end
+	local stacklist = (itemstack and {itemstack}) or srcinv:get_list(src[2]) or {metastorage("to stack", srcpos)}
+	for _,stack in ipairs(stacklist) do
+		if not stack:is_empty() then
+			local unit = stack:to_table()
+			if ductworks.room_for_item(unit, dstpos, dst) then
+				unit.count = 1
 
-						if dst[1] == "inventory" then dstinv:add_item(dst[2], unit) end
-						if dst[1] == "meta" then metastorage("add item", dstpos, unit) end
-						if dst[1] == "air" then minetest.add_item(dstpos, unit) end
+				for i = 1, stack:get_count() do
+					if src[1] == "inventory" then srcinv:remove_item(src[2], unit) end
+					if src[1] == "meta" then metastorage("remove item", srcpos, unit) end
 
-						local delay = (minetest.get_node(dstpos).name == "ductworks:ejector" and 0.0) or 1.0
-						minetest.get_node_timer(dstpos):start(delay)
-					end
+					if dst[1] == "inventory" then dstinv:add_item(dst[2], unit) end
+					if dst[1] == "meta" then metastorage("add item", dstpos, unit) end
+					if dst[1] == "air" then minetest.add_item(dstpos, unit) end
 				end
+
+				local delay = (minetest.get_node(dstpos).name == "ductworks:ejector" and 0.0) or 1.0
+				minetest.get_node_timer(dstpos):start(delay)
 			end
 		end
 	end
