@@ -277,6 +277,17 @@ local max_factor = function(total, limit)
 	end
 end
 
+local get_max_room = function(stack, dstpos, dst)
+	local unit = stack:to_table()
+	unit.count = 1
+	if not ductworks.room_for_item(unit, dstpos, dst) then return 0 end
+	for i = stack:get_count(), 1, -1 do
+		unit.count = i
+		if ductworks.room_for_item(unit, dstpos, dst) then return i end
+	end
+	return 0
+end
+
 ductworks.transfer = function(srcpos, dstpos, basename, itemstack)
 	local src, dst = ductworks.valid_src(srcpos, nil, (itemstack and "ejector") or basename), ductworks.valid_dst(dstpos, basename)
 
@@ -292,10 +303,11 @@ ductworks.transfer = function(srcpos, dstpos, basename, itemstack)
 	for _,stack in ipairs(stacklist) do
 		if not stack:is_empty() then
 			local unit = stack:to_table()
-			if ductworks.room_for_item(unit, dstpos, dst) then
-				unit.count = max_factor(stack:get_count(), stack:get_definition().stack_max)
+			local max_room = (itemstack and ductworks.room_for_item(unit, dstpos, dst) and stack:get_count()) or get_max_room(stack, dstpos, dst)
+			if max_room > 0 then
+				unit.count = max_factor(max_room, stack:get_definition().stack_max)
 
-				for i = 1, stack:get_count(), unit.count do
+				for i = 1, max_room, unit.count do
 					if src[1] == "inventory" then srcinv:remove_item(src[2], unit) end
 					if src[1] == "meta" then metastorage("remove item", srcpos, unit) end
 
