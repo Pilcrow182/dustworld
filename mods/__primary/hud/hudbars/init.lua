@@ -19,7 +19,7 @@ hb.settings.start_offset_right = { x = 15, y = -86 }
 hb.settings.vmargin = 24
 hb.settings.tick = 0.2
 
-hb.settings.autohide_breath = true
+hb.settings.autohide_breath = false
 local autohide_breath = minetest.setting_getbool("hudbars_autohide_breath")
 if autohide_breath ~= nil then
 	hb.settings.autohide_breath = autohide_breath
