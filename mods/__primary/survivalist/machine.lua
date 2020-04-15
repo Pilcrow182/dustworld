@@ -289,6 +289,6 @@ survivalist.register_machine("compressor", {
 	{"survivalist:mulch", "default:coal_lump"},
 	{"bed:bed_bottom", "bed:minibed"},
 	{"default:glass", "hardened_glass:glass"},
-	{"mobs:meat_raw", "backpack:raw_leather"}
+	{"mobs:meat_raw", "backpack:leather_raw"}
 })
 
