@@ -1,20 +1,31 @@
-minetest.register_craft({
-	output = 'ductworks:itemduct 8',
-	recipe = {
-		{'default:copper_ingot', '', 'default:copper_ingot'},
-		{'default:copper_ingot', '', 'default:copper_ingot'},
-		{'default:copper_ingot', '', 'default:copper_ingot'},
-	}
-})
+for _,material in pairs({"default:copper_ingot", "gloopores:akalin_ingot"}) do
+	minetest.register_craft({
+		output = 'ductworks:itemduct 8',
+		recipe = {
+			{material, '', material},
+			{material, '', material},
+			{material, '', material},
+		}
+	})
 
-minetest.register_craft({
-	output = 'ductworks:hopper',
-	recipe = {
-		{'default:copper_ingot', '',                     'default:copper_ingot'},
-		{'default:copper_ingot', 'default:chest',        'default:copper_ingot'},
-		{'',                     'default:copper_ingot', ''                    },
-	}
-})
+	minetest.register_craft({
+		output = 'ductworks:pipe_wrench',
+		recipe = {
+			{material, material},
+			{material, material},
+			{'',       material},
+		}
+	})
+
+	minetest.register_craft({
+		output = 'ductworks:hopper',
+		recipe = {
+			{material, '',                     material},
+			{material, 'default:chest',        material},
+			{'',       material,               ''      },
+		}
+	})
+end
 
 minetest.register_craft({
 	output = 'ductworks:ejector',
@@ -22,15 +33,6 @@ minetest.register_craft({
 		{'',                     'default:diamond',      ''                   },
 		{'default:copper_ingot', 'ductworks:hopper',     'default:steel_ingot'},
 		{'',                     'default:mese_crystal', ''                   },
-	}
-})
-
-minetest.register_craft({
-	output = 'ductworks:pipe_wrench',
-	recipe = {
-		{'default:copper_ingot', 'default:copper_ingot'},
-		{'default:copper_ingot', 'default:copper_ingot'},
-		{'', 'default:copper_ingot'},
 	}
 })
 
