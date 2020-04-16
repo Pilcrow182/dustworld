@@ -115,7 +115,7 @@ minetest.register_node("backpack:backpack", {
 		return player:get_inventory():room_for_item("main", {name = "backpack:placeholder"})
 	end,
 	on_receive_fields = function(pos, formname, fields, sender)
-		if fields.write then
+		if fields.label then
 			local meta = minetest.get_meta(pos)
 			meta:set_string("formspec", get_formspec(fields.label))
 			meta:set_string("infotext", fields.label)
