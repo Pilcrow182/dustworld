@@ -1,3 +1,23 @@
+--[[
+
+  Movable storage ('backpack') mod for Minetest
+
+  Copyright (C) 2020 Pilcrow182
+
+  Permission to use, copy, modify, and/or distribute this software for
+  any purpose with or without fee is hereby granted, provided that the
+  above copyright notice and this permission notice appear in all copies.
+
+  THE SOFTWARE IS PROVIDED "AS IS" AND ISC DISCLAIMS ALL WARRANTIES
+  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL ISC BE LIABLE FOR ANY
+  SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN
+  AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING
+  OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+]]--
+
 local colors = {}
 for _,R in ipairs({"77", "BB", "FF"}) do
 	for _,G in ipairs({"77", "BB", "FF"}) do
@@ -127,7 +147,8 @@ minetest.register_node("backpack:backpack", {
 minetest.register_craftitem("backpack:placeholder",{
 	description = "Backpack (being picked up)",
 	inventory_image = "backpack_placeholder.png",
-	stack_max = 1
+	stack_max = 1,
+	groups = {not_in_creative_inventory=1}
 })
 
 minetest.register_craft({
