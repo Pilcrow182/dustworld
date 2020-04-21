@@ -107,7 +107,7 @@ if KAPPA then
 			punch_end = 105,
 		},
 	})
-	mobs:register_spawn("mobs:kappa", {"default:water_source", "noairblocks:water_sourcex"}, 20, -1, 7000, 3, 31000)
+	mobs:register_spawn("mobs:kappa", {"default:water_source", "default:water_flowing"}, 20, -1, 7000, 3, 31000)
 end
 
 if DIRT_MONSTER then
@@ -152,7 +152,7 @@ if DIRT_MONSTER then
 			punch_end = 63,
 		}
 	})
-	mobs:register_spawn("mobs:dirt_monster", {"default:dirt_with_grass"}, 3, -1, 7000, 3, 31000)
+	mobs:register_spawn("mobs:dirt_monster", {"default:dirt", "default:dirt_with_grass"}, 3, -1, 7000, 3, 31000)
 end
 
 if STONE_MONSTER then
@@ -216,7 +216,7 @@ if SAND_MONSTER then
 		can_climb = true,
 		damage = 2,
 		drops = {
-			{name = "default:sand",
+			{name = "default:desert_sand",
 			chance = 1,
 			min = 3,
 			max = 5,},
