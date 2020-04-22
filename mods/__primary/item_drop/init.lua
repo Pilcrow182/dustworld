@@ -3,6 +3,7 @@ local MC_DROP = false        -- make mining/chopping/etc drop items like it does
 local MC_DEATH = false       -- drop all your items when you die, like minecraft (disable if you have "bones" mod)
 local LAVA_BURN = true       -- destroy an item if it touches either flowing lava or a lava source
 local LIQUID_FLOW = true     -- push an item in the flowing direction if it is within a liquid such as water
+local LIQUID_FLOAT = true    -- make an item float upward when it is within a source and LIQUID_FLOW is enabled
 local PICKUP_DISTANCE = 1    -- this determines how far from a player an item can be and still get picked up
 local SOUND_VOL = 1          -- volume can be any decimal between 0 and 1
 
@@ -214,62 +215,68 @@ if MC_PICKUP then
 				local pos = self.object:getpos()
 				local param2 = minetest.get_node(pos).param2
 				local pn = minetest.get_node(pos).name
+				local liquidtype = minetest.registered_nodes[pn].liquidtype
 
-				if minetest.registered_nodes[pn].liquidtype and minetest.registered_nodes[pn].liquidtype == "flowing" then
-					get_flowing_dir = function(self)
-						if self.flowdir ~= nil then
-							local dp = {x=pos.x+self.flowdir[1], y=pos.y, z=pos.z+self.flowdir[2]}
-							local dn = minetest.get_node(dp).name
-							if not minetest.registered_nodes[dn].walkable then return dp end
-						end
-						for i,d in ipairs({-1, 1, -1, 1}) do
-							if i<3 then pos.x = pos.x+d else pos.z = pos.z+d end
-
-							local dn = minetest.get_node(pos).name
-							local par2 = minetest.get_node(pos).param2
-							if param2 < 9 and dn == "default:water_flowing" and par2 < param2 then
-								return pos
+				if liquidtype then
+					if LIQUID_FLOAT and liquidtype == "source" then
+						local v = self.object:getvelocity()
+						self.object:setvelocity({x = v.x / 1.04, y = math.min(v.y + 1, 2), z = v.z / 1.04})
+					elseif liquidtype == "flowing" then
+						get_flowing_dir = function(self)
+							if self.flowdir ~= nil then
+								local dp = {x=pos.x+self.flowdir[1], y=pos.y, z=pos.z+self.flowdir[2]}
+								local dn = minetest.get_node(dp).name
+								if not minetest.registered_nodes[dn].walkable then return dp end
 							end
+							for i,d in ipairs({-1, 1, -1, 1}) do
+								if i<3 then pos.x = pos.x+d else pos.z = pos.z+d end
+	
+								local dn = minetest.get_node(pos).name
+								local par2 = minetest.get_node(pos).param2
+								if param2 < 9 and dn == "default:water_flowing" and par2 < param2 then
+									return pos
+								end
 
-							if i<3 then pos.x = pos.x-d else pos.z = pos.z-d end
-						end
-						for i,d in ipairs({-1, 1, -1, 1}) do
-							if i<3 then pos.x = pos.x+d else pos.z = pos.z+d end
-
-							local dn = minetest.get_node(pos).name
-							local par2 = minetest.get_node(pos).param2
-							if param2 < 9 and dn == "default:water_flowing" and par2 >= 9 then
-								return pos
+								if i<3 then pos.x = pos.x-d else pos.z = pos.z-d end
 							end
+							for i,d in ipairs({-1, 1, -1, 1}) do
+								if i<3 then pos.x = pos.x+d else pos.z = pos.z+d end
 
-							if i<3 then pos.x = pos.x-d else pos.z = pos.z-d end
-						end
-						for i,d in ipairs({-1, 1, -1, 1}) do
-							if i<3 then pos.x = pos.x+d else pos.z = pos.z+d end
+								local dn = minetest.get_node(pos).name
+								local par2 = minetest.get_node(pos).param2
+								if param2 < 9 and dn == "default:water_flowing" and par2 >= 9 then
+									return pos
+								end
 
-							local dn = minetest.get_node(pos).name
-							local par2 = minetest.get_node(pos).param2
-							if dn == "air" then
-								return pos
+								if i<3 then pos.x = pos.x-d else pos.z = pos.z-d end
 							end
+							for i,d in ipairs({-1, 1, -1, 1}) do
+								if i<3 then pos.x = pos.x+d else pos.z = pos.z+d end
 
-							if i<3 then pos.x = pos.x-d else pos.z = pos.z-d end
+								local dn = minetest.get_node(pos).name
+								local par2 = minetest.get_node(pos).param2
+								if dn == "air" then
+									return pos
+								end
+
+								if i<3 then pos.x = pos.x-d else pos.z = pos.z-d end
+							end
 						end
+
+						local vec = get_flowing_dir(self)
+						if vec then
+							self.flowing = true
+							self.flowdir = {vec.x-p.x, vec.z-p.z}
+							local newpos = {x=p.x+((vec.x-p.x)/20), y=vec.y, z=p.z+((vec.z-p.z)/20)}
+							if param2 == 15 then newpos = roundh(pos) end
+							self.object:moveto(newpos)
+							return
+						end
+					elseif self.flowing == true then
+						self.object:moveto(roundh(pos))
+						self.flowing = false
+						self.flowdir = nil
 					end
-
-					local vec = get_flowing_dir(self)
-					if vec then
-						self.flowing = true
-						self.flowdir = {vec.x-p.x, vec.z-p.z}
-						local newpos = {x=p.x+((vec.x-p.x)/20), y=vec.y, z=p.z+((vec.z-p.z)/20)}
-						if param2 == 15 then newpos = roundh(pos) end
-						self.object:moveto(newpos)
-						return
-					end
-				elseif self.flowing == true then
-					self.object:moveto(roundh(pos))
-					self.flowing = false
-					self.flowdir = nil
 				end
 			end
 		end,
