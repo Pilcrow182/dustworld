@@ -948,6 +948,8 @@ function mob_class:do_env_damage()
 
 			self.health = self.health - self.land_damage
 
+			effect(pos, 5, "tnt_smoke.png", nil, nil, 1, nil)
+
 			if self:check_for_death({type = "environment",
 					pos = pos, node = self.standing_in}) then return true end
 		end
@@ -3104,13 +3106,14 @@ function mob_class:mob_expire(pos, dtime)
 	if self.type ~= "npc"
 	and not self.tamed
 	and self.state ~= "attack"
-	and remove_far ~= true
+--	and remove_far ~= true
 	and self.lifetimer < 20000 then
 
 		self.lifetimer = self.lifetimer - dtime
 
 		if self.lifetimer <= 0 then
 
+--[[
 			-- only despawn away from player
 			local objs = minetest.get_objects_inside_radius(pos, 15)
 
@@ -3123,6 +3126,7 @@ function mob_class:mob_expire(pos, dtime)
 					return
 				end
 			end
+--]]
 
 --			minetest.log("action",
 --				S("lifetimer expired, removed @1", self.name))

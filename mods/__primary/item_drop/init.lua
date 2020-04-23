@@ -3,7 +3,7 @@ local MC_DROP = false        -- make mining/chopping/etc drop items like it does
 local MC_DEATH = false       -- drop all your items when you die, like minecraft (disable if you have "bones" mod)
 local LAVA_BURN = true       -- destroy an item if it touches either flowing lava or a lava source
 local LIQUID_FLOW = true     -- push an item in the flowing direction if it is within a liquid such as water
-local LIQUID_FLOAT = true    -- make an item float upward when it is within a source and LIQUID_FLOW is enabled
+local LIQUID_FLOAT = true    -- make an item float upward when it is within a liquid source
 local PICKUP_DISTANCE = 1    -- this determines how far from a player an item can be and still get picked up
 local SOUND_VOL = 1          -- volume can be any decimal between 0 and 1
 
@@ -205,7 +205,7 @@ if MC_PICKUP then
 					return
 				end
 			end
-			if LIQUID_FLOW then -- TODO: the LIQUID_FLOW code really needs a full rewrite. it works, but it's very hacky...
+			if LIQUID_FLOAT or LIQUID_FLOW then -- TODO: the LIQUID_FLOW code really needs a full rewrite. it works, but it's very hacky...
 				local roundh = function(pos)
 					pos.x = tonumber(string.format("%.0f", pos.x))
 					pos.z = tonumber(string.format("%.0f", pos.z))
@@ -217,11 +217,11 @@ if MC_PICKUP then
 				local pn = minetest.get_node(pos).name
 				local liquidtype = minetest.registered_nodes[pn].liquidtype
 
-				if liquidtype then
+				if liquidtype and liquidtype ~= "none" then
 					if LIQUID_FLOAT and liquidtype == "source" then
 						local v = self.object:getvelocity()
 						self.object:setvelocity({x = v.x / 1.04, y = v.y / 4 + 3.6, z = v.z / 1.04})
-					elseif liquidtype == "flowing" then
+					elseif LIQUID_FLOW and liquidtype == "flowing" then
 						get_flowing_dir = function(self)
 							if self.flowdir ~= nil then
 								local dp = {x=pos.x+self.flowdir[1], y=pos.y, z=pos.z+self.flowdir[2]}
