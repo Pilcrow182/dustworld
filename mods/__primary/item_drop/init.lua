@@ -220,7 +220,7 @@ if MC_PICKUP then
 				if liquidtype then
 					if LIQUID_FLOAT and liquidtype == "source" then
 						local v = self.object:getvelocity()
-						self.object:setvelocity({x = v.x / 1.04, y = math.min(v.y + 1, 2), z = v.z / 1.04})
+						self.object:setvelocity({x = v.x / 1.025, y = v.y / 1.08 + 0.6, z = v.z / 1.025})
 					elseif liquidtype == "flowing" then
 						get_flowing_dir = function(self)
 							if self.flowdir ~= nil then

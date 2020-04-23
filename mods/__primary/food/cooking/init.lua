@@ -111,14 +111,21 @@ minetest.register_craft({
 	type = "cooking",
 	output = "cooking:eggs_cooked",
 	recipe = "animalmaterials:egg",
-	cooktime = 5
+	cooktime = 2
 })
 
 minetest.register_craft({
 	type = "cooking",
 	output = "cooking:eggs_cooked 4",
 	recipe = "animalmaterials:egg_big",
-	cooktime = 10
+	cooktime = 5
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = "cooking:eggs_cooked",
+	recipe = "mobs:egg",
+	cooktime = 2
 })
 
 

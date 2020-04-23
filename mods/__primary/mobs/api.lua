@@ -2418,6 +2418,11 @@ function mob_class:do_states(dtime)
 					else
 						self:set_animation("walk")
 					end
+
+					if self.can_climb and p.y > s.y and minetest.registered_nodes[self.standing_in].climbable then
+						local v0 = self.object:get_velocity()
+						self.object:set_velocity({x = v0.x, y = self.jump_height, z = v0.z})
+					end
 				end
 
 			else -- rnd: if inside reach range
@@ -3161,16 +3166,6 @@ function mob_class:on_step(dtime)
 				})
 		end
 
-		-- if standing inside climbable block and can climb then do so
-		if self.can_climb and minetest.registered_nodes[self.standing_in].climbable then
-
-				self.object:set_velocity({
-					x = 0,
-					y = self.jump_height,
-					z = 0
-				})
-		end
-
 		-- check and stop if standing at cliff and fear of heights
 		self.at_cliff = self:is_at_cliff()
 
@@ -3828,8 +3823,8 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 	local invimg = background
 
 	if addegg == 1 then
-		invimg = "mobs_chicken_egg.png^(" .. invimg ..
-			"^[mask:mobs_chicken_egg_overlay.png)"
+		invimg = "mobs_egg.png^(" .. invimg ..
+			"^[mask:mobs_egg_overlay.png)"
 	end
 
 	-- register new spawn egg containing mob information

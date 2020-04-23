@@ -1,5 +1,6 @@
 local MUMMY = true
 local KAPPA = true
+local DUCKMAN = true
 local DIRT_MONSTER = true
 local STONE_MONSTER = true
 local SAND_MONSTER = true
@@ -60,6 +61,7 @@ if MUMMY then
 		},
 	})
 -- 	mobs:register_spawn("mobs:mummy", {"pyramids:trap"}, 20, -1, 7000, 3, 31000)
+	mobs:register_egg("mobs:mummy", "Mummy Egg", "default_sandstone.png", 1, false)
 end
 
 if KAPPA then
@@ -108,6 +110,56 @@ if KAPPA then
 		},
 	})
 	mobs:register_spawn("mobs:kappa", {"default:water_source", "default:water_flowing"}, 20, -1, 7000, 3, 31000)
+	mobs:register_egg("mobs:kappa", "Kappa Egg", "default_water.png", 1, false)
+end
+
+if DUCKMAN then
+	mobs:register_mob("mobs:duckman", {
+		mob_name = "duckman",
+		type = "monster",
+		hp_max = 2,
+		collisionbox = {-0.4, -0.01, -0.4, 0.4, 1.9, 0.4},
+		visual = "mesh",
+		mesh = "mobs_duckman.x",
+		textures = {"mobs_duckman.png"},
+		visual_size = {x=8,y=8},
+		makes_footstep_sound = true,
+		view_range = 10,
+		walk_velocity = 1,
+		run_velocity = 3,
+		can_swim = true,
+		idle_swim_depth = 5,
+		idle_swim_varience = 4,
+		fear_height = 2,
+		damage = 1,
+		drops = {
+			{name = "mobs:egg",
+			chance = 2,
+			min = 1,
+			max = 2,},
+		},
+		light_resistant = true,
+		armor = 200,
+		drawtype = "front",
+		water_damage = 0,
+		lava_damage = 5,
+		light_damage = 0,
+		attack_type = "dogfight",
+		animation = {
+			speed_normal = 15,
+			speed_run = 15,
+			stand_start = 0,
+			stand_end = 39,
+			walk_start = 41,
+			walk_end = 72,
+			run_start = 74,
+			run_end = 105,
+			punch_start = 74,
+			punch_end = 105,
+		},
+	})
+	mobs:register_spawn("mobs:duckman", {"default:dirt_with_grass", "default:sand"}, 20, 0, 14000, 3, 31000)
+	mobs:register_egg("mobs:duckman", "Duckman Egg", "default_grass.png", 1, false)
 end
 
 if DIRT_MONSTER then
@@ -153,6 +205,7 @@ if DIRT_MONSTER then
 		}
 	})
 	mobs:register_spawn("mobs:dirt_monster", {"default:dirt", "default:dirt_with_grass"}, 3, -1, 7000, 3, 31000)
+	mobs:register_egg("mobs:dirt_monster", "Dirt Monster Egg", "default_dirt.png", 1, false)
 end
 
 if STONE_MONSTER then
@@ -197,6 +250,7 @@ if STONE_MONSTER then
 		}
 	})
 	mobs:register_spawn("mobs:stone_monster", {"default:stone"}, 3, -1, 7000, 3, 0)
+	mobs:register_egg("mobs:stone_monster", "Golem Egg", "default_stone.png", 1, false)
 end
 
 if SAND_MONSTER then
@@ -242,6 +296,7 @@ if SAND_MONSTER then
 		},
 	})
 	mobs:register_spawn("mobs:sand_monster", {"default:desert_sand"}, 20, -1, 7000, 3, 31000)
+	mobs:register_egg("mobs:sand_monster", "Sand Monster Egg", "default_desert_sand.png", 1, false)
 end
 
 if DUST_MONSTER then
@@ -277,16 +332,17 @@ if DUST_MONSTER then
 			speed_normal = 15,
 			speed_run = 15,
 			stand_start = 0,
-			stand_end = 14,
-			walk_start = 15,
-			walk_end = 38,
-			run_start = 40,
-			run_end = 63,
-			punch_start = 40,
-			punch_end = 63,
-		}
+			stand_end = 39,
+			walk_start = 41,
+			walk_end = 72,
+			run_start = 74,
+			run_end = 105,
+			punch_start = 74,
+			punch_end = 105,
+		},
 	})
 	mobs:register_spawn("mobs:dust_monster", {"wasteland:dust"}, 3, -1, 5000, 3, 31000)
+	mobs:register_egg("mobs:dust_monster", "Dust Monster Egg", "default_clay.png", 1, false)
 end
 
 if TREE_MONSTER then
@@ -306,7 +362,7 @@ if TREE_MONSTER then
 		can_climb = true,
 		damage = 4,
 		drops = {
-			{name = "default:sapling",
+			{name = "survivalist:oak_sapling",
 			chance = 3,
 			min = 1,
 			max = 2,},
@@ -337,6 +393,7 @@ if TREE_MONSTER then
 		},
 	})
 	mobs:register_spawn("mobs:tree_monster", {"default:leaves", "default:jungleleaves", "trees:leaves_green", "trees:leaves_yellow", "trees:leaves_red"}, 3, -1, 7000, 3, 31000)
+	mobs:register_egg("mobs:tree_monster", "Tree Monster Egg", "default_tree.png", 1, false)
 end
 
 if SHEEP then
@@ -425,6 +482,11 @@ minetest.register_craftitem("mobs:meat", {
 	inventory_image = "mobs_meat.png",
 	groups = {food=2},
 	on_use = minetest.item_eat(8),
+})
+
+minetest.register_craftitem("mobs:egg", {
+	description = "Egg",
+	inventory_image = "mobs_egg.png",
 })
 
 minetest.register_craft({
