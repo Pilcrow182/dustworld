@@ -940,6 +940,19 @@ function mob_class:do_env_damage()
 					pos = pos, node = self.standing_in}) then return true end
 		end
 
+	-- land
+	elseif self.land_damage
+	and not minetest.find_node_near(pos, 5, {"group:water"}) then
+
+		if self.land_damage ~= 0 then
+
+			self.health = self.health - self.land_damage
+
+			if self:check_for_death({type = "environment",
+					pos = pos, node = self.standing_in}) then return true end
+		end
+
+
 	-- lava or fire or ignition source
 	elseif self.lava_damage
 	and nodef.groups.igniter then
@@ -3344,6 +3357,7 @@ minetest.register_entity(name, setmetatable({
 	light_damage_min = def.light_damage_min,
 	light_damage_max = def.light_damage_max,
 	water_damage = def.water_damage,
+	land_damage = def.land_damage,
 	lava_damage = def.lava_damage,
 	suffocation = def.suffocation,
 	fall_damage = def.fall_damage,

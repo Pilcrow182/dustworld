@@ -19,6 +19,7 @@ if MUMMY then
 	mobs:register_mob("mobs:mummy", {
 		mob_name = "mummy",
 		type = "monster",
+		hp_min = 10,
 		hp_max = 10,
 		collisionbox = {-0.4, -0.01, -0.4, 0.4, 1.9, 0.4},
 		visual = "mesh",
@@ -68,7 +69,8 @@ if KAPPA then
 	mobs:register_mob("mobs:kappa", {
 		mob_name = "kappa",
 		type = "monster",
-		hp_max = 10,
+		hp_min = 50,
+		hp_max = 50,
 		collisionbox = {-0.4, -0.01, -0.4, 0.4, 1.9, 0.4},
 		visual = "mesh",
 		mesh = "mobs_kappa.x",
@@ -90,9 +92,10 @@ if KAPPA then
 			max = 5,},
 		},
 		light_resistant = true,
-		armor = 100,
+		armor = 500,
 		drawtype = "front",
 		water_damage = 0,
+		land_damage = 1,
 		lava_damage = 5,
 		light_damage = 0,
 		attack_type = "dogfight",
@@ -117,6 +120,7 @@ if DUCKMAN then
 	mobs:register_mob("mobs:duckman", {
 		mob_name = "duckman",
 		type = "monster",
+		hp_min = 2,
 		hp_max = 2,
 		collisionbox = {-0.4, -0.01, -0.4, 0.4, 1.9, 0.4},
 		visual = "mesh",
@@ -166,6 +170,7 @@ if DIRT_MONSTER then
 	mobs:register_mob("mobs:dirt_monster", {
 		mob_name = "dirt_monster",
 		type = "monster",
+		hp_min = 10,
 		hp_max = 10,
 		collisionbox = {-0.4, -0.01, -0.4, 0.4, 1.9, 0.4},
 		visual = "mesh",
@@ -212,6 +217,7 @@ if STONE_MONSTER then
 	mobs:register_mob("mobs:stone_monster", {
 		mob_name = "stone_monster",
 		type = "monster",
+		hp_min = 20,
 		hp_max = 20,
 		collisionbox = {-0.4, -0.01, -0.4, 0.4, 1.9, 0.4},
 		visual = "mesh",
@@ -257,6 +263,7 @@ if SAND_MONSTER then
 	mobs:register_mob("mobs:sand_monster", {
 		mob_name = "sand_monster",
 		type = "monster",
+		hp_min = 6,
 		hp_max = 6,
 		collisionbox = {-0.4, -0.01, -0.4, 0.4, 1.9, 0.4},
 		visual = "mesh",
@@ -303,6 +310,7 @@ if DUST_MONSTER then
 	mobs:register_mob("mobs:dust_monster", {
 		mob_name = "dust_monster",
 		type = "monster",
+		hp_min = 6,
 		hp_max = 6,
 		collisionbox = {-0.4, -0.01, -0.4, 0.4, 1.9, 0.4},
 		visual = "mesh",
@@ -349,6 +357,7 @@ if TREE_MONSTER then
 	mobs:register_mob("mobs:tree_monster", {
 		mob_name = "tree_monster",
 		type = "monster",
+		hp_min = 10,
 		hp_max = 10,
 		collisionbox = {-0.4, -0.01, -0.4, 0.4, 1.9, 0.4},
 		visual = "mesh",
