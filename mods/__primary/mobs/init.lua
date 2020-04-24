@@ -143,7 +143,7 @@ if DUCKMAN then
 			max = 2,},
 		},
 		light_resistant = true,
-		armor = 200,
+		armor = 100,
 		drawtype = "front",
 		lifetimer = 60,
 		water_damage = 0,

@@ -101,7 +101,7 @@ minetest.register_craft({
 -- eggs
 
 minetest.register_craftitem("cooking:eggs_cooked", {
-	description = "Scrambled Eggs",
+	description = "Cooked Egg",
 	inventory_image = "cooking_eggs_cooked.png",
 	groups = {food=2},
 	on_use = minetest.item_eat(4)

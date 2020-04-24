@@ -4,11 +4,17 @@ minetest.register_alias("noairblocks:water_flowingx", "default:water_flowing")
 minetest.register_alias("seaplants:seaplantssandkelpbrown", "seaflora:sand_with_brown_kelp")
 minetest.register_alias("seaplants:seaplantssandkelpgreen", "seaflora:sand_with_green_kelp")
 
+minetest.register_alias("seaplants:seaplantsdirtkelpbrown", "seaflora:dirt_with_brown_kelp")
+minetest.register_alias("seaplants:seaplantsdirtkelpgreen", "seaflora:dirt_with_green_kelp")
+
 minetest.register_alias("seaplants:seagrassgreen", "default:water_source")
 minetest.register_alias("seaplants:seagrassred", "default:water_source")
 
 minetest.register_alias("seaplants:seaplantssandseagrassgreen", "seaflora:sand_with_green_coral")
 minetest.register_alias("seaplants:seaplantssandseagrassred", "seaflora:sand_with_red_coral")
+
+minetest.register_alias("seaplants:seaplantsdirtseagrassgreen", "seaflora:dirt_with_green_coral")
+minetest.register_alias("seaplants:seaplantsdirtseagrassred", "seaflora:dirt_with_red_coral")
 
 minetest.register_alias("seacoral:seacoralsandaqua", "default:sand")
 minetest.register_alias("seacoral:seacoralsandcyan", "default:sand")
