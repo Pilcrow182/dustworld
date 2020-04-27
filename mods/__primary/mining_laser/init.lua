@@ -33,6 +33,8 @@ mining_laser.dig = function(machinepos, digpos)
 		end
 	end
 
+	local oldmetadata = minetest.get_meta(machinepos):to_table()
+
 	minetest.remove_node(digpos)
 
 	--handle post-digging callback
@@ -40,7 +42,7 @@ mining_laser.dig = function(machinepos, digpos)
 		-- Copy pos and node because callback can modify them
 		local pos_copy = {x=digpos.x, y=digpos.y, z=digpos.z}
 		local node_copy = {name=node.name, param1=node.param1, param2=node.param2}
-		def.after_dig_node(pos_copy, node_copy, oldmetadata, digger)
+		def.after_dig_node(machinepos, node, oldmetadata, digger)
 	end
 
 	--run digging event callbacks
@@ -48,7 +50,7 @@ mining_laser.dig = function(machinepos, digpos)
 		-- Copy pos and node because callback can modify them
 		local pos_copy = {x=digpos.x, y=digpos.y, z=digpos.z}
 		local node_copy = {name=node.name, param1=node.param1, param2=node.param2}
-		callback(pos_copy, node_copy, digger)
+		callback(machinepos, node, digger)
 	end
 	return true
 end
