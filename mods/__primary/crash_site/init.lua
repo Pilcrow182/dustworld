@@ -11,6 +11,9 @@ crash_site.spawn = function(player, tries)
 	local tries = tries or 0
 	tries = tries + 1
 
+	-- restore player's health so we don't kill them while waiting for land to generate
+	player:set_hp(20)
+
 	if tries == 1 then -- if this is the first time this function runs,
 		-- temporarily move player out of the way (under the ground, most likely)
 		player:moveto({x=0,y=-50,z=0})
