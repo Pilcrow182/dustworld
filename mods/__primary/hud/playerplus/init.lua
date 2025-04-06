@@ -211,7 +211,7 @@ minetest.register_globalstep(function(dtime)
 				end
 				
 				-- set player physics
-				player:set_physics_override(pp.speed, pp.jump, pp.gravity)
+				player:set_physics_override({speed=pp.speed, jump=pp.jump, gravity=pp.gravity})
 				--print ("Speed:", pp.speed, "Jump:", pp.jump, "Gravity:", pp.gravity)
 				
 				-- every SUFFOCATION_TIMER seconds
